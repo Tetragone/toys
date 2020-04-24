@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// 코드를 좀더 가독성 있게 바꿀 예정이에요!
 class StudyManager extends StatelessWidget{
 
   int Dday = 5; //test data for D-day
@@ -17,10 +16,9 @@ class StudyManager extends StatelessWidget{
       body: Row(
         children: <Widget>[
           Expanded(
-            flex: 10,
+            flex: 10, //좌우로 꽉채우기 위해 넣은 코드1
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-
               children: <Widget>[
                 Container(
                   child: Text('D-$Dday'),
