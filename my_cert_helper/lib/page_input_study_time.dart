@@ -2,21 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mycerthelper/page_study_manage.dart';
 
-import 'main.dart';
+import 'data_group.dart';
 
 // 코드를 좀더 가독성 있게 바꿀 예정이에요!
 class RouteGetStudyTime extends StatelessWidget{
-  StudyManager mainManager;
-  RouteGetStudyTime(this.mainManager); // 입력 받은 text를 title로 해주기 위함.
   static List<StateStudyTimeForm> stateFormList = new List<StateStudyTimeForm>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(mainManager.title)), //title 용
+        appBar: AppBar(title: Text('공부시간 입력')), //title 용
         body: buildColumn(context)
-    )
-    ;
+    );
     }
 
     Widget buildColumn(BuildContext context) {
@@ -35,21 +32,21 @@ class RouteGetStudyTime extends StatelessWidget{
       while(stateIter.moveNext() != false) {
           cursor = stateIter.current;
           input = int.parse(cursor.formController.text);
-          storedData = StudyManager.targetCert.getPersonalTimeWithDate(
+          storedData = StudyManagerState.targetCert.getPersonalTimeWithDate(
               cursor.targetDate);
           if (storedData != input) {
             if(storedData != 0) {
-              StudyManager.targetCert.modifyPersonalTimeWithDate(
+              StudyManagerState.targetCert.modifyPersonalTimeWithDate(
                   cursor.targetDate, input - storedData);
             }
             else {
-              StudyManager.targetCert.personalTime.add(new StudyTime(cursor.targetDate, cursor.targetDate.add(new Duration(hours: input))));
+              StudyManagerState.targetCert.personalTime.add(new StudyTime(cursor.targetDate, cursor.targetDate.add(new Duration(hours: input))));
             }
           }
         }
       stateFormList = new List<StateStudyTimeForm>();
         Navigator.pop(context);
-      mainManager.updateStat();
+//        StudyManagerState.updateStat();
       },
       child: Text("확인"),
     ));
@@ -57,7 +54,7 @@ class RouteGetStudyTime extends StatelessWidget{
     return Column(
     children: result
     );
-    }
+  }
 
   Widget buildRow(int count) {
     DateTime today = DateTime.now();
@@ -94,7 +91,7 @@ class StateStudyTimeForm extends State<StudyTimeForm> {
   var formController;
   DateTime targetDate;
   StateStudyTimeForm(this.targetDate) {
-    formController = TextEditingController(text: StudyManager.targetCert.getPersonalTimeWithDate(targetDate).toString());
+    formController = TextEditingController(text: StudyManagerState.targetCert.getPersonalTimeWithDate(targetDate).toString());
   }
   bool needRedraw = false;
 
