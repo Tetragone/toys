@@ -147,13 +147,17 @@ class _CalenderPageState extends State<CalenderPage>{
           ]
         )
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: _showAddDialog,
+      floatingActionButton: FloatingActionButton.extended(
+        tooltip: '자격증 시험 일정을 추가합니다.',
+        label: Text('일정 추가'),
+        icon: Icon(Icons.add),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        onPressed: _editTestDay,
         ),
     );
   }
-  _showAddDialog() {
+    _editTestDay() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -163,6 +167,7 @@ class _CalenderPageState extends State<CalenderPage>{
         actions: <Widget>[
           FlatButton(
             child: Text('저장'),
+            color: Colors.green,
             onPressed: () {
               if(_eventController.text.isEmpty) return;
               setState(() {
