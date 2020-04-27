@@ -124,7 +124,7 @@ class _CalenderPageState extends State<CalenderPage>{
                   margin: const EdgeInsets.all(4.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.blue,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
