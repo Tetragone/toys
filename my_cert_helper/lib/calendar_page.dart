@@ -31,7 +31,7 @@ final Map<DateTime, List> _holidays = {
 class CalenderPage extends StatefulWidget{
 
   @override
-  State createState() => CalenderPageState();
+  State createState() => _CalenderPageState();
 }
 
 class _CalenderPageState extends State<CalenderPage>{
@@ -42,6 +42,7 @@ class _CalenderPageState extends State<CalenderPage>{
   TextEditingController _eventController;
   SharedPreferences prefs;
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -51,6 +52,7 @@ class _CalenderPageState extends State<CalenderPage>{
     _events = {};
     _selectedEvents = [];
     initPrefs();
+    initializeDateFormatting('pt_BR', null);
   }
 
   initPrefs() async {
