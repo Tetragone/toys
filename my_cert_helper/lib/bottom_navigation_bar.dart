@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'calendar_page.dart';
 import 'information_setting_page.dart';
-import 'main_page.dart';
 import 'page_study_manage.dart';
 import 'data_group.dart';
 
@@ -13,9 +12,9 @@ class UnderBar extends StatefulWidget{
 
 class UnderBarState extends State<UnderBar> {
   Data data;
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
-  final List<Widget> selectUnderBar = [MainPage(), StudyManager(), CalenderPage(), InformationSettingPage()];
+  final List<Widget> selectUnderBar = [StudyManager(), CalenderPage(), InformationSettingPage()];
 
   void _ontap(int index) {
     setState(() {
@@ -32,10 +31,6 @@ class UnderBarState extends State<UnderBar> {
         onTap: _ontap, //밑에 바 누를시 호출하는 함수
         currentIndex: _currentIndex, //현재 위치(초기값을 결정을 하면 처음에 나오는 위치 조절 가능)
         items: [
-          new BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('메인'),
-          ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.border_color),
             title: Text('학습관리'),
