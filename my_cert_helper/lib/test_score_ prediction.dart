@@ -7,11 +7,23 @@ class TestScorePrediction extends StatelessWidget{
     return Scaffold(
       appBar: AppBar(title: Text('자격증 점수 예측'),),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          RaisedButton(
-            child: Text('back'),
-            onPressed: () => Navigator.pop(context),
-          )
+          Expanded(
+            flex: 10,
+            child: ListView.builder(
+                itemCount: 3,
+                itemBuilder: (context, index){
+                  return ListTile(
+                    title: Text('test'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: () => {},
+                    ),
+                  );
+                },
+              ),
+          ),
         ],
       ),
     );

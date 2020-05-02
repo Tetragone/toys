@@ -5,6 +5,7 @@ import 'study_time_check_and_compare.dart';
 import 'test_score_%20prediction.dart';
 import 'bottom_navigation_bar.dart';
 import 'page_input_study_time.dart';
+import 'each_test_setting.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +14,8 @@ const String TEST_SETTING_PAGE = '/test setting';
 const String STUDY_TIME_CHECK_PAGE = '/time check';
 const String TEST_SCORE_PREDICTION_PAGE = '/score perdiction';
 const String TIME_SETTING_PAGE = '/time setting';
+const String TEST_SCORE_PREDICTION = '/score perdiction/each test';
+const String EACH_TEST_SETTING = '/test setting/each test setting';
 
 class MyApp extends StatefulWidget {
   @override
@@ -36,6 +39,7 @@ class MyAppState extends State<MyApp> {
         STUDY_TIME_CHECK_PAGE : (context) => StudyTimeCheckAndCompare(),
         TEST_SCORE_PREDICTION_PAGE : (context) => TestScorePrediction(),
         TIME_SETTING_PAGE : (context) => RouteGetStudyTime(),
+        EACH_TEST_SETTING : (context) => EachTestSetting(),
       },
     );
   }

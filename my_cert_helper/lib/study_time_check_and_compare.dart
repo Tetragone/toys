@@ -8,10 +8,23 @@ class StudyTimeCheckAndCompare extends StatelessWidget{
       appBar: AppBar(title: Text('공부 시간 확인 및 비교'),),
       body: Column(
         children: <Widget>[
-          RaisedButton(
-            child: Text('back'),
-            onPressed: () => Navigator.pop(context),
-          )
+          Expanded(
+            flex: 10,
+            child: ListView.builder(
+              itemCount: 3,
+              itemBuilder: (context, index){
+                return ListTile(
+                  title: Text('test'),
+                  trailing: IconButton(
+                    icon: Icon(Icons.settings),
+                    onPressed: () => {
+                      //Navigator.of(context).pushNamed();
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
