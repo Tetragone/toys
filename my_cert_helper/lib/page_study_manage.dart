@@ -13,7 +13,7 @@ class StudyManager extends StatefulWidget {
 }
 
 class StudyManagerState extends State<StudyManager> {
-  Data data = Data();
+  static Data data = Data();
   static CertObjective targetCert;
   Firestore firestore;
   StudyTimeBox studyTimeWidget;

@@ -16,7 +16,7 @@ class StudyTimeCheckAndCompare extends StatelessWidget{
                 return ListTile(
                   title: Text('test'),
                   trailing: IconButton(
-                    icon: Icon(Icons.settings),
+                    icon: Icon(Icons.border_color),
                     onPressed: () => {
                       //Navigator.of(context).pushNamed();
                     },

@@ -86,7 +86,7 @@ class CertObjective {
 
     while(iterator.moveNext() != false) {
       cursor = iterator.current;
-      if(cursor.startTime.isAfter(checker))
+      if(cursor.startTime.isAfter(checker) || cursor.startTime.difference(checker).inSeconds == 0)
         sum = sum + cursor.startTime.difference(cursor.endTime);
     }
 
@@ -105,7 +105,9 @@ class StudyTime {
 
 class DateTool {
   static DateTime getWeekMonday(DateTime time) {
+    String timeString;
     time = time.subtract(new Duration(days: (time.weekday - 1)));
+    time = new DateTime(time.year, time.month, time.day);
     return time;
   }
 
