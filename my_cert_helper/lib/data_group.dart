@@ -86,7 +86,7 @@ class CertObjective {
 
     while(iterator.moveNext() != false) {
       cursor = iterator.current;
-      if(cursor.startTime.day >= checker.day)
+      if(cursor.startTime.isAfter(checker))
         sum = sum + cursor.startTime.difference(cursor.endTime);
     }
 
