@@ -1,9 +1,6 @@
 // json 직렬화
 import 'dart:convert';
 
-// http
-import 'package:http/http.dart';
-
 import 'package:flutter/material.dart';
 
 // 캘린더 플러그인
@@ -12,6 +9,9 @@ import 'package:intl/date_symbol_data_local.dart';
 
 // shared_preferences(key-value) 플러그인 : DB 저장, 읽기
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+
 
 final Map<DateTime, List> _holidays = {
   DateTime(2020, 4, 15): ['21대 국회의원 선거'],
@@ -26,6 +26,24 @@ final Map<DateTime, List> _holidays = {
   DateTime(2020, 10, 9): ['한글날'],
   DateTime(2020, 12, 25): ['성탄절'],
 };
+
+final dummyttoeic = [
+    {
+    "testname": "토익 404회",
+    "testday" : "2020-05-16 14:20",
+    "lastsubday" : "2020-05-04 08:00",
+    "passday" : "2020-05-28 06:00",
+    "link" : "https://appexam.ybmnet.co.kr/toeic/receipt/receipt.asp"
+    },
+  
+    {
+    "testname": "토익 405회",
+    "testday" : "2020-05-31 09:20",
+    "lastsubday" : "2020-05-18 08:00",
+    "passday" : "2020-06-11 06:00",
+    "link" : "https://appexam.ybmnet.co.kr/toeic/receipt/receipt.asp"
+    }
+];
 
 
 class CalenderPage extends StatefulWidget{
@@ -155,38 +173,105 @@ class _CalenderPageState extends State<CalenderPage>{
         icon: Icon(Icons.add),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
-        onPressed: _editTestDay,
-        ),
+        onPressed: () {
+          Navigator.push(context,
+          MaterialPageRoute<void>(builder: (BuildContext context) {
+            return _editTestDay();
+            })
+          );
+        }
+      ),
     );
   }
-    _editTestDay() {
+}
+
+
+class _editTestDay extends StatefulWidget {
+  @override
+  __editTestDayState createState() => __editTestDayState();
+}
+
+class __editTestDayState extends State<_editTestDay> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('자격증 시험 일정 추가')
+        ),
+        body: _showTest(context, dummyttoeic),
+    );
+  }
+
+  Widget _showTest(BuildContext context, List<Map> snapshot) {
+    return ListView(
+      padding: const EdgeInsets.only(top:20.0),
+      children: snapshot.map((data)=> _buildListItem(context,data)).toList()
+    );
+  }
+
+  Widget _buildListItem(BuildContext context, Map data) {
+    final record = Record.fromMap(data);
+
+   return Padding(
+     key: ValueKey(record.testname),
+     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+     child: Container(
+       decoration: BoxDecoration(
+         border: Border.all(color: Colors.grey),
+         borderRadius: BorderRadius.circular(5.0),
+       ),
+       child: ListTile(
+         title: Text(record.testname),
+         trailing: Text(record.testday.toString()),
+         onTap: () => _showDialog(context,record.testname),
+       ),
+     ),
+   );
+  }
+
+  void _showDialog(BuildContext context, text) {
+  // 경고창을 보여주는 가장 흔한 방법.
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        content: TextField(
-          controller: _eventController,
-        ), //TextField
-        actions: <Widget>[
-          FlatButton(
-            child: Text('저장'),
-            color: Colors.green,
-            onPressed: () {
-              if(_eventController.text.isEmpty) return;
-              setState(() {
-                 if(_events[_controller.selectedDay]!= null) {
-                 _events[_controller.selectedDay].add(_eventController.text);
-                }
-                else {
-                  _events[_controller.selectedDay] = [_eventController.text];
-               }
-               prefs.setString("events", json.encode(encodeMap(_events)));
-               _eventController.clear();
-               Navigator.pop(context);
-              });
-            },
-          )
-        ],
-      )
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            title: Text('일정 추가'),
+            content: Text('$text 시험을 캘린더에 추가합니까?.'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('저장', style: TextStyle(color: Colors.black),),
+                onPressed: () {
+                  
+                },
+              )
+            ],
+            // 주석으로 막아놓은 actions 매개변수도 확인해 볼 것.
+            // actions: <Widget>[
+            //     FlatButton(child: Text('확인'), onPressed: () => Navigator.pop(context)),
+            // ],
+        );
+      }
     );
   }
+}
+
+class Record {
+ final String testname;
+ final String testday;
+
+ final DocumentReference reference;
+
+ Record.fromMap(Map<String, dynamic> map, {this.reference})
+     : assert(map['testname'] != null),
+       assert(map['testday'] != null),
+
+       testname = map['testname'],
+       testday = map['testday'];
+
+ Record.fromSnapshot(DocumentSnapshot snapshot)
+     : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+ @override
+ String toString() => "Record<$testname:$testday>";
 }
