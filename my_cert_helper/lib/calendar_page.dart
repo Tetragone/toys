@@ -182,8 +182,8 @@ class _HomePageState extends State<HomePage> {
                  width: MediaQuery.of(context).size.width,
                  height: 50,
                  child: Padding(
-                   padding: EdgeInsets.fromLTRB(20.0, 16.0, 16.0, 16.0),
-                   child: Text(tevents, style: TextStyle(fontSize: 20),)
+                   padding: EdgeInsets.only(left: 15, top: 10, bottom: 10),
+                   child: Text(tevents, style: TextStyle(fontSize: 18),)
                    )
                ),
              )),
