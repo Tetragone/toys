@@ -98,7 +98,7 @@ class StateStudyTimeForm extends State<StudyTimeForm> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    TextFormField formfield = TextFormField(
+    TextFormField formField = TextFormField(
         validator: (value) {
           if (value.isEmpty) {
             return "학습 시간을 입력해 주세요";
@@ -108,7 +108,7 @@ class StateStudyTimeForm extends State<StudyTimeForm> {
       controller: formController
     );
     Form result = Form(
-        child: formfield
+        child: formField
         );
     return result;
   }

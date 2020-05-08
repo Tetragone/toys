@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'main.dart';
 
@@ -9,6 +10,15 @@ class TestSettingPage extends StatefulWidget{
 }
 
 class TestSettingPageState extends State<TestSettingPage>{
+  Firestore firestore = Firestore.instance;
+  Stream<QuerySnapshot> currentStream;
+
+
+  @override
+  void initState() {
+    super.initState();
+    currentStream = firestore.collection("test").snapshots();
+  }
 
   @override
   Widget build(BuildContext context ){
@@ -31,16 +41,31 @@ class TestSettingPageState extends State<TestSettingPage>{
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Text('설정된 자격증'),
             ),
-            Flexible(
-              child: GridView.count(
-                crossAxisCount: 2,
-                children: List.generate(100, (index) {
-                  return RaisedButton(
-                    child: Text('item $index'),
-                    onPressed: () {Navigator.of(context).pushNamed(EACH_TEST_SETTING);},
-                  );
-                })
-              ),
+            StreamBuilder(
+              stream: currentStream,
+              builder: (context, snapshot) {
+                if(!snapshot.hasData){
+                  return  CircularProgressIndicator();
+                }
+
+                List<DocumentSnapshot> documents = snapshot.data.documents;
+                //DocumentSnapshot 이란? cloud firestore에서 데이터를 가져오기 위한 형식 정도로 생각!
+                int length = documents.length;
+
+                return Flexible(
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    children: List.generate(length, (index) {
+                      return RaisedButton( //뒤에 배경 이미지를 넣을려면 container로 바꿔서 구현해야한다.
+                        child: Text('${documents[index].data["name"]}'),
+                        color: Colors.limeAccent,
+                        onPressed: () {Navigator.of(context).pushNamed(EACH_TEST_SETTING
+                        , arguments:<String, String> {'title' : documents[index].data["name"]},);},
+                      );
+                    })
+                  ),
+                );
+              },
             ),
           ],
         )

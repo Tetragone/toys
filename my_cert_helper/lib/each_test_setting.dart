@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'main.dart';
+
 class EachTestSetting extends StatefulWidget{
 
   @override
@@ -10,8 +12,10 @@ class EachTestSettingState extends State<EachTestSetting>{
 
   @override
   Widget build(BuildContext context) {
+    final Map<String,String> args = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
-      appBar: AppBar(title: Text('xx의 설정'),),
+      appBar: AppBar(title: Text('${args['title']}의 설정'),),
       body: Row(
         children: <Widget>[
           Expanded(
