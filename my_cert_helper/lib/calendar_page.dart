@@ -47,7 +47,7 @@ final dummyttoeic = [
 
 Map<DateTime, List<dynamic>> cal_events;
 
-class MyApp extends StatelessWidget {
+class CalenderPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
