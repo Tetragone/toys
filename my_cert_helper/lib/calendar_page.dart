@@ -71,7 +71,6 @@ class _HomePageState extends State<HomePage> {
   // 여기서 DB 확인 후 캘린더 설정
 
   
-  CalendarController cal_controller;
   List<dynamic> cal_selectedEvents;
   TextEditingController cal_eventController;
   SharedPreferences prefs;
@@ -196,7 +195,7 @@ class _HomePageState extends State<HomePage> {
         closeManually: true,
         tooltip: '일정을 추가합니다.',
         child: Icon(Icons.add),
-        onOpen: () => print('일정 추가'),
+        onOpen: () => print('Dial Opened'),
         onClose: () => print('Dial Closed'),
         backgroundColor: Colors.yellow,
         foregroundColor: Colors.black,
@@ -227,12 +226,9 @@ class _HomePageState extends State<HomePage> {
             },
           ),          
         ],
-      ),
-
-      
+      ),     
     );
   }
-
 
 // 일정 추가
     _addSchedule() {
@@ -244,8 +240,7 @@ class _HomePageState extends State<HomePage> {
         ), //TextField
         actions: <Widget>[
           FlatButton(
-            child: Text('저장'),
-            color: Colors.green,
+            child: Text('저장', style: TextStyle(color: Colors.black),),
             onPressed: () {
               if(cal_eventController.text.isEmpty) return;
               setState(() {
@@ -260,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                Navigator.pop(context);
               });
             },
-          )
+          ),
         ],
       )
     );
@@ -275,6 +270,40 @@ class editTestDay extends StatefulWidget {
 }
 
 class _editTestDayState extends State<editTestDay> {
+
+  SharedPreferences prefs;
+
+    void initState() {
+    // TODO: implement initState
+    super.initState();
+    initPrefs();
+  }
+
+
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      cal_events = Map<DateTime, List<dynamic>>.from(
+          decodeMap(json.decode(prefs.getString("events") ?? "{}")));
+    });
+  }
+
+  Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
+    Map<String, dynamic> newMap = {};
+    map.forEach((key, value) {
+      newMap[key.toString()] = map[key];
+    });
+    return newMap;
+  }
+
+  Map<DateTime, dynamic> decodeMap(Map<String, dynamic> map) {
+    Map<DateTime, dynamic> newMap = {};
+    map.forEach((key, value) {
+      newMap[DateTime.parse(key)] = map[key];
+    });
+    return newMap;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -315,9 +344,9 @@ class _editTestDayState extends State<editTestDay> {
 
   void cal_showDialog(BuildContext context, tname, tday) {
 
-    String settname = tname;
-    DateTime settday = DateTime.parse(tday);
-    DateTime _tday = tday;
+    var settname = tname;
+    var settday = DateTime.parse(tday);
+    var _tday = tday;
     showDialog(
       context: context,
         builder: (BuildContext ctx) {
@@ -328,10 +357,18 @@ class _editTestDayState extends State<editTestDay> {
               FlatButton(
                 child: Text('저장', style: TextStyle(color: Colors.black, fontSize: 17),),
                 onPressed: () {
-                  //Navigator.pop(context);
-                  // DB에 저장
+                  // DB에 저장 방법을 강구할 것
 //                  cal_events.addEntries(Map(tday));
+                  setState(() {
+                  if(cal_events[settday] !=null) {
+                    cal_events[settday].add(settname);
+                  } else {
+                    cal_events[settday] = [settname];
+                  }
+                  prefs.setString("events", json.encode(encodeMap(cal_events)));
                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                  });
+//                  Navigator.pop(context);
                 }
               )
             ],
