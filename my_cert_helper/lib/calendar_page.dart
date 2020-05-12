@@ -178,13 +178,20 @@ class _HomePageState extends State<HomePage> {
              ... cal_selectedEvents.map((tevents) => Card(
 
 // or ListTile(title: Text(event),)
-               child: Container(
-                 width: MediaQuery.of(context).size.width,
-                 height: 50,
-                 child: Padding(
-                   padding: EdgeInsets.only(left: 15, top: 10, bottom: 10),
-                   child: Text(tevents, style: TextStyle(fontSize: 18),)
-                   )
+               child: new GestureDetector(
+                 onTap: () {
+                   setState(() {
+                     print('$tevents');
+                   });
+                 },
+                 child: Container(
+                   width: MediaQuery.of(context).size.width,
+                   height: 50,
+                   child: Padding(
+                     padding: EdgeInsets.only(left: 15, top: 10, bottom: 10),
+                     child: Text(tevents, style: TextStyle(fontSize: 18),)
+                     )
+                 ),
                ),
              )),
           ]
@@ -367,6 +374,7 @@ class _editTestDayState extends State<editTestDay> {
                     cal_events[settday] = [settname];
                   }
                   prefs.setString("events", json.encode(encodeMap(cal_events)));
+                  Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                   });
 //                  Navigator.pop(context);
