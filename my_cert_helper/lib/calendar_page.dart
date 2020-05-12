@@ -45,7 +45,6 @@ final dummyttoeic = [
     }
 ];
 
-CalendarController cal_controller;
 Map<DateTime, List<dynamic>> cal_events;
 CalendarController cal_controller;
 
@@ -358,7 +357,7 @@ class _editTestDayState extends State<editTestDay> {
     var _tday = tday;
     showDialog(
       context: context,
-        builder: (BuildContext ctx) {
+        builder: (BuildContext context) {
           return AlertDialog(
             title: Text('일정 추가'),
             content: Text('$settname ($tday) 시험을 캘린더에 추가합니까?'),
@@ -366,8 +365,6 @@ class _editTestDayState extends State<editTestDay> {
               FlatButton(
                 child: Text('저장', style: TextStyle(color: Colors.black, fontSize: 17),),
                 onPressed: () {
-                  // DB에 저장 방법을 강구할 것
-//                  cal_events.addEntries(Map(tday));
                   setState(() {
                   if(cal_events[settday] !=null) {
                     cal_events[settday].add(settname);
@@ -375,7 +372,7 @@ class _editTestDayState extends State<editTestDay> {
                     cal_events[settday] = [settname];
                   }
                   prefs.setString("events", json.encode(encodeMap(cal_events)));
-                  Navigator.pop(context);
+//                  Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                   });
 //                  Navigator.pop(context);
