@@ -46,6 +46,7 @@ final dummyttoeic = [
 ];
 
 Map<DateTime, List<dynamic>> cal_events;
+CalendarController cal_controller;
 
 class CalenderPage extends StatelessWidget {
   // This widget is the root of your application.
