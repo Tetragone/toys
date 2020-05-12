@@ -7,7 +7,9 @@ import 'bottom_navigation_bar.dart';
 import 'page_input_study_time.dart';
 import 'each_test_setting.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  initializeDateFormatting().then((_) => runApp(MyApp()));
+}
 
 const String ROOT_PAGE = '/';
 const String TEST_SETTING_PAGE = '/test setting';
