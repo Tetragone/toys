@@ -45,6 +45,7 @@ final dummyttoeic = [
     }
 ];
 
+CalendarController cal_controller;
 Map<DateTime, List<dynamic>> cal_events;
 CalendarController cal_controller;
 
