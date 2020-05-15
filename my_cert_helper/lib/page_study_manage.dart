@@ -97,7 +97,7 @@ class StudyTimeBox extends StatefulWidget {
   CertObjective targetCert;
   static StateStudyTimeBox state;
 
-  StudyTimeBox(this.targetCert) { state = StateStudyTimeBox(this.targetCert); }
+  StudyTimeBox(this.targetCert) { state = StateStudyTimeBox(); }
 
   @override
   State<StatefulWidget> createState() {
@@ -109,17 +109,16 @@ class StudyTimeBox extends StatefulWidget {
 
 class StateStudyTimeBox extends State<StudyTimeBox> {
   Firestore firestore;
-  CertObjective targetCert;
   int studyTime;
 
-  StateStudyTimeBox(this.targetCert);
+  StateStudyTimeBox();
 
   String compareText() {
     String messege;
-    if (targetCert.averageTime == null) {
+    if (StudyManagerState.targetCert.averageTime == null) {
       messege = "데이터를 가져오는 중입니다";
     }
-    else if ((targetCert.averageTime) >= (targetCert.getWeekAverage())) {
+    else if ((StudyManagerState.targetCert.averageTime) >= (StudyManagerState.targetCert.getWeekAverage())) {
       messege = "공부 시간이 부족합니다";
     } else {
       messege = "공부 시간이 평균 이상입니다";
@@ -128,7 +127,7 @@ class StateStudyTimeBox extends State<StudyTimeBox> {
   }
 
   void updateStat() {
-    setState(() {studyTime = targetCert.getWeekAverage(); } );
+    setState(() {studyTime = StudyManagerState.targetCert.getWeekAverage(); } );
   }
 
   @override
@@ -139,18 +138,18 @@ class StateStudyTimeBox extends State<StudyTimeBox> {
     firestore
         .collection('CertPrepareData')
         .document('FirstClient')
-        .setData({'studytime': targetCert.getWeekAverage()});
+        .setData({'studytime': StudyManagerState.targetCert.getWeekAverage()});
     firestore
         .collection('CertPrepareData')
         .document('TotalAverage')
         .get()
         .then((DocumentSnapshot ds) {
       setState(() {
-        targetCert.averageTime = ds.data['studytime'];
+        StudyManagerState.targetCert.averageTime = ds.data['studytime'];
       });
     });
 
-    studyTime = targetCert.getWeekAverage();
+    studyTime = StudyManagerState.targetCert.getWeekAverage();
 
     return Column(
         children: <Widget>[
@@ -186,7 +185,7 @@ class StateStudyTimeBox extends State<StudyTimeBox> {
 
           Container(
             child: Text(
-              '다른 사람의 주당 학습 시간은 ${targetCert.averageTime} 시간입니다',
+              '다른 사람의 주당 학습 시간은 ${StudyManagerState.targetCert.averageTime} 시간입니다',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,

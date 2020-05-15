@@ -27,10 +27,10 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-
+  static MaterialApp mApp;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    mApp = MaterialApp(
       title: 'Write the name',
       theme: ThemeData(
         primarySwatch: Colors.yellow,
@@ -46,5 +46,6 @@ class MyAppState extends State<MyApp> {
         EACH_TEST_SETTING : (context) => EachTestSetting(),
       },
     );
+    return mApp;
   }
 }

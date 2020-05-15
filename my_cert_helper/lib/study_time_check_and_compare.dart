@@ -5,9 +5,11 @@ import 'package:mycerthelper/page_study_manage.dart';
 
 import 'bottom_navigation_bar.dart';
 
-class StudyTimeCheckAndCompare extends StatefulWidget{
+class StudyTimeCheckAndCompare extends StatefulWidget {
   StudyManagerState manager;
+
   StudyTimeCheckAndCompare(StudyManagerState manager);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -15,8 +17,9 @@ class StudyTimeCheckAndCompare extends StatefulWidget{
   }
 }
 
-class StateStudyTimeCheckAndCompare extends State<StudyTimeCheckAndCompare>{
+class StateStudyTimeCheckAndCompare extends State<StudyTimeCheckAndCompare> {
   StudyManagerState manager;
+
   StateStudyTimeCheckAndCompare(StudyManagerState manager);
 
   @override
@@ -24,29 +27,23 @@ class StateStudyTimeCheckAndCompare extends State<StudyTimeCheckAndCompare>{
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(title: Text('공부 시간 확인 및 비교'),),
-    body: Column(
-    children: <Widget>[
-    Expanded(
-    flex: 10,
-    child: ListView.builder(
-    itemCount: StudyManagerState.data.certObj.length,
-    itemBuilder: (context, index){
-    return ListTile(
-    title: Text(StudyManagerState.data.certObj.elementAt(index).CertName),
-    trailing: Radio<CertObjective>(value: StudyManagerState.data.certObj.elementAt(index), groupValue: StudyManagerState.targetCert,
-    onChanged: (CertObjective selected) {StudyManagerState.targetCert = selected;
-    this.setState((){});
-    UnderBarState.manager = StudyManager();
-    }
-    )
-    );
-    }
-    )
-    )
-    ]
-    )
-    );
-
-
-    }
-}
+        body: Column(
+            children: <Widget>[
+              Expanded(
+                  flex: 10,
+                  child: ListView.builder(
+                      itemCount: StudyManagerState.data.certObj.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                            title: Text(StudyManagerState.data.certObj.elementAt(index)
+                            .CertName),
+                        trailing: Radio<CertObjective>(value: StudyManagerState.data.certObj.elementAt(index), groupValue: StudyManagerState.targetCert,
+                        onChanged: (CertObjective selected) {
+                        StudyManagerState.targetCert = selected;
+                        this.setState((){});
+                        StudyManager.state.updateStat();
+                        StudyTimeBox.state.updateStat();
+                        }
+    ));
+                      }))]));
+}}
