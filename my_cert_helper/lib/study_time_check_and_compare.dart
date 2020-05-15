@@ -37,7 +37,7 @@ class StateStudyTimeCheckAndCompare extends State<StudyTimeCheckAndCompare>{
     onChanged: (CertObjective selected) {StudyManagerState.targetCert = selected;
     this.setState((){});
     UnderBarState.manager = StudyManager();
-    Navigator.pushReplacementNamed(context, ROOT_PAGE);}
+    }
     )
     );
     }
