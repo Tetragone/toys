@@ -7,13 +7,14 @@ import 'page_study_menu_bar.dart';
 
 // 코드를 좀더 가독성 있게 바꿀 예정이에요!
 class StudyManager extends StatefulWidget {
-
+  static StudyManagerState state;
+  StudyManager(){ state =  StudyManagerState();}
   @override
-  State createState() => StudyManagerState();
+  State createState() { state= StudyManagerState(); return state; }
 }
 
 class StudyManagerState extends State<StudyManager> {
-  static Data data = Data();
+  static Data data;
   static CertObjective targetCert;
   Firestore firestore;
   StudyTimeBox studyTimeWidget;
@@ -21,8 +22,12 @@ class StudyManagerState extends State<StudyManager> {
 
   @override
   void initState() {
-    data.testMode();
-    targetCert = data.certObj.first;
+    if(data == null) {
+      data = Data();
+      data.testMode();
+      targetCert = data.certObj.first;
+    }
+
     studyTimeWidget = StudyTimeBox(targetCert);
   }
 
@@ -43,7 +48,7 @@ class StudyManagerState extends State<StudyManager> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    child: Text('D-${targetCert.getRemainingDate()} '),
+                    child: Text('D-${(targetCert.getRemainingDate() == -99 ? "NULL" : targetCert.getRemainingDate()) } '),
                     constraints: BoxConstraints(
                         maxWidth: 80, minWidth: 80, maxHeight: 80, minHeight: 80),
                     color: Colors.white70,

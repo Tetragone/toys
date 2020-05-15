@@ -74,6 +74,8 @@ class CertObjective {
   int getRemainingDate() {
     int diff = 0;
     DateTime now = DateTime.now();
+    if(examDate.isEmpty == true)
+      return -99;
     diff = examDate.first.difference(now).inDays;
     return diff;
   }

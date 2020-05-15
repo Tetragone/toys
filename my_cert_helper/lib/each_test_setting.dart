@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:mycerthelper/data_group.dart';
 
 import 'main.dart';
 
 class EachTestSetting extends StatefulWidget{
-
   @override
   State createState() => EachTestSettingState();
 }
 
 class EachTestSettingState extends State<EachTestSetting>{
+  CertObjective obj;
 
   @override
   Widget build(BuildContext context) {
-    final Map<String,String> args = ModalRoute.of(context).settings.arguments;
+    final Map<String,CertObjective> args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      appBar: AppBar(title: Text('${args['title']}의 설정'),),
+      appBar: AppBar(title: Text('${args['obj'].CertName}의 설정'),),
       body: Row(
         children: <Widget>[
           Expanded(
@@ -37,8 +38,8 @@ class EachTestSettingState extends State<EachTestSetting>{
                     Expanded(
                       flex: 1,
                       child: Checkbox(
-                        value: false,
-                        onChanged: (bool value) {},
+                        value: args['obj'].isTested ?? false,
+                        onChanged: (bool value) {args['obj'].isTested = value; this.setState((){});},
                       )
                     )
                   ],
@@ -60,6 +61,8 @@ class EachTestSettingState extends State<EachTestSetting>{
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                           ),
+                          initialValue: args['obj'].targetGrade.toString() ?? "0",
+                          onChanged: (input) { args['obj'].targetGrade = int.parse(input);this.setState((){});},
                         )
                     )
                   ],
@@ -79,6 +82,7 @@ class EachTestSettingState extends State<EachTestSetting>{
                     Expanded(
                         flex: 4,
                         child: DropdownButton(
+                          value: args['obj'].priority  ?? 1,
                           hint: Text('우선순위!'),
                           items: [
                             DropdownMenuItem(
@@ -98,7 +102,7 @@ class EachTestSettingState extends State<EachTestSetting>{
                               child: Text('그외'),
                             )
                           ],
-                          onChanged: (int index) => {},
+                          onChanged: (int index) {args['obj'].priority = index;this.setState((){});},
                         )
                     )
                   ],
@@ -117,28 +121,28 @@ class EachTestSettingState extends State<EachTestSetting>{
                     ),
                     Expanded(
                         flex: 4,
-                        child: DropdownButton(
+                        child: DropdownButton<Color>(
                           hint: Text('색상!'),
-                          value: 4,
+                          value: args['obj'].selected  ?? Colors.yellow,
                           items: [
                             DropdownMenuItem(
-                              value: 1,
+                              value: Colors.yellow,
                               child: Text('노랑'),
                             ),
                             DropdownMenuItem(
-                              value: 2,
+                              value: Colors.red,
                               child: Text('빨강'),
                             ),
                             DropdownMenuItem(
-                              value: 3,
+                              value: Colors.blue,
                               child: Text('파랑'),
                             ),
                             DropdownMenuItem(
-                              value: 4,
+                              value: Colors.green,
                               child: Text('초록'),
                             )
                           ],
-                          onChanged: (int index) => {},
+                          onChanged: (Color selected) {args['obj'].selected = selected; this.setState((){});},
                         )
                     )
                   ],

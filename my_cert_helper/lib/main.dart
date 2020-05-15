@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mycerthelper/page_study_manage.dart';
 
 import 'page_test_setting.dart';
 import 'study_time_check_and_compare.dart';
@@ -35,8 +36,8 @@ class MyAppState extends State<MyApp> {
       initialRoute: ROOT_PAGE,
       routes: {
         ROOT_PAGE : (context) => UnderBar(),
-        TEST_SETTING_PAGE : (context) => TestSettingPage(),
-        STUDY_TIME_CHECK_PAGE : (context) => StudyTimeCheckAndCompare(),
+        TEST_SETTING_PAGE : (context) => TestSettingPage(StudyManagerState.data),
+        STUDY_TIME_CHECK_PAGE : (context) => StudyTimeCheckAndCompare(StudyManager.state),
         TEST_SCORE_PREDICTION_PAGE : (context) => TestScorePrediction(),
         TIME_SETTING_PAGE : (context) => RouteGetStudyTime(),
         EACH_TEST_SETTING : (context) => EachTestSetting(),

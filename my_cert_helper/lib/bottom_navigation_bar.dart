@@ -14,7 +14,9 @@ class UnderBarState extends State<UnderBar> {
   Data data;
   int _currentIndex = 1;
 
-  final List<Widget> selectUnderBar = [StudyManager(), CalenderPage(), InformationSettingPage()];
+  static StudyManager manager = StudyManager();
+  final List<Widget> selectUnderBar = [manager, CalenderPage(), InformationSettingPage()];
+
 
   void _ontap(int index) {
     setState(() {
