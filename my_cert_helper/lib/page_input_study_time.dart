@@ -4,7 +4,7 @@ import 'package:mycerthelper/page_study_manage.dart';
 
 import 'data_group.dart';
 
-// 코드를 좀더 가독성 있게 바꿀 예정이에요!
+
 class RouteGetStudyTime extends StatelessWidget{
   static List<StateStudyTimeForm> stateFormList = new List<StateStudyTimeForm>();
 
@@ -12,7 +12,9 @@ class RouteGetStudyTime extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('공부시간 입력')), //title 용
-        body: buildColumn(context)
+        body: SingleChildScrollView(
+          child: buildColumn(context),
+        )
     );
     }
 
