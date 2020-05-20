@@ -14,8 +14,7 @@ class CertObjective {
   int CertID;
   String CertName;
   int priority;
-  int targetScore;
-  int targetGrade;
+  int targetGrade = -1;
   bool isTested;
   Color selected;
   List<DateTime> examDate = List<DateTime>();
@@ -48,8 +47,7 @@ class CertObjective {
     CertID = 101;
     CertName = "testCert";
     priority = 1;
-    targetScore = -1;
-    targetGrade = 1;
+    targetGrade =  -1;
     isTested = false;
     selected = Colors.red;
 
