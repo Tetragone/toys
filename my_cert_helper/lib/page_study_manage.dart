@@ -245,6 +245,16 @@ class StateStudyTimeBox extends State<StudyTimeBox> {
         children: <Widget>[
           Container(
             child: Text(
+              '목표 점수: ${ (StudyManagerState.targetCert.targetGrade < 0) ? "설정이 필요합니다" : StudyManagerState.targetCert.targetGrade }',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            color: Colors.white70,
+            alignment: AlignmentDirectional(0, 0),
+          ),
+          Container(
+            child: Text(
               '${DateTime
                   .now()
                   .month}월 ${DateTool.getWeek()}주차',
