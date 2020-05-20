@@ -27,6 +27,7 @@ final Map<DateTime, List> _holidays = {
   DateTime(2020, 12, 25): ['성탄절'],
 };
 
+// dummyttoeic 미사용
 final dummyttoeic = [
     {
     "testname": "토익 404회",
@@ -49,7 +50,6 @@ Map<DateTime, List<dynamic>> cal_events;
 CalendarController cal_controller;
 
 class CalenderPage extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -180,9 +180,41 @@ class _HomePageState extends State<HomePage> {
 // or ListTile(title: Text(event),)
                child: new GestureDetector(
                  onTap: () {
-                   setState(() {
-                     print('$tevents');
-                   });
+                   showDialog(
+                    context: context,
+                    builder : (context) => AlertDialog(
+                      content: Text("일정을 삭제하시겠습니까?"),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('아니오',style: TextStyle(color: Colors.black)), 
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }, 
+                        ),
+                        FlatButton(
+                          child: Text('예',style: TextStyle(color: Colors.black)), 
+                          onPressed: () {
+                            setState(() {
+                              //print(tevents.runtimeType);
+                              //print("events".runtimeType);
+                              //print(prefs.get("events"));
+                              //print(prefs.getString("events"));
+
+                              // 리스트를 지워야 함
+                              //prefs.remove(tevents);
+                              //prefs.clear();
+                              prefs.remove("events");
+                              //Navigator.of(context).pop();
+                              Navigator.pop(context);
+
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
+                              }
+                            );
+                          }, 
+                        )
+                      ],
+                    ),                    
+                   );
                  },
                  child: Container(
                    width: MediaQuery.of(context).size.width,
@@ -216,7 +248,7 @@ class _HomePageState extends State<HomePage> {
             label: '일정 추가',
             labelStyle: TextStyle(fontWeight: FontWeight.w500),
             onTap: () {
-              _addSchedule();
+              addSchedule();
             },
           ),
           SpeedDialChild(
@@ -239,7 +271,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 // 일정 추가
-    _addSchedule() {
+    addSchedule() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -319,19 +351,33 @@ class _editTestDayState extends State<editTestDay> {
       appBar: AppBar(
         title: Text('자격증 시험 일정 추가')
         ),
-        body: showTest(context, dummyttoeic),
+        body: buildBody(context),
     );
   }
 
-  Widget showTest(BuildContext context, List<Map> snapshot) {
+  Widget buildBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('testinfo').snapshots(),
+      builder: (context, snapshot) {
+        if(!snapshot.hasData) {
+          return LinearProgressIndicator();
+        }
+        else {
+          return showTest(context, snapshot.data.documents);
+        }
+      },
+    );
+  }
+
+  Widget showTest(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
       padding: const EdgeInsets.only(top:20.0),
       children: snapshot.map((data)=> buildListItem(context,data)).toList()
     );
   }
 
-  Widget buildListItem(BuildContext context, Map data) {
-    final record = Record.fromMap(data);
+  Widget buildListItem(BuildContext context, DocumentSnapshot data) {
+    final record = Record.fromSnapshot(data);
 
    return Padding(
      key: ValueKey(record.testname),
@@ -365,6 +411,8 @@ class _editTestDayState extends State<editTestDay> {
               FlatButton(
                 child: Text('저장', style: TextStyle(color: Colors.black, fontSize: 17),),
                 onPressed: () {
+                  // DB에 저장 방법을 강구할 것
+//                  cal_events.addEntries(Map(tday));
                   setState(() {
                   if(cal_events[settday] !=null) {
                     cal_events[settday].add(settname);
@@ -372,8 +420,8 @@ class _editTestDayState extends State<editTestDay> {
                     cal_events[settday] = [settname];
                   }
                   prefs.setString("events", json.encode(encodeMap(cal_events)));
-//                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                  Navigator.pop(context);
+                  //Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
                   });
 //                  Navigator.pop(context);
                 }
