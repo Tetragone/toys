@@ -8,6 +8,10 @@ import 'test_score_prediction.dart';
 import 'bottom_navigation_bar.dart';
 import 'page_input_study_time.dart';
 import 'each_test_setting.dart';
+import 'push_notification_page.dart';
+
+
+
 
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));
@@ -20,6 +24,7 @@ const String TEST_SCORE_PREDICTION_PAGE = '/score perdiction';
 const String TIME_SETTING_PAGE = '/time setting';
 const String TEST_SCORE_PREDICTION = '/score perdiction/each test';
 const String EACH_TEST_SETTING = '/test setting/each test setting';
+const String PUSH_NOTIFICATION_PAGE = '/push notification page';
 
 class MyApp extends StatefulWidget {
   @override
@@ -27,6 +32,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  
   static MaterialApp mApp;
   @override
   Widget build(BuildContext context) {
@@ -44,6 +50,7 @@ class MyAppState extends State<MyApp> {
         TEST_SCORE_PREDICTION_PAGE : (context) => TestScorePrediction(),
         TIME_SETTING_PAGE : (context) => RouteGetStudyTime(),
         EACH_TEST_SETTING : (context) => EachTestSetting(),
+        PUSH_NOTIFICATION_PAGE : (context) => PushNotificationService(),
       },
     );
     return mApp;
