@@ -32,20 +32,26 @@ class StudySettingState extends State<StudySetting>{
           ListTile(
             leading: Icon(Icons.access_time),
             onTap: () => Navigator.pushNamed(context, STUDY_TIME_CHECK_PAGE),
-            title: Text('공부 시간, 진도 체크 및 비교'),
+            title: Text('대시보드 설정'),
           ),
           ListTile(
             leading: Icon(Icons.contacts),
             onTap:  () => Navigator.pushNamed(context, TEST_SCORE_PREDICTION_PAGE),
-            title: Text('자격증 시험 점수 예측'),
+            title: Text('공부 방법 추천'),
           ),
           ListTile(
             leading: Icon(Icons.notifications),
             onTap:  () => Navigator.pushNamed(context, PUSH_NOTIFICATION_PAGE),
             title: Text('시험 알림'),
           ),
+          ListTile(
+            leading: Icon(Icons.border_color),
+            onTap:  () => Navigator.pushNamed(context, TO_DO_LIST_PAGE),
+            title: Text('To Do List 설정'),
+          ),
         ],
       ),
     );
   }
 } // 앱바 오른쪽 위에 메뉴바안에 내용물을 넣기 위한 코드
+

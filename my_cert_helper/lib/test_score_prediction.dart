@@ -5,7 +5,7 @@ class TestScorePrediction extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('자격증 점수 예측'),),
+      appBar: AppBar(title: Text('공부 방법 추천'),),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -28,4 +28,9 @@ class TestScorePrediction extends StatelessWidget{
       ),
     );
   }
+}
+
+class testListTile extends ListTile {
+
+
 }
