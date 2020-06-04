@@ -21,7 +21,6 @@ class StudyManagerState extends State<StudyManager> {
   Firestore firestore;
   StudyTimeBox studyTimeWidget;
 
-
   @override
   void initState() {
     if(data == null) {

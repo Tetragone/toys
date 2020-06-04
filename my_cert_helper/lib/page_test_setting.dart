@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mycerthelper/dialog_search_cert.dart';
@@ -137,7 +136,6 @@ class StateSelectedBox extends State<SelectedBox> {
   List<CertObjective> objList;
   List<Widget> buttonList;
   Iterator<CertObjective> iter;
-  Column col;
 
   @override
   Widget build(BuildContext context) {
@@ -146,9 +144,10 @@ class StateSelectedBox extends State<SelectedBox> {
     iter = objList.iterator;
     while(iter.moveNext() == true) {
       buttonList.add(
-          ButtonBox(iter.current, context)
+        Card(child: myListTile(iter.current, context),)
       );
     }
+
     return Column(children: buttonList);
   }
 }
@@ -168,7 +167,26 @@ class ButtonBox extends RaisedButton {
           },
         );
       });
-
-
-
   }
+
+class myListTile extends ListTile {
+  final CertObjective cert;
+
+  myListTile(CertObjective arg, BuildContext context)
+      : cert = arg,
+        super(
+          title: Text('${arg.CertName}'),
+          trailing:Text('분류'),
+          subtitle: Text('주관사'),
+//        leading: Icon(Icons.title), 여기는 각자 logo를 넣으면 어떨까요?
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              EACH_TEST_SETTING,
+              arguments: <String, CertObjective>{
+                'obj': arg
+              },
+            );
+          }
+      );
+}
+

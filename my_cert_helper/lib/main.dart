@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mycerthelper/page_study_manage.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:mycerthelper/page_to_do_list.dart';
 
 import 'page_test_setting.dart';
 import 'study_time_check_and_compare.dart';
@@ -24,12 +25,17 @@ const String TEST_SCORE_PREDICTION_PAGE = '/score perdiction';
 const String TIME_SETTING_PAGE = '/time setting';
 const String TEST_SCORE_PREDICTION = '/score perdiction/each test';
 const String EACH_TEST_SETTING = '/test setting/each test setting';
+<<<<<<< HEAD
 const String PUSH_NOTIFICATION_PAGE = '/infromation notification';
 const String INFORMATION_NOTIFICATION = '/notice';
 const String INFORMATION_UTILITY = '/notice';
 const String INFORMATION_CLASSIFICATION = '/notice';
 const String INFORMATION_MARKET = '/notice';
 
+=======
+const String PUSH_NOTIFICATION_PAGE = '/push notification page';
+const String TO_DO_LIST_PAGE = '/to do list';
+>>>>>>> origin/학습-관리-기능-구현
 
 class MyApp extends StatefulWidget {
   @override
@@ -55,8 +61,13 @@ class MyAppState extends State<MyApp> {
         TEST_SCORE_PREDICTION_PAGE : (context) => TestScorePrediction(),
         TIME_SETTING_PAGE : (context) => RouteGetStudyTime(),
         EACH_TEST_SETTING : (context) => EachTestSetting(),
+<<<<<<< HEAD
         // 임시
         INFORMATION_NOTIFICATION : (context) => InfoNotification(),
+=======
+        PUSH_NOTIFICATION_PAGE : (context) => PushNotificationService(),
+        TO_DO_LIST_PAGE : (context) => ToDoListPage(),
+>>>>>>> origin/학습-관리-기능-구현
       },
     );
     return mApp;
