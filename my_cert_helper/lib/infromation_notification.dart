@@ -5,18 +5,55 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'calendar_page.dart';
+
 // 시험 알림 페이지
 
-class PushNotificationService extends StatefulWidget {
+class InfoNotification extends StatefulWidget {
   @override
-  _PushNotificationServiceState createState() => _PushNotificationServiceState();
+  _InfoNotificationState createState() => _InfoNotificationState();
 }
 
-class _PushNotificationServiceState extends State<PushNotificationService> {
+class _InfoNotificationState extends State<InfoNotification> {
   
   final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
+  Map<String, dynamic> fcm_message;  
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        fcm_message = message;
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        fcm_message = message;
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        fcm_message = message;
+      },
+    );
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('공지사항')),
+      body: ListTile(
+        title: Text(fcm_message['notification']['title']),
+        subtitle: Text(fcm_message['notification']['body']),
+      ),
+    );
+  }
+}
+
+
+/*
   @override
   void initState() {
     // TODO: implement initState
@@ -48,15 +85,4 @@ class _PushNotificationServiceState extends State<PushNotificationService> {
       },
     );
   }
-  
-
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('시험 알림')),
-      body: ListTile(
-      ),
-    );
-  }
-}
+*/

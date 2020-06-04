@@ -78,6 +78,9 @@ class _HomePageState extends State<HomePage> {
   List<dynamic> cal_selectedEvents;
   TextEditingController cal_eventController;
   SharedPreferences prefs;
+  Firestore firestore = Firestore.instance;
+  Stream<QuerySnapshot> streamData;
+
 
   @override
   void initState() {
@@ -88,8 +91,14 @@ class _HomePageState extends State<HomePage> {
     cal_events = {};
     cal_selectedEvents = [];
     initPrefs();
+    streamData = firestore.collection('testinfo').snapshots();
   }
 
+  Widget _fetchData(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+
+    );
+  }
 
   initPrefs() async {
     prefs = await SharedPreferences.getInstance();
@@ -131,7 +140,7 @@ class _HomePageState extends State<HomePage> {
               holidays: _holidays,
               //initialCalendarFormat: CalendarFormat.week,
               calendarStyle: CalendarStyle(
-                todayColor: Colors.green, // 오늘 날짜 동그라미 색상
+                todayColor: Colors.blue, // 오늘 날짜 동그라미 색상
                 selectedColor: Colors.orange, // 기본 색상과 동일한 선택날짜 색상
                 todayStyle: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -142,7 +151,7 @@ class _HomePageState extends State<HomePage> {
               headerStyle: HeaderStyle(
                 centerHeaderTitle: true,
                 formatButtonDecoration: BoxDecoration(
-                  color: Colors.green,
+                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 formatButtonTextStyle: TextStyle(
@@ -171,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                   margin: const EdgeInsets.all(4.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: Colors.blue,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
@@ -257,7 +266,7 @@ class _HomePageState extends State<HomePage> {
           SpeedDialChild(
             child: Icon(Icons.library_books),
             backgroundColor: Colors.white,
-            foregroundColor: Colors.green,
+            foregroundColor: Colors.blue,
             labelStyle: TextStyle(fontWeight: FontWeight.w500),
             label: '시험 일정 추가',
             onTap: () {

@@ -8,7 +8,7 @@ import 'test_score_prediction.dart';
 import 'bottom_navigation_bar.dart';
 import 'page_input_study_time.dart';
 import 'each_test_setting.dart';
-import 'push_notification_page.dart';
+import 'infromation_notification.dart';
 
 
 
@@ -24,7 +24,12 @@ const String TEST_SCORE_PREDICTION_PAGE = '/score perdiction';
 const String TIME_SETTING_PAGE = '/time setting';
 const String TEST_SCORE_PREDICTION = '/score perdiction/each test';
 const String EACH_TEST_SETTING = '/test setting/each test setting';
-const String PUSH_NOTIFICATION_PAGE = '/push notification page';
+const String PUSH_NOTIFICATION_PAGE = '/infromation notification';
+const String INFORMATION_NOTIFICATION = '/notice';
+const String INFORMATION_UTILITY = '/notice';
+const String INFORMATION_CLASSIFICATION = '/notice';
+const String INFORMATION_MARKET = '/notice';
+
 
 class MyApp extends StatefulWidget {
   @override
@@ -50,7 +55,8 @@ class MyAppState extends State<MyApp> {
         TEST_SCORE_PREDICTION_PAGE : (context) => TestScorePrediction(),
         TIME_SETTING_PAGE : (context) => RouteGetStudyTime(),
         EACH_TEST_SETTING : (context) => EachTestSetting(),
-        PUSH_NOTIFICATION_PAGE : (context) => PushNotificationService(),
+        // 임시
+        INFORMATION_NOTIFICATION : (context) => InfoNotification(),
       },
     );
     return mApp;

@@ -39,11 +39,6 @@ class StudySettingState extends State<StudySetting>{
             onTap:  () => Navigator.pushNamed(context, TEST_SCORE_PREDICTION_PAGE),
             title: Text('자격증 시험 점수 예측'),
           ),
-          ListTile(
-            leading: Icon(Icons.notifications),
-            onTap:  () => Navigator.pushNamed(context, PUSH_NOTIFICATION_PAGE),
-            title: Text('시험 알림'),
-          ),
         ],
       ),
     );
