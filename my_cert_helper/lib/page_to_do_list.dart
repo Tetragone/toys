@@ -12,17 +12,13 @@ class _ToDoListPageState extends State<ToDoListPage> {
   @override
   void initState(){
     super.initState();
-    todos.add("Item1");
-    todos.add("Item2");
-    todos.add("Item3");
-    todos.add("Item4");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("나의 할일"),
+        title: Text("나의 Todo"),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: ()  {
@@ -32,7 +28,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                 return AlertDialog(
                   shape: RoundedRectangleBorder(borderRadius:
                   BorderRadius.circular(8)),
-                  title : Text("Add Todolist"),
+                  title : Text("Todo 작성"),
                   content: TextField(
                     onChanged: (String value){
                       input = value;
@@ -46,7 +42,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                           });
 
                           Navigator.of(context).pop();
-                        }, child: Text("Add"))
+                        }, child: Text("추가",style: TextStyle(color: Colors.black)))
                   ],
 
                 );
@@ -68,7 +64,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
             title: Text(todos[index]),
             trailing: IconButton(icon: Icon(
               Icons.delete,
-              color: Colors.red,
+              color: Colors.grey,
             ), onPressed: (){
               setState(() {
                 todos.removeAt(index);

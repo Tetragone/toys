@@ -39,19 +39,11 @@ class StudySettingState extends State<StudySetting>{
             onTap:  () => Navigator.pushNamed(context, TEST_SCORE_PREDICTION_PAGE),
             title: Text('공부 방법 추천'),
           ),
-<<<<<<< HEAD
-=======
-          ListTile(
-            leading: Icon(Icons.notifications),
-            onTap:  () => Navigator.pushNamed(context, PUSH_NOTIFICATION_PAGE),
-            title: Text('시험 알림'),
-          ),
           ListTile(
             leading: Icon(Icons.border_color),
             onTap:  () => Navigator.pushNamed(context, TO_DO_LIST_PAGE),
-            title: Text('To Do List 설정'),
+            title: Text('ToDo 리스트'),
           ),
->>>>>>> origin/학습-관리-기능-구현
         ],
       ),
     );
