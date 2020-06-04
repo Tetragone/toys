@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mycerthelper/page_study_manage.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:mycerthelper/page_to_do_list.dart';
 
 import 'page_test_setting.dart';
 import 'study_time_check_and_compare.dart';
@@ -25,6 +26,7 @@ const String TIME_SETTING_PAGE = '/time setting';
 const String TEST_SCORE_PREDICTION = '/score perdiction/each test';
 const String EACH_TEST_SETTING = '/test setting/each test setting';
 const String PUSH_NOTIFICATION_PAGE = '/push notification page';
+const String TO_DO_LIST_PAGE = '/to do list';
 
 class MyApp extends StatefulWidget {
   @override
@@ -51,6 +53,7 @@ class MyAppState extends State<MyApp> {
         TIME_SETTING_PAGE : (context) => RouteGetStudyTime(),
         EACH_TEST_SETTING : (context) => EachTestSetting(),
         PUSH_NOTIFICATION_PAGE : (context) => PushNotificationService(),
+        TO_DO_LIST_PAGE : (context) => ToDoListPage(),
       },
     );
     return mApp;

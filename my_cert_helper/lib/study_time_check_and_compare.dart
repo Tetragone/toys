@@ -26,7 +26,7 @@ class StateStudyTimeCheckAndCompare extends State<StudyTimeCheckAndCompare> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(title: Text('공부 시간 확인 및 비교'),),
+        appBar: AppBar(title: Text('대시보드 설정'),),
         body: Column(
             children: <Widget>[
               Expanded(
