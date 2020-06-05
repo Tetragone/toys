@@ -20,6 +20,8 @@ class CertObjective {
   List<DateTime> examDate = List<DateTime>();
   List<StudyTime> personalTime = List<StudyTime>();
   int averageTime;
+  String classificationName;
+  String organizerName;
 
   CertObjective();
 

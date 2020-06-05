@@ -22,6 +22,8 @@ class TestSettingPageState extends State<TestSettingPage> {
   TextFormField searchBox;
   TextEditingController searchBoxControl;
   String selectedName;
+  String selectedClass;
+  String selectedOrga;
   Data data;
   SelectedBox box;
 
@@ -59,6 +61,8 @@ class TestSettingPageState extends State<TestSettingPage> {
     List<Future> fuList = new List<Future>();
     List<Widget> optionList = List<Widget>();
     String strTmp;
+    String strTmp_class;
+    String strTmp_orga;
     Future<String> fuResult;
 
     qSnap = await firestore.collection("CertList").getDocuments();
@@ -67,9 +71,12 @@ class TestSettingPageState extends State<TestSettingPage> {
 
     while(docIter.moveNext() == true) {
       strTmp= docIter.current.data["name"];
+      strTmp_class = docIter.current.data["classification"];
+      strTmp_orga = docIter.current.data["organizer"];
+
       if(strTmp.contains(input) == true) {
         resultList.add(strTmp);
-        optionList.add(UIChooseCertOption(strTmp, this));
+        optionList.add(UIChooseCertOption(strTmp, this, strTmp_orga, strTmp_class));
       }
     }
 
@@ -81,9 +88,11 @@ class TestSettingPageState extends State<TestSettingPage> {
       );
     }
     );
-    if(selectedName != null) {
+    if(selectedName != null && selectedClass != null && selectedOrga != null) {
       CertObjective result = CertObjective();
       result.CertName = selectedName;
+      result.classificationName = selectedClass;
+      result.organizerName = selectedOrga;
       data.certObj.add(result);
       box.created.setState(() {});
     }
@@ -176,8 +185,8 @@ class myListTile extends ListTile {
       : cert = arg,
         super(
           title: Text('${arg.CertName}'),
-          trailing:Text('분류'),
-          subtitle: Text('주관사'),
+          trailing:Text('${arg.classificationName}'),
+          subtitle: Text('${arg.organizerName}'),
 //        leading: Icon(Icons.title), 여기는 각자 logo를 넣으면 어떨까요?
           onTap: () {
             Navigator.of(context).pushNamed(

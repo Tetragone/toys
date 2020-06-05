@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mycerthelper/each_recommendation_test_question.dart';
 import 'package:mycerthelper/page_study_manage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mycerthelper/page_to_do_list.dart';
@@ -31,6 +32,7 @@ const String INFORMATION_CLASSIFICATION = '/notice';
 const String INFORMATION_MARKET = '/notice';
 const String PUSH_NOTIFICATION_PAGE = '/push notification page';
 const String TO_DO_LIST_PAGE = '/to do list';
+const String RECOMMENDATION_TEST_PAGE = '/study recommendation';
 
 class MyApp extends StatefulWidget {
   @override
@@ -58,6 +60,7 @@ class MyAppState extends State<MyApp> {
         EACH_TEST_SETTING : (context) => EachTestSetting(),
         PUSH_NOTIFICATION_PAGE : (context) => InfoNotification(),
         TO_DO_LIST_PAGE : (context) => ToDoListPage(),
+        RECOMMENDATION_TEST_PAGE : (context) => TestQuestion(),
       },
     );
     return mApp;

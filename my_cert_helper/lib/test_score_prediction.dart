@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mycerthelper/main.dart';
 
 class TestScorePrediction extends StatelessWidget{
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +18,7 @@ class TestScorePrediction extends StatelessWidget{
                     title: Text('test'),
                     trailing: IconButton(
                       icon: Icon(Icons.settings),
-                      onPressed: () => {},
+                      onPressed: () => {Navigator.of(context).pushNamed(RECOMMENDATION_TEST_PAGE)},
                     ),
                   );
                 },
@@ -30,7 +30,50 @@ class TestScorePrediction extends StatelessWidget{
   }
 }
 
-class testListTile extends ListTile {
+//enum SingingCharacter { yes, no }
+//
+//class testContainer extends Container {
+//  final String testQuestion;
+//  int answer;
+//  SingingCharacter _character = SingingCharacter.yes;
+//
+//
+//  testContainer(String question, BuildContext context)
+//      : testQuestion = question,
+//        super(
+//        child: Column(
+//          children: <Widget>[
+//            Text('${question}'),
+//            Row(
+//              children: <Widget>[
+//                ListTile(
+//                  title: Text('yes'),
+//                  leading: Radio(
+//                    value: SingingCharacter.yes,
+//                    groupValue: _character,
+//                    onChanged: (SingingCharacter value) {
+//                      setState(() {
+//                        _character = value;
+//                      });
+//                    },
+//                  ),
+//                ),
+//                ListTile(
+//                  title: const Text('no'),
+//                  leading: Radio(
+//                    value: SingingCharacter.no,
+//                    groupValue: _character,
+//                    onChanged: (SingingCharacter value) {
+//                      setState(() {
+//                        _character = value;
+//                      });
+//                    },
+//                  ),
+//                ),
+//              ],
+//            )
+//          ]
+//        )
+//      );
+//}
 
-
-}
