@@ -10,7 +10,7 @@ import 'test_score_prediction.dart';
 import 'bottom_navigation_bar.dart';
 import 'page_input_study_time.dart';
 import 'each_test_setting.dart';
-import 'infromation_notification.dart';
+import 'information_notification.dart';
 
 
 

@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.orange,
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(100.0),
                   ),
                   child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
                 todayDayBuilder: (context, date, cal_events) => 
@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(100.0),
                   ),
                   child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
               ),
