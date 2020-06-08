@@ -115,8 +115,8 @@ class InformationPage extends StatelessWidget {
           Card(
             child: ListTile(
               leading: Icon(Icons.category, color: Colors.cyan[100], size: 52.0),
-              title: Text('자격증 분류'),
-              subtitle: Text('자격증 분야별 분류'),
+              title: Text('자격증 정보 및 평가'),
+              subtitle: Text('시험 필수정보, 자격증 평가 및 활용정보'),
               onTap: () {
                 Navigator.push(context,
                 MaterialPageRoute<void>(builder: (BuildContext context) {
@@ -124,20 +124,6 @@ class InformationPage extends StatelessWidget {
                 }));
               },
             ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.info, color: Colors.white, size: 52.0),
-              title: Text('자격증 활용정보'),
-              subtitle: Text('자격증 쓰임새 및 실무활용 알아보기'),
-              onTap: () {
-                Navigator.push(context,
-                MaterialPageRoute<void>(builder: (BuildContext context) {
-                  return editTestDay(); // 바로가기할 페이지
-                }));
-              },
-            ),
-            color: Colors.cyan[100],            
           ),
           Card(
             child: ListTile(
