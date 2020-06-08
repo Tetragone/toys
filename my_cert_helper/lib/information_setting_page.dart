@@ -100,7 +100,7 @@ class InformationPage extends StatelessWidget {
         children : <Widget>[
           Card(
             child: ListTile(
-              leading: Icon(Icons.alarm, color: Colors.white, size: 52.0),
+              leading: Icon(Icons.alarm, color: Colors.cyan[100], size: 52.0),
               title: Text('공지사항'),
               subtitle: Text('시험 접수, 추가접수, 성적발표 알림'),
               onTap: () {
@@ -110,7 +110,6 @@ class InformationPage extends StatelessWidget {
                 }));
               },
             ),
-            color: Colors.cyan[100],
           ),
           Card(
             child: ListTile(

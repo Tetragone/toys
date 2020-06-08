@@ -16,13 +16,22 @@ import 'calendar_edit_event.dart';
 
 // 자격증 시험 일정 추가
 
+
 class editTestDay extends StatefulWidget {
+
+  editTestDay({Key key, this.title}) : super(key: key);
+
+  final String title;
+
   @override
   _editTestDayState createState() => _editTestDayState();
 }
 
 class _editTestDayState extends State<editTestDay> {
 
+
+
+// 기존 코드
   SharedPreferences prefs;
 
     void initState() {
@@ -61,11 +70,21 @@ class _editTestDayState extends State<editTestDay> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('자격증 시험 일정 추가')
+        automaticallyImplyLeading: false,
+        title: Text('자격증 시험 일정 추가'),
+        actions: <Widget>[
+          IconButton(icon: const Icon(Icons.search),
+          onPressed: () {
+            
+          },
+          )
+        ],
+        
         ),
         body: buildBody(context),
     );
   }
+
 
   Widget buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -163,4 +182,15 @@ class Record {
 
  @override
  String toString() => "Record<$testname:$testday>";
+}
+
+
+class SearchService {
+  searchByName(String searchField) {
+    return Firestore.instance
+        .collection('testinfo')
+        .where('searchKey',
+            isEqualTo: searchField.substring(0, 1).toUpperCase())
+        .getDocuments();
+  }
 }

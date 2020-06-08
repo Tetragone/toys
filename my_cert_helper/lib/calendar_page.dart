@@ -56,6 +56,7 @@ class CalenderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: '캘린더',
       theme: ThemeData(
         primarySwatch: Colors.yellow // 주 색상 변경
@@ -94,11 +95,13 @@ class _HomePageState extends State<HomePage> {
     streamData = firestore.collection('testinfo').snapshots();
   }
 
+/*
   Widget _fetchData(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
 
     );
   }
+*/
 
   initPrefs() async {
     prefs = await SharedPreferences.getInstance();
