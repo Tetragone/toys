@@ -116,8 +116,8 @@ class InformationPage extends StatelessWidget {
           Card(
             child: ListTile(
               leading: Icon(Icons.category, color: Colors.cyan[100], size: 52.0),
-              title: Text('자격증 분류'),
-              subtitle: Text('자격증 분야별 분류'),
+              title: Text('자격증 정보 및 평가'),
+              subtitle: Text('시험 필수정보, 자격증 평가 및 활용정보'),
               onTap: () {
                 Navigator.push(context,
                 MaterialPageRoute<void>(builder: (BuildContext context) {

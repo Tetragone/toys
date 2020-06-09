@@ -233,6 +233,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+1"
+  korean_words:
+    dependency: "direct main"
+    description:
+      name: korean_words
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   logging:
     dependency: transitive
     description:
