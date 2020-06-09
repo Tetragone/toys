@@ -67,7 +67,7 @@ class UnderBarState extends State<UnderBar> {
       if(index == 3)
         {
           FirebaseAuth.instance.signOut();
-          Splash.isFirstCall == true;
+          Splash.isFirstCall = true;
         }
 
     });
