@@ -90,7 +90,7 @@ void _register(BuildContext context) async {
     child: FittedBox(
       fit: BoxFit.contain,
       child: CircleAvatar(
-        backgroundImage: NetworkImage("http://edudonga.com/data/article/1807/325500368fc6f78a2c04c380709fe201_1532677223_694.jpg"), //이미지 넣고싶은 것 넣으면 된다.
+        backgroundImage: NetworkImage("https://firebasestorage.googleapis.com/v0/b/certhelper-3e7f3.appspot.com/o/image%2Flogo_last.png?alt=media&token=234f57ff-013e-42c0-b8a4-4c722a366dbb"), //이미지 넣고싶은 것 넣으면 된다.
          ),
     ),
   ),

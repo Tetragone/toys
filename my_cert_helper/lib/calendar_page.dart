@@ -52,26 +52,12 @@ final dummyttoeic = [
 Map<DateTime, List<dynamic>> cal_events;
 CalendarController cal_controller;
 
-class CalenderPage extends StatelessWidget {
+class CalenderPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: '캘린더',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow // 주 색상 변경
-      ),
-      home: HomePage(),
-    );
-  }
+  _CalenderPageState createState() => _CalenderPageState();
 }
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class _CalenderPageState extends State<CalenderPage> {
 
   // 여기서 DB 확인 후 캘린더 설정
 
