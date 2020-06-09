@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'calendar_page.dart';
 import 'information_setting_page.dart';
+import 'main.dart';
 import 'page_study_manage.dart';
 import 'data_group.dart';
 
@@ -22,7 +24,7 @@ class UnderBarState extends State<UnderBar> {
   int _currentIndex = 1;
 
   static StudyManager manager = StudyManager();
-  final List<Widget> selectUnderBar = [manager, CalenderPage(), InformationSettingPage()];
+  final List<Widget> selectUnderBar = [manager, CalenderPage(), InformationSettingPage(), Splash()];
 
   final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
@@ -62,6 +64,8 @@ class UnderBarState extends State<UnderBar> {
   void _ontap(int index) {
     setState(() {
       _currentIndex = index;
+      if(index == 3)
+        FirebaseAuth.instance.signOut();
     });
   } // 밑에 바를 누를 시에 실행하는 코드
 
@@ -85,6 +89,10 @@ class UnderBarState extends State<UnderBar> {
           new BottomNavigationBarItem(
             icon: Icon(Icons.person),
             title: Text('자격증 정보'),
+          ),
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.exit_to_app),
+            title: Text('ID 변경'),
           )
         ],
       ),

@@ -13,6 +13,7 @@ import 'package:mycerthelper/test_score_prediction.dart';
 import 'package:provider/provider.dart';
 
 import 'bottom_navigation_bar.dart';
+import 'calendar_page.dart';
 import 'each_recommendation_test_question.dart';
 import 'each_test_setting.dart';
 import 'information_notification.dart';
@@ -76,6 +77,7 @@ class MyAppState extends State<MyApp> {
 }
 
 class Splash extends StatelessWidget{
+  static bool isFirstCall = true;
   @override
   Widget build(BuildContext context){
     return StreamBuilder<FirebaseUser>(
@@ -87,7 +89,12 @@ class Splash extends StatelessWidget{
             value: JoinOrLogin(),   // ;인지 ,인지 ????????
             child: AuthPage());
       }else{
-          return UnderBar();
+          if(isFirstCall == true) {
+            isFirstCall = false;
+            return UnderBar();
+          }
+            else
+            return CalenderPage();
         }}
     );
   }
