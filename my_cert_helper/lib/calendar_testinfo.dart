@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'calendar_page.dart';
 import 'calendar_edit_event.dart';
+import 'data_group.dart';
 
 
 // 자격증 시험 일정 추가
@@ -121,13 +122,13 @@ class _editTestDayState extends State<editTestDay> {
        child: ListTile(
          title: Text(record.testname),
          trailing: Text(record.testday.toString()),
-         onTap: () => cal_showDialog(context,record.testname,record.testday),
+         onTap: () => cal_showDialog(context,record.testname,record.testday, record),
        ),
      ),
    );
   }
 
-  void cal_showDialog(BuildContext context, tname, tday) {
+  void cal_showDialog(BuildContext context, tname, tday, Record record) {
 
     var settname = tname;
     var settday = DateTime.parse(tday);
@@ -145,6 +146,9 @@ class _editTestDayState extends State<editTestDay> {
                   // DB에 저장 방법을 강구할 것
 //                  cal_events.addEntries(Map(tday));
                   setState(() {
+                    if(Data.getCertObjByName(record.testCert) != null) {
+                      Data.getCertObjByName(record.testCert).examDate.add(DateTime.parse(tday));
+                    }
                   if(cal_events[settday] !=null) {
                     cal_events[settday].add(settname);
                   } else {
@@ -167,6 +171,7 @@ class _editTestDayState extends State<editTestDay> {
 class Record {
  final String testname;
  final String testday;
+ final String testCert;
 
  final DocumentReference reference;
 
@@ -175,7 +180,8 @@ class Record {
        assert(map['testday'] != null),
 
        testname = map['testname'],
-       testday = map['testday'];
+       testday = map['testday'],
+       testCert = map['cert'];
 
  Record.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);

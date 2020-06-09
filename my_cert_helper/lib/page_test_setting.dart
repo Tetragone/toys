@@ -47,7 +47,7 @@ class TestSettingPageState extends State<TestSettingPage> {
           ),
           hintText: '자격증을 입력해주세요!',
         ));
-    box = SelectedBox(data.certObj);
+    box = SelectedBox(Data.certObj);
   }
 
   onSearchBoxClicked() async {
@@ -93,7 +93,7 @@ class TestSettingPageState extends State<TestSettingPage> {
       result.CertName = selectedName;
       result.classificationName = selectedClass;
       result.organizerName = selectedOrga;
-      data.certObj.add(result);
+      Data.certObj.add(result);
       box.created.setState(() {});
     }
   }

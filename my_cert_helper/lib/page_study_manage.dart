@@ -26,7 +26,7 @@ class StudyManagerState extends State<StudyManager> {
     if(data == null) {
       data = Data();
       data.testMode();
-      targetCert = data.certObj.first;
+      targetCert = Data.certObj.first;
     }
 
     studyTimeWidget = StudyTimeBox(targetCert);

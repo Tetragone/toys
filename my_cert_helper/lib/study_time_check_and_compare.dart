@@ -32,12 +32,12 @@ class StateStudyTimeCheckAndCompare extends State<StudyTimeCheckAndCompare> {
               Expanded(
                   flex: 10,
                   child: ListView.builder(
-                      itemCount: StudyManagerState.data.certObj.length,
+                      itemCount: Data.certObj.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                            title: Text(StudyManagerState.data.certObj.elementAt(index)
+                            title: Text(Data.certObj.elementAt(index)
                             .CertName),
-                        trailing: Radio<CertObjective>(value: StudyManagerState.data.certObj.elementAt(index), groupValue: StudyManagerState.targetCert,
+                        trailing: Radio<CertObjective>(value: Data.certObj.elementAt(index), groupValue: StudyManagerState.targetCert,
                         onChanged: (CertObjective selected) {
                         StudyManagerState.targetCert = selected;
                         this.setState((){});

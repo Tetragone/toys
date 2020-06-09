@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Data {
-  List<CertObjective> certObj = new List();
+  static List<CertObjective> certObj = new List();
 
-  CertObjective getCertObjByName(String name) {
+  static CertObjective getCertObjByName(String name) {
     Iterator<CertObjective> cursor;
     cursor = certObj.iterator;
     while(cursor.moveNext() == true) {
