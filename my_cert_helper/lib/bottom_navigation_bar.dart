@@ -65,7 +65,11 @@ class UnderBarState extends State<UnderBar> {
     setState(() {
       _currentIndex = index;
       if(index == 3)
-        FirebaseAuth.instance.signOut();
+        {
+          FirebaseAuth.instance.signOut();
+          Splash.isFirstCall = true;
+        }
+
     });
   } // 밑에 바를 누를 시에 실행하는 코드
 
