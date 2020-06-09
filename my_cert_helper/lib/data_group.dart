@@ -3,11 +3,23 @@ import 'package:flutter/material.dart';
 class Data {
   List<CertObjective> certObj = new List();
 
+  CertObjective getCertObjByName(String name) {
+    Iterator<CertObjective> cursor;
+    cursor = certObj.iterator;
+    while(cursor.moveNext() == true) {
+      if(cursor.current.CertName == name)
+        return cursor.current;
+    }
+    return null;
+  }
+
   void testMode() {
     CertObjective testData = CertObjective();
     testData.buildTestData();
     certObj.add(testData);
   }
+
+
 }
 
 class CertObjective {
