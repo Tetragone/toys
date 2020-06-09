@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import 'information_review_page.dart';
 import 'main.dart';
 import 'calendar_testinfo.dart';
 import 'information_notification.dart';
@@ -141,7 +142,20 @@ class InformationPage extends StatelessWidget {
           ),
           Card(
             child: ListTile(
-              leading: Icon(Icons.attach_money, color: Colors.cyan[100], size: 52.0),
+              leading: Icon(Icons.create, color: Colors.cyan[100], size: 52.0),
+              title: Text('자격증 평가'),
+              subtitle: Text('자격증에 별점 주기'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute<void>(builder: (BuildContext context) {
+                      return editTestDay(); // 바로가기할 페이지
+                    }));
+              },
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: Icon(Icons.attach_money, color: Colors.white, size: 52.0),
               title: Text('중고장터'),
               subtitle: Text('자격증 교재, 강의 등 개인 간 중고거래'),
               onTap: () {
@@ -151,6 +165,7 @@ class InformationPage extends StatelessWidget {
                 }));
               },
             ),
+            color: Colors.cyan[100],
           ),                               
         ]
       );

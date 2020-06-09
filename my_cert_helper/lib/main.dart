@@ -55,6 +55,7 @@ class MyAppState extends State<MyApp> {
         primarySwatch: Colors.yellow,
       ),
       debugShowCheckedModeBanner: false,
+
       initialRoute: LOGIN_PAGE,
       routes: {
         ROOT_PAGE : (context) => UnderBar(),
@@ -86,7 +87,7 @@ class Splash extends StatelessWidget{
             value: JoinOrLogin(),   // ;인지 ,인지 ????????
             child: AuthPage());
       }else{
-          return MainPage(email:snapshot.data.email);
+          return UnderBar();
         }}
     );
   }
