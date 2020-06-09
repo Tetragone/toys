@@ -9,7 +9,7 @@ class LoginBackground extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = isJoin?Colors.brown:Colors.yellow; //isJoin 이 true 라면 red ,false라면 yellow
+    Paint paint = Paint()..color = isJoin?Colors.blue:Colors.yellow; //isJoin 이 true 라면 red ,false라면 yellow
     canvas.drawCircle(Offset(size.width*0.5,size.height*0.2), size.height*0.5, paint);
   }
 
