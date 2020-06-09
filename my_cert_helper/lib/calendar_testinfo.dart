@@ -11,8 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'calendar_page.dart';
-import 'calendar_edit_event.dart';
+import 'calendar_model_event.dart';
 import 'data_group.dart';
+import 'calendar_firestore.dart';
+import 'calendar_view_event.dart';
 
 
 // 자격증 시험 일정 추가
@@ -20,9 +22,9 @@ import 'data_group.dart';
 
 class editTestDay extends StatefulWidget {
 
-  editTestDay({Key key, this.title}) : super(key: key);
+  final EventModel note;
 
-  final String title;
+  editTestDay({Key key, this.note}) : super(key: key);
 
   @override
   _editTestDayState createState() => _editTestDayState();
@@ -30,7 +32,13 @@ class editTestDay extends StatefulWidget {
 
 class _editTestDayState extends State<editTestDay> {
 
-
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  TextEditingController _title;
+  TextEditingController _description;
+  DateTime _eventDate;
+  final _formKey = GlobalKey<FormState>();
+  final _key = GlobalKey<ScaffoldState>();
+  bool processing;
 
 // 기존 코드
   SharedPreferences prefs;
@@ -38,6 +46,8 @@ class _editTestDayState extends State<editTestDay> {
     void initState() {
     // TODO: implement initState
     super.initState();
+    _eventDate = DateTime.now();
+    processing = false;
     initPrefs();
   }
 
@@ -71,7 +81,6 @@ class _editTestDayState extends State<editTestDay> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text('자격증 시험 일정 추가'),
         actions: <Widget>[
           IconButton(icon: const Icon(Icons.search),
@@ -132,7 +141,6 @@ class _editTestDayState extends State<editTestDay> {
 
     var settname = tname;
     var settday = DateTime.parse(tday);
-    var _tday = tday;
     showDialog(
       context: context,
         builder: (BuildContext context) {
@@ -191,12 +199,3 @@ class Record {
 }
 
 
-class SearchService {
-  searchByName(String searchField) {
-    return Firestore.instance
-        .collection('testinfo')
-        .where('searchKey',
-            isEqualTo: searchField.substring(0, 1).toUpperCase())
-        .getDocuments();
-  }
-}

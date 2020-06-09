@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-import 'calendar_page.dart';
 
 // 시험 알림 페이지
 
@@ -20,7 +16,7 @@ class _InfoNotificationState extends State<InfoNotification> {
   
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
   }
   
   @override

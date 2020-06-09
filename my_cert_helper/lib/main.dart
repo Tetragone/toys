@@ -56,7 +56,6 @@ class MyAppState extends State<MyApp> {
         primarySwatch: Colors.yellow,
       ),
       debugShowCheckedModeBanner: false,
-
       initialRoute: LOGIN_PAGE,
       routes: {
         ROOT_PAGE : (context) => UnderBar(),
@@ -93,7 +92,7 @@ class Splash extends StatelessWidget{
             isFirstCall = false;
             return UnderBar();
           }
-            else
+          else
             return CalenderPage();
         }}
     );

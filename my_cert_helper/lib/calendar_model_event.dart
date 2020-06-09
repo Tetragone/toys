@@ -1,30 +1,21 @@
-// json 직렬화
-import 'dart:convert';
-import 'package:flutter/material.dart';
-
-// 캘린더 플러그인
-import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/date_symbol_data_local.dart';
-
-// shared_preferences(key-value) 플러그인 : DB 저장, 읽기
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'calendar_page.dart';
-import 'calendar_edit_event.dart';
 
 import 'package:firebase_helpers/firebase_helpers.dart';
 
 class EventModel extends DatabaseItem{
   final String id;
   final String title;
+  final String description;
   final DateTime eventDate;
 
-  EventModel({this.id,this.title, this.eventDate}):super(id);
+  EventModel({this.id,this.title, this.description, this.eventDate}):super(id);
 
   factory EventModel.fromMap(Map data) {
     return EventModel(
       title: data['title'],
+      description: data['description'],
       eventDate: data['event_date'],
     );
   }
@@ -33,6 +24,7 @@ class EventModel extends DatabaseItem{
     return EventModel(
       id: id,
       title: data['title'],
+      description: data['description'],
       eventDate: data['event_date'].toDate(),
     );
   }
@@ -40,6 +32,7 @@ class EventModel extends DatabaseItem{
   Map<String,dynamic> toMap() {
     return {
       "title":title,
+      "description": description,
       "event_date":eventDate,
       "id":id,
     };

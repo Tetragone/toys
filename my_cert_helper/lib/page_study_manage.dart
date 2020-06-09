@@ -37,7 +37,7 @@ class StudyManagerState extends State<StudyManager> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('학습관리 페이지'),
+          title: Text('학습관리'),
         ), //title 용
         drawer: StudySetting(),
 //        bottomNavigationBar:

@@ -12,7 +12,6 @@ class StudyTimeCheckAndCompare extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return StateStudyTimeCheckAndCompare(manager);
   }
 }
@@ -24,7 +23,6 @@ class StateStudyTimeCheckAndCompare extends State<StudyTimeCheckAndCompare> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         appBar: AppBar(title: Text('대시보드 설정'),),
         body: Column(

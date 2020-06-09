@@ -4,7 +4,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'information_review_page.dart';
 import 'main.dart';
-import 'calendar_testinfo.dart';
 import 'information_notification.dart';
 
   /*
@@ -30,7 +29,8 @@ class InformationSettingPageState extends State<InformationSettingPage>{
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('자격증 정보')),
+      appBar: AppBar(
+        title: Text('자격증 정보')),
       body: InformationPage(),
     );
   }
@@ -101,7 +101,7 @@ class InformationPage extends StatelessWidget {
         children : <Widget>[
           Card(
             child: ListTile(
-              leading: Icon(Icons.alarm, color: Colors.white, size: 52.0),
+              leading: Icon(Icons.alarm, color: Colors.cyan[200], size: 52.0),
               title: Text('공지사항'),
               subtitle: Text('시험 접수, 추가접수, 성적발표 알림'),
               onTap: () {
@@ -111,34 +111,32 @@ class InformationPage extends StatelessWidget {
                 }));
               },
             ),
-            color: Colors.cyan[100],
           ),
           Card(
             child: ListTile(
-              leading: Icon(Icons.create, color: Colors.cyan[100], size: 52.0),
+              leading: Icon(Icons.create, color: Colors.cyan[200], size: 52.0),
               title: Text('자격증 정보 및 평가'),
-              subtitle: Text('시험 필수·활용 정보, 자격증 별점 평가'),
+              subtitle: Text('시험 필수·활용 정보 밎 자격증 별점 평가'),
               onTap: () {
                 Navigator.push(context,
                 MaterialPageRoute<void>(builder: (BuildContext context) {
-                  return editTestDay(); // 바로가기할 페이지
+                  return ; // 바로가기할 페이지
                 }));
               },
             ),
           ),
           Card(
             child: ListTile(
-              leading: Icon(Icons.attach_money, color: Colors.white, size: 52.0),
+              leading: Icon(Icons.attach_money, color: Colors.cyan[200], size: 52.0),
               title: Text('중고장터'),
               subtitle: Text('자격증 교재, 강의 등 개인 간 중고거래'),
               onTap: () {
                 Navigator.push(context,
                 MaterialPageRoute<void>(builder: (BuildContext context) {
-                  return editTestDay(); // 바로가기할 페이지
+                  return ; // 바로가기할 페이지
                 }));
               },
             ),
-            color: Colors.cyan[100],
           ),                               
         ]
       );

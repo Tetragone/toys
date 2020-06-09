@@ -1,11 +1,9 @@
 // json 직렬화
-import 'dart:convert';
 import 'package:flutter/material.dart';
 //import 'package:firebase_helpers/firebase_helpers.dart';
 
 // 캘린더 플러그인
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 // shared_preferences(key-value) 플러그인 : DB 저장, 읽기
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +12,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'calendar_testinfo.dart';
-import 'calendar_edit_event.dart';
+import 'calendar_model_event.dart';
+import 'calendar_add_event.dart';
+import 'calendar_firestore.dart';
+import 'data_group.dart';
+import 'calendar_view_event.dart';
 
 final Map<DateTime, List> _holidays = {
   DateTime(2020, 4, 15): ['21대 국회의원 선거'],
@@ -29,25 +31,6 @@ final Map<DateTime, List> _holidays = {
   DateTime(2020, 10, 9): ['한글날'],
   DateTime(2020, 12, 25): ['성탄절'],
 };
-
-// dummyttoeic 미사용
-final dummyttoeic = [
-    {
-    "testname": "토익 404회",
-    "testday" : "2020-05-16 14:20",
-    "lastsubday" : "2020-05-04 08:00",
-    "passday" : "2020-05-28 06:00",
-    "link" : "https://appexam.ybmnet.co.kr/toeic/receipt/receipt.asp"
-    },
-  
-    {
-    "testname": "토익 405회",
-    "testday" : "2020-05-31 09:20",
-    "lastsubday" : "2020-05-18 08:00",
-    "passday" : "2020-06-11 06:00",
-    "link" : "https://appexam.ybmnet.co.kr/toeic/receipt/receipt.asp"
-    }
-];
 
 Map<DateTime, List<dynamic>> cal_events;
 CalendarController cal_controller;
@@ -67,6 +50,7 @@ class _CalenderPageState extends State<CalenderPage> {
   SharedPreferences prefs;
   Firestore firestore = Firestore.instance;
   Stream<QuerySnapshot> streamData;
+  Map<DateTime, List<dynamic>> _events;
 
 
   @override
@@ -76,19 +60,11 @@ class _CalenderPageState extends State<CalenderPage> {
     cal_controller = CalendarController();
     cal_eventController = TextEditingController();
     cal_events = {};
+    _events = {};
     cal_selectedEvents = [];
-    initPrefs();
-    streamData = firestore.collection('testinfo').snapshots();
+    //initPrefs();
   }
-
 /*
-  Widget _fetchData(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-
-    );
-  }
-*/
-
   initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -112,6 +88,16 @@ class _CalenderPageState extends State<CalenderPage> {
     });
     return newMap;
   }
+*/
+  Map<DateTime, List<dynamic>> _groupEvents(List<EventModel> events) {
+    Map<DateTime,List<dynamic>> data = {};
+    events.forEach((event) {
+      DateTime date = DateTime(event.eventDate.year, event.eventDate.month, event.eventDate.day, 12);
+      if(data[data] == null) data[date] = [];
+      data[data].add(events);
+    });
+    return data;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,116 +105,119 @@ class _CalenderPageState extends State<CalenderPage> {
       appBar: AppBar(
         title: Text('캘린더'),
       ), // AppBar
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TableCalendar(
-              locale: 'ko_KO',
-              events: cal_events,
-              holidays: _holidays,
-              //initialCalendarFormat: CalendarFormat.week,
-              calendarStyle: CalendarStyle(
-                todayColor: Colors.blue, // 오늘 날짜 동그라미 색상
-                selectedColor: Colors.orange, // 기본 색상과 동일한 선택날짜 색상
-                todayStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-
-              ),
-              headerStyle: HeaderStyle(
-                centerHeaderTitle: true,
-                formatButtonDecoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                formatButtonTextStyle: TextStyle(
-                  color: Colors.white,
-                ),
-                formatButtonShowsNext: false,
-              ),
+      body: StreamBuilder<List<EventModel>>(
+        stream: eventDBS.streamList(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            List<EventModel> allEvents = snapshot.data;
+            if(allEvents.isNotEmpty) {
+              cal_events = _groupEvents(allEvents);
+            }
+          }
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TableCalendar(
+                  locale: 'ko_KO',
+                  events: cal_events,
+                  holidays: _holidays,
+                  //initialCalendarFormat: CalendarFormat.week,
+                  calendarStyle: CalendarStyle(
+                    todayColor: Colors.blue, // 오늘 날짜 동그라미 색상
+                    selectedColor: Colors.orange, // 기본 색상과 동일한 선택날짜 색상
+                    todayStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  headerStyle: HeaderStyle(
+                    centerHeaderTitle: true,
+                    formatButtonDecoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    formatButtonTextStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    formatButtonShowsNext: false,
+                  ),
 //              startingDayOfWeek: StartingDayOfWeek.monday,
-              onDaySelected: (date, cal_events){
-                setState(() {
-                  cal_selectedEvents = cal_events;
-                });
-              },
-              builders: CalendarBuilders(
-                selectedDayBuilder: (context, date, cal_events) => 
-                Container(
-                  margin: const EdgeInsets.all(4.0),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(100.0),
+                  onDaySelected: (date, events){
+                    setState(() {
+                      cal_selectedEvents = events;
+                    });
+                  },
+                  builders: CalendarBuilders(
+                    selectedDayBuilder: (context, date, events) => 
+                    Container(
+                      margin: const EdgeInsets.all(4.0),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(100.0),
+                      ),
+                      child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
+                    todayDayBuilder: (context, date, events) => 
+                    Container(
+                      margin: const EdgeInsets.all(4.0),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(100.0),
+                      ),
+                      child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
                   ),
-                  child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
-                todayDayBuilder: (context, date, cal_events) => 
-                Container(
-                  margin: const EdgeInsets.all(4.0),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(100.0),
+                  calendarController: cal_controller,
                   ),
-                  child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
-              ),
-              calendarController: cal_controller,
-              ),
-             ... cal_selectedEvents.map((tevents) => Card(
-
+                 ... cal_selectedEvents.map((event) => Card(
 // or ListTile(title: Text(event),)
-               child: new GestureDetector(
-                 onTap: () {
-                   showDialog(
-                    context: context,
-                    builder : (context) => AlertDialog(
-                      content: Text("일정을 삭제하시겠습니까?"),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text('아니오',style: TextStyle(color: Colors.black)), 
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }, 
-                        ),
-                        FlatButton(
-                          child: Text('예',style: TextStyle(color: Colors.black)), 
-                          onPressed: () {
-                            setState(() {
-                              //print(tevents.runtimeType);
-                              //print("events".runtimeType);
-                              //print(prefs.get("events"));
-                              //print(prefs.getString("events"));
-
-                              // 리스트를 지워야 함
-                              //prefs.remove(tevents);
-                              //prefs.clear();
-                              prefs.remove("events");
-                              //Navigator.of(context).pop();
-                              Navigator.pop(context);
-
-                              //Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
-                              }
-                            );
-                          }, 
-                        )
-                      ],
-                    ),                    
-                   );
-                 },
-                 child: Container(
-                   width: MediaQuery.of(context).size.width,
-                   height: 50,
-                   child: Padding(
-                     padding: EdgeInsets.only(left: 15, top: 10, bottom: 10),
-                     child: Text(tevents, style: TextStyle(fontSize: 18),)
-                     )
-                 ),
-               ),
-             )),
-          ]
-        )
+                   child: new GestureDetector(
+                     onTap: () {
+                       showDialog(
+                        context: context,
+                        builder : (context) => AlertDialog(
+                          content: Text("일정 상세/ 일정 삭제"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('일정 상세',style: TextStyle(color: Colors.black)), 
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
+                              }, 
+                            ),
+                            FlatButton(
+                              child: Text('일정 지우기',style: TextStyle(color: Colors.black)), 
+                              onPressed: () {
+                                setState(() {
+                                  print(event);
+                                  Firestore.instance
+                                    .collection('events')
+                                    .document('temp')
+                                    .delete();                                    
+                                  Navigator.pop(context);
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
+                                  }
+                                );
+                              }, 
+                            )
+                          ],
+                        ),                    
+                       );
+                     },
+                     child: Container(
+                       width: MediaQuery.of(context).size.width,
+                       height: 50,
+                       child: Padding(
+                         padding: EdgeInsets.only(left: 15, top: 10, bottom: 10),
+                         child: Text(event, style: TextStyle(fontSize: 18),)
+                         )
+                     ),
+                   ),
+                 )),
+              ]
+            )
+          );
+        }
       ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
@@ -249,7 +238,7 @@ class _CalenderPageState extends State<CalenderPage> {
             label: '일정 추가',
             labelStyle: TextStyle(fontWeight: FontWeight.w500),
             onTap: () {
-              addSchedule();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AddEvent()));
             },
           ),
           SpeedDialChild(
@@ -271,6 +260,7 @@ class _CalenderPageState extends State<CalenderPage> {
     );
   }
 
+
 // 일정 추가
     addSchedule() {
     showDialog(
@@ -291,7 +281,7 @@ class _CalenderPageState extends State<CalenderPage> {
                 else {
                   cal_events[cal_controller.selectedDay] = [cal_eventController.text];
                }
-               prefs.setString("events", json.encode(encodeMap(cal_events)));
+               //prefs.setString("events", json.encode(encodeMap(cal_events)));
                cal_eventController.clear();
                Navigator.pop(context);
               });
@@ -300,6 +290,11 @@ class _CalenderPageState extends State<CalenderPage> {
         ],
       )
     );
+  }
+  @override
+  void dispose() {
+    cal_eventController.dispose();
+    super.dispose();
   }
 }
 
