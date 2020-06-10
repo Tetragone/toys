@@ -7,10 +7,6 @@ import 'main.dart';
 import 'page_study_manage.dart';
 import 'data_group.dart';
 
-
-import 'dart:io';
-import 'dart:async';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,12 +22,10 @@ class UnderBarState extends State<UnderBar> {
   static StudyManager manager = StudyManager();
   final List<Widget> selectUnderBar = [manager, CalenderPage(), InformationSettingPage(), Splash()];
 
-  final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {

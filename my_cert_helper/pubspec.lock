@@ -181,6 +181,11 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_speed_dial:
     dependency: "direct main"
     description:
@@ -240,13 +245,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.11.4"
-  masked_text:
-    dependency: "direct main"
-    description:
-      name: masked_text
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.6"
   matcher:
     dependency: transitive
     description:

@@ -52,49 +52,24 @@ class _CalenderPageState extends State<CalenderPage> {
   Stream<QuerySnapshot> streamData;
   Map<DateTime, List<dynamic>> _events;
 
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     cal_controller = CalendarController();
     cal_eventController = TextEditingController();
     cal_events = {};
     _events = {};
     cal_selectedEvents = [];
-    //initPrefs();
-  }
-/*
-  initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    setState(() {
-      cal_events = Map<DateTime, List<dynamic>>.from(
-          decodeMap(json.decode(prefs.getString("events") ?? "{}")));
-    });
   }
 
-  Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
-    Map<String, dynamic> newMap = {};
-    map.forEach((key, value) {
-      newMap[key.toString()] = map[key];
-    });
-    return newMap;
-  }
-
-  Map<DateTime, dynamic> decodeMap(Map<String, dynamic> map) {
-    Map<DateTime, dynamic> newMap = {};
-    map.forEach((key, value) {
-      newMap[DateTime.parse(key)] = map[key];
-    });
-    return newMap;
-  }
-*/
-  Map<DateTime, List<dynamic>> _groupEvents(List<EventModel> events) {
+  Map<DateTime, List<dynamic>> groupEvents(List<EventModel> events) {
     Map<DateTime,List<dynamic>> data = {};
     events.forEach((event) {
       DateTime date = DateTime(event.eventDate.year, event.eventDate.month, event.eventDate.day, 12);
-      if(data[data] == null) data[date] = [];
-      data[data].add(events);
+      if(data[date] == null) {
+        data[date] = [];
+      }
+      data[date].add(event);
     });
     return data;
   }
@@ -102,6 +77,7 @@ class _CalenderPageState extends State<CalenderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text('캘린더'),
       ), // AppBar
@@ -111,7 +87,7 @@ class _CalenderPageState extends State<CalenderPage> {
           if(snapshot.hasData) {
             List<EventModel> allEvents = snapshot.data;
             if(allEvents.isNotEmpty) {
-              cal_events = _groupEvents(allEvents);
+              cal_events = groupEvents(allEvents);
             }
           }
           return SingleChildScrollView(
@@ -120,7 +96,7 @@ class _CalenderPageState extends State<CalenderPage> {
               children: <Widget>[
                 TableCalendar(
                   locale: 'ko_KO',
-                  events: cal_events,
+                  events: cal_events,//cal_events,
                   holidays: _holidays,
                   //initialCalendarFormat: CalendarFormat.week,
                   calendarStyle: CalendarStyle(
@@ -166,11 +142,60 @@ class _CalenderPageState extends State<CalenderPage> {
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(100.0),
                       ),
-                      child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
+                      child: Text(date.day.toString(), 
+                      style: TextStyle(color:Colors.white),
+                      )),
                   ),
                   calendarController: cal_controller,
                   ),
                  ... cal_selectedEvents.map((event) => Card(
+                   child: ListTile(
+                     //trailing: IconButton(
+                       //color: Colors.red,
+                       //icon: Icon(Icons.delete),
+                       //onPressed: () async{
+                         //try{
+                           //await FirestoreService().deleteNote(event.id);
+                         //} catch(e) {
+                           //print(e);
+                         //}
+                       //},
+                     //),
+                     title: Text(event.title),
+                       onTap: () {
+                         showDialog(
+                          context: context,
+                          builder : (context) => AlertDialog(
+                            content: Text("일정 상세 / 일정 지우기"),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('일정 상세',style: TextStyle(color: Colors.black)), 
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
+                                }, 
+                              ),
+                              FlatButton(
+                                child: Text('일정 지우기',style: TextStyle(color: Colors.black)), 
+                                onPressed: () {
+                                  this.setState(() async {
+                                      try{
+                                        await eventDBS.removeItem(event.id);           
+                                      }catch(e) {
+                                        print(e);
+                                      }
+                                      Navigator.pop(context);
+                                    }
+                                  );
+                                }, 
+                              )
+                            ],
+                          ),                    
+                         );
+                       },
+                   ),
+                 )
+                 /*
+Card(
 // or ListTile(title: Text(event),)
                    child: new GestureDetector(
                      onTap: () {
@@ -209,11 +234,13 @@ class _CalenderPageState extends State<CalenderPage> {
                        height: 50,
                        child: Padding(
                          padding: EdgeInsets.only(left: 15, top: 10, bottom: 10),
-                         child: Text(event, style: TextStyle(fontSize: 18),)
+                         child: Text(event.title, style: TextStyle(fontSize: 18),)
                          )
                      ),
                    ),
-                 )),
+                 )
+                 */
+                ),
               ]
             )
           );

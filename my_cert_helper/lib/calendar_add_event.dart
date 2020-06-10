@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'calendar_model_event.dart';
 import 'calendar_firestore.dart';
 import 'package:provider/provider.dart';
@@ -33,13 +33,12 @@ class _AddEventState extends State<AddEvent> {
     _description = TextEditingController(text: widget.note != null ? widget.note.description : "");
     _eventDate = DateTime.now();
     processing = false;
-    _title.clear();
-    _description.clear();  
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         title: Text(widget.note != null ? "일정 수정" : "일정 추가"),
       ),
@@ -55,8 +54,7 @@ class _AddEventState extends State<AddEvent> {
                 child: TextFormField(
                   keyboardType: TextInputType.text,
                   controller: _title,
-                  validator: (value) =>
-                      (value.isEmpty) ? "제목을 입력해주세요." : null,
+                  validator: (value) => (value.isEmpty) ? "제목을 입력해주세요." : null,
                   style: style,
                   decoration: InputDecoration(
                       labelText: "제목",
@@ -72,8 +70,7 @@ class _AddEventState extends State<AddEvent> {
                   controller: _description,
                   minLines: 3,
                   maxLines: 5,
-                  validator: (value) =>
-                      (value.isEmpty) ? "설명을 입력해주세요" : null,
+                  validator: (value) => (value.isEmpty) ? "설명을 입력해주세요" : null,
                   style: style,
                   decoration: InputDecoration(
                       labelText: "설명",
@@ -109,29 +106,26 @@ class _AddEventState extends State<AddEvent> {
                               setState(() {
                                 processing = true;
                               });
-                              if(widget.note != null) {
+                              if(widget.note != null) {                           
                                 await eventDBS.updateData(widget.note.id,{
                                   "title": _title.text,
                                   "description": _description.text,
                                   "event_date": widget.note.eventDate
                                 });
-                                _title.clear();
-                                _description.clear();
-                              }else{
+                              }else{                              
                                 await eventDBS.createItem(EventModel(
                                   title: _title.text,
                                   description: _description.text,
                                   eventDate: _eventDate
                                 ));
-                                _title.clear();
-                                _description.clear();
                               }
                               Navigator.pop(context);
                               setState(() {
                                 processing = false;
                               });                             
                             }
-
+                            _description.clear();
+                            _title.clear();                            
                           },
                           child: Text(
                             "저장",
@@ -154,6 +148,5 @@ class _AddEventState extends State<AddEvent> {
     _title.dispose();
     _description.dispose();
     super.dispose();
-    
   }
 }

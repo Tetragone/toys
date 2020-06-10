@@ -33,11 +33,7 @@ class editTestDay extends StatefulWidget {
 class _editTestDayState extends State<editTestDay> {
 
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  TextEditingController _title;
-  TextEditingController _description;
   DateTime _eventDate;
-  final _formKey = GlobalKey<FormState>();
-  final _key = GlobalKey<ScaffoldState>();
   bool processing;
 
 // 기존 코드
@@ -150,21 +146,17 @@ class _editTestDayState extends State<editTestDay> {
             actions: <Widget>[
               FlatButton(
                 child: Text('저장', style: TextStyle(color: Colors.black, fontSize: 17),),
-                onPressed: () {
-                  // DB에 저장 방법을 강구할 것
-//                  cal_events.addEntries(Map(tday));
+                onPressed: ()  {
                   setState(() {
                     if(Data.getCertObjByName(record.testCert) != null) {
                       Data.getCertObjByName(record.testCert).examDate.add(DateTime.parse(tday));
                     }
-                  if(cal_events[settday] !=null) {
-                    cal_events[settday].add(settname);
-                  } else {
-                    cal_events[settday] = [settname];
-                  }
-                  prefs.setString("events", json.encode(encodeMap(cal_events)));
-                  Navigator.pop(context);
-                  //Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
+                    eventDBS.createItem(EventModel(
+                      title: tname,
+                      description: tday,
+                      eventDate: settday
+                      ));
+                      Navigator.pop(context);
                   });
 //                  Navigator.pop(context);
                 }
