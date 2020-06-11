@@ -12,7 +12,8 @@ import 'package:mycerthelper/screens/main_page.dart';
 import 'package:mycerthelper/study_time_check_and_compare.dart';
 import 'package:mycerthelper/test_score_prediction.dart';
 import 'package:provider/provider.dart';
-
+import 'package:mycerthelper/recommendation_result.dart';
+import 'all_recommendation_question.dart';
 import 'bottom_navigation_bar.dart';
 import 'calendar_page.dart';
 import 'each_recommendation_test_question.dart';
@@ -34,7 +35,8 @@ const String PUSH_NOTIFICATION_PAGE = '/push notification page';
 const String TO_DO_LIST_PAGE = '/to do list';
 const String RECOMMENDATION_TEST_PAGE = '/study recommendation';
 const String LOGIN_PAGE = '/login';
-
+const String ALL_RECOMMENDATION_QUESTION = '/study recommendation/all for question';
+const String RECOMMENDATION_RESULT = '/study recommendation/recommendation result';
 
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));
@@ -67,8 +69,10 @@ class MyAppState extends State<MyApp> {
         EACH_TEST_SETTING : (context) => EachTestSetting(),
         PUSH_NOTIFICATION_PAGE : (context) => InfoNotification(),
         TO_DO_LIST_PAGE : (context) => ToDoListPage(),
-        RECOMMENDATION_TEST_PAGE : (context) => TestQuestion(),
+        RECOMMENDATION_TEST_PAGE : (context) => TestQuestion(TestScorePrediction.selected),
         LOGIN_PAGE : (context) => Splash(),
+        ALL_RECOMMENDATION_QUESTION : (context) => AllRecommendationQuestion(TestQuestionState.nowHowMany),
+        RECOMMENDATION_RESULT : (context) => RecommendationResult(TestQuestionState.score, AllRecommendationQuestionState.answerSet),
       },
     );
 

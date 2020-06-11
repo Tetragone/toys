@@ -1,91 +1,183 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-enum SingingCharacter { yes, no }
+import 'package:mycerthelper/main.dart';
+import 'package:mycerthelper/page_study_manage.dart';
 
 class TestQuestion extends StatefulWidget {
+  int selected;
+
+  TestQuestion(int selected) {
+    this.selected = selected;
+  }
+
   @override
-  State createState() => TestQuestionState();
+  State createState() => TestQuestionState(selected);
 }
 
 class TestQuestionState extends State<TestQuestion>{
+  Firestore firestore = Firestore.instance;
   String testQuestion;
-  List<int> answer;
-  SingingCharacter _character = SingingCharacter.yes;
-  int nowHowMany = 0;
-  String nextOrFinish;
+  static int nowHowMany = 0;
+  String nextOrFinish = '다음';
+  var qSnap;
+  List<DocumentSnapshot> docList;
+  Iterator<DocumentSnapshot> docIter;
+  int _radioValue = 0;
+  static int score;
+  String answerTemp0;
+  String answerTemp1;
+  String answerTemp2;
+  String answerTemp3;
+  int selected;
+
+  TestQuestionState(int selected){
+    this.selected = selected;
+  }
+
+  void showNextQuestion(){
+    if(_radioValue == 0){
+      score += 5;
+    }
+    else if(_radioValue == 1) {
+      score += 3;
+    }
+    else if(_radioValue == 2) {
+      score += 1;
+    }
+    else if(_radioValue == 3) {
+      score += 0;
+    }
+
+    return setState(() {
+      if(docIter.moveNext() == true){
+
+        testQuestion = docIter.current.data["question"];
+        answerTemp0 = docIter.current.data["answer0"];
+        answerTemp1 = docIter.current.data["answer1"];
+        answerTemp2 = docIter.current.data["answer2"];
+        answerTemp3 = docIter.current.data["answer3"];
+
+        nowHowMany++;
+        _radioValue = 1;
+        _radioValue = 0;
+      }
+      else {
+        Navigator.of(context).pushNamed(ALL_RECOMMENDATION_QUESTION);
+      }
+    });
+  }
 
   @override
   void initState() {
-    if(nowHowMany < 15) {
-      nextOrFinish = '다음';
-    }
-    else nextOrFinish = '종료';
+    if(getFirestoreDocuments() == true)
+      super.initState();
 
-    super.initState();
+    score = 0;
 
-    testQuestion = '아직 질문이 없어요!';
     // 처음의 질문 값을 넣어줘야한다.
+  }
+
+  getFirestoreDocuments() async{
+    if(StudyManagerState.data.certObj.elementAt(selected).classificationName == '어학'){
+      qSnap = await firestore.collection("RecommedationQuestionForLanguage").getDocuments();
+    }
+    else if(StudyManagerState.data.certObj.elementAt(selected).classificationName == '사회'){
+      qSnap = await firestore.collection("RecommedationQuestionForSocial").getDocuments();
+    }
+    else {
+      qSnap = await firestore.collection("RecommedationQuestionForEngineering").getDocuments();
+    }
+
+    docList = qSnap.documents;
+    docIter = docList.iterator;
+
+    docIter.moveNext();
+    testQuestion = docIter.current.data["question"];
+
+    answerTemp0 = docIter.current.data["answer0"];
+    answerTemp1 = docIter.current.data["answer1"];
+    answerTemp2 = docIter.current.data["answer2"];
+    answerTemp3 = docIter.current.data["answer3"];
+
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('공부 방법 추천 질문'),),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            child: Text(
-              '${nowHowMany + 1}. $testQuestion',
-              style: TextStyle(
-                fontSize: 20,
+      body: SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: Text(
+                  '${nowHowMany + 1}. $testQuestion',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                padding: EdgeInsets.all(20),
               ),
-            ),
-            padding: EdgeInsets.all(20),
-          ),
-          ListTile(
-            title: Text('yes'),
-            leading: Radio(
-              value: SingingCharacter.yes,
-              groupValue: _character,
-              onChanged: (SingingCharacter value) {
-                setState(() {
-                  _character = value;
-                });
-              },
-            ),
-          ),
-
-          ListTile(
-            title: const Text('no'),
-            leading: Radio(
-              value: SingingCharacter.no,
-              groupValue: _character,
-              onChanged: (SingingCharacter value) {
-                setState(() {
-                  _character = value;
-                });
-              },
-            ),
-          ),
-          RaisedButton(
-            child: Text('$nextOrFinish'),
-            onPressed: showNextQuestion,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Radio(
+                    value: 0,
+                    groupValue: _radioValue,
+                    onChanged: (int value) {
+                      setState(() {
+                      _radioValue = value;
+                      });
+                    }
+                  ),
+                  Text("$answerTemp0"),
+                  Radio(
+                      value: 1,
+                      groupValue: _radioValue,
+                      onChanged: (int value) {
+                        setState(() {
+                          _radioValue = value;
+                        });
+                      }
+                  ),
+                  Text("$answerTemp1"),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Radio(
+                      value: 2,
+                      groupValue: _radioValue,
+                      onChanged: (int value) {
+                        setState(() {
+                          _radioValue = value;
+                        });
+                      }
+                  ),
+                  Text("$answerTemp2"),
+                  Radio(
+                      value: 3,
+                      groupValue: _radioValue,
+                      onChanged: (int value) {
+                        setState(() {
+                          _radioValue = value;
+                        });
+                      }
+                  ),
+                  Text("$answerTemp3"),
+                ],
+              ),
+              RaisedButton(
+                child: Text('$nextOrFinish'),
+                onPressed: showNextQuestion,
+              )
+            ],
           )
-        ],
-      )
-    );
-  }
-
-  void showNextQuestion(){
-    if(_character == SingingCharacter.yes){
-      answer[nowHowMany++] = 1;
-    }
-    else answer[nowHowMany++] = 0;
-
-    setState(() {
-      // 다음 질문의 값을 넣어줘야한다.
-      testQuestion = '아직 질문이 없어요!';
-    });
+        )
+      );
   }
 }
+
+

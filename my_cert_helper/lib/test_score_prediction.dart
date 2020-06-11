@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mycerthelper/main.dart';
+import 'package:mycerthelper/page_study_manage.dart';
 
 class TestScorePrediction extends StatelessWidget{
+  static int selected = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,13 +15,16 @@ class TestScorePrediction extends StatelessWidget{
           Expanded(
             flex: 10,
             child: ListView.builder(
-                itemCount: 3,
+                itemCount: StudyManagerState.data.certObj.length,
                 itemBuilder: (context, index){
                   return ListTile(
-                    title: Text('test'),
+                    title: Text(StudyManagerState.data.certObj.elementAt(index).CertName),
                     trailing: IconButton(
                       icon: Icon(Icons.settings),
-                      onPressed: () => {Navigator.of(context).pushNamed(RECOMMENDATION_TEST_PAGE)},
+                      onPressed: () {
+                        selected = index;
+                        Navigator.of(context).pushNamed(RECOMMENDATION_TEST_PAGE);
+                      },
                     ),
                   );
                 },
@@ -30,50 +36,4 @@ class TestScorePrediction extends StatelessWidget{
   }
 }
 
-//enum SingingCharacter { yes, no }
-//
-//class testContainer extends Container {
-//  final String testQuestion;
-//  int answer;
-//  SingingCharacter _character = SingingCharacter.yes;
-//
-//
-//  testContainer(String question, BuildContext context)
-//      : testQuestion = question,
-//        super(
-//        child: Column(
-//          children: <Widget>[
-//            Text('${question}'),
-//            Row(
-//              children: <Widget>[
-//                ListTile(
-//                  title: Text('yes'),
-//                  leading: Radio(
-//                    value: SingingCharacter.yes,
-//                    groupValue: _character,
-//                    onChanged: (SingingCharacter value) {
-//                      setState(() {
-//                        _character = value;
-//                      });
-//                    },
-//                  ),
-//                ),
-//                ListTile(
-//                  title: const Text('no'),
-//                  leading: Radio(
-//                    value: SingingCharacter.no,
-//                    groupValue: _character,
-//                    onChanged: (SingingCharacter value) {
-//                      setState(() {
-//                        _character = value;
-//                      });
-//                    },
-//                  ),
-//                ),
-//              ],
-//            )
-//          ]
-//        )
-//      );
-//}
 
