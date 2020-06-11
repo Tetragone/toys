@@ -59,7 +59,7 @@ class CertObjective {
 
   CertObjective buildTestData() {
     CertID = 101;
-    CertName = "testCert";
+    CertName = "자격증을 입력해 주세요!";
     priority = 1;
     targetGrade =  -1;
     isTested = false;
@@ -67,7 +67,6 @@ class CertObjective {
 
     DateTime dummyDate = DateTime.now();
     dummyDate = dummyDate.add(new Duration(days: 17));
-    examDate.add(dummyDate);
 
     DateTime startTime;
     DateTime endTime;
@@ -79,7 +78,7 @@ class CertObjective {
       parse = DateTime.now().subtract(new Duration(days: (14 - count) ) ).toString().substring(0,10);
       endTime = DateTime.parse(parse).add(new Duration(hours:9));
       dummyTime = new StudyTime(startTime, endTime);
-      personalTime.add(dummyTime);
+//      personalTime.add(dummyTime);
     }
   }
 

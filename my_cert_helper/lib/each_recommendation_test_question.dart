@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mycerthelper/main.dart';
 import 'package:mycerthelper/page_study_manage.dart';
 
+import 'data_group.dart';
+
 class TestQuestion extends StatefulWidget {
   int selected;
 
@@ -78,10 +80,10 @@ class TestQuestionState extends State<TestQuestion>{
   }
 
   getFirestoreDocuments() async{
-    if(StudyManagerState.data.certObj.elementAt(selected).classificationName == '어학'){
+    if(Data.certObj.elementAt(selected).classificationName == '어학'){
       qSnap = await firestore.collection("RecommedationQuestionForLanguage").getDocuments();
     }
-    else if(StudyManagerState.data.certObj.elementAt(selected).classificationName == '사회'){
+    else if(Data.certObj.elementAt(selected).classificationName == '사회'){
       qSnap = await firestore.collection("RecommedationQuestionForSocial").getDocuments();
     }
     else {

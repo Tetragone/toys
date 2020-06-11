@@ -6,7 +6,7 @@ import 'package:mycerthelper/page_test_setting.dart';
 
 import 'data_group.dart';
 import 'dialog_search_cert.dart';
-/*
+
 class ReviewPage extends StatefulWidget {
   @override
   State<ReviewPage> createState() {
@@ -69,7 +69,7 @@ class ReviewPageState extends State<ReviewPage> {
 
       if(strTmp.contains(input) == true) {
         resultList.add(strTmp);
-        optionList.add(UIChooseCertOption2(strTmp, this, strTmp_orga, strTmp_class));
+//        optionList.add(UIChooseCertOption2(strTmp, this, strTmp_orga, strTmp_class));
       }
     }
 
@@ -89,7 +89,7 @@ class ReviewPageState extends State<ReviewPage> {
       docList = qSnap.documents;
       docIter = docList.iterator;
       QuerySnapshot qSnapAggr;
-      docIterAggr
+      //docIterAggr
 
       while(docIter.moveNext() != true) {
         if( docIter.current.data['name'] == result.CertName ) {
@@ -107,30 +107,22 @@ class ReviewPageState extends State<ReviewPage> {
         appBar: AppBar(
           title: Text('자격증 평가'),
         ),
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              searchBox,
-              StreamBuilder<QuerySnapshot> (
-                stream: Firestore.instance.collection('CertList').snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) return LinearProgressIndicator();
-
-                  return ;
-                },
-              ),
-            ]
-
-        ));
+        body: Center(
+        child: new TextFormField(
+        controller: searchBoxControl,
+    decoration: InputDecoration(
+    border: OutlineInputBorder(),
+    suffixIcon: IconButton(
+    icon: Icon(Icons.search),
+    onPressed: onSearchBoxClicked,
+    ),
+    hintText: '자격증을 입력해주세요!',
+    ))));
   }
 }
 
-    // TODO: implement build
-    return
-  }
 
-}
-
+/*
 class TestSettingPageState extends State<TestSettingPage> {
 
 

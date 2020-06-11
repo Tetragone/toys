@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mycerthelper/main.dart';
 import 'package:mycerthelper/page_study_manage.dart';
 
+import 'data_group.dart';
+
 class TestScorePrediction extends StatelessWidget{
   static int selected = 0;
 
@@ -15,10 +17,10 @@ class TestScorePrediction extends StatelessWidget{
           Expanded(
             flex: 10,
             child: ListView.builder(
-                itemCount: StudyManagerState.data.certObj.length,
+                itemCount: Data.certObj.length,
                 itemBuilder: (context, index){
                   return ListTile(
-                    title: Text(StudyManagerState.data.certObj.elementAt(index).CertName),
+                    title: Text(Data.certObj.elementAt(index).CertName),
                     trailing: IconButton(
                       icon: Icon(Icons.settings),
                       onPressed: () {

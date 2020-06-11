@@ -51,7 +51,7 @@ class StudyManagerState extends State<StudyManager> {
                   children: <Widget>[
                     Container(
                       child: Text(
-                          'D-${(targetCert.getRemainingDate() == -99 ? "NULL" : targetCert.getRemainingDate()) } ',
+                          'D-${(targetCert.getRemainingDate() == -99 ? "시험 일정 없음" : targetCert.getRemainingDate()) } ',
                         style: TextStyle(
                           fontSize: 40
                         ),
