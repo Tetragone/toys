@@ -25,6 +25,8 @@ class ReviewPageState extends State<ReviewPage> {
   int difficultCount = 0;
   int valueCount = 0;
   Data data;
+  String orga;
+  String classifi;
 
   @override
   void initState() {
@@ -69,7 +71,7 @@ class ReviewPageState extends State<ReviewPage> {
 
       if(strTmp.contains(input) == true) {
         resultList.add(strTmp);
-//        optionList.add(UIChooseCertOption2(strTmp, this, strTmp_orga, strTmp_class));
+        optionList.add(UIChooseCertOption2(strTmp, this, strTmp_orga, strTmp_class));
       }
     }
 
@@ -88,6 +90,7 @@ class ReviewPageState extends State<ReviewPage> {
       qSnap = await firestore.collection("CertList").getDocuments();
       docList = qSnap.documents;
       docIter = docList.iterator;
+      
       QuerySnapshot qSnapAggr;
       //docIterAggr
 
@@ -107,102 +110,10 @@ class ReviewPageState extends State<ReviewPage> {
         appBar: AppBar(
           title: Text('자격증 평가'),
         ),
-        body: Center(
-        child: new TextFormField(
-        controller: searchBoxControl,
-    decoration: InputDecoration(
-    border: OutlineInputBorder(),
-    suffixIcon: IconButton(
-    icon: Icon(Icons.search),
-    onPressed: onSearchBoxClicked,
-    ),
-    hintText: '자격증을 입력해주세요!',
-    ))));
+        body: Column(
+        children: <Widget>[
+          searchBox
+    ],
+        ));
   }
 }
-
-
-/*
-class TestSettingPageState extends State<TestSettingPage> {
-
-
-
-
-  @override
-  Widget build(BuildContext context) {
-
-class SelectedBox extends StatefulWidget{
-  List<CertObjective> objList;
-  StateSelectedBox created;
-
-  @override
-  State<StatefulWidget> createState() {
-    created = new StateSelectedBox();
-    created.objList = objList;
-    // TODO: implement createState
-    return created;
-  }
-
-  SelectedBox(List<CertObjective> objList) {
-    this.objList = objList;
-  }
-}
-
-class StateSelectedBox extends State<SelectedBox> {
-  List<CertObjective> objList;
-  List<Widget> buttonList;
-  Iterator<CertObjective> iter;
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    buttonList = new List<Widget>();
-    iter = objList.iterator;
-    while(iter.moveNext() == true) {
-      buttonList.add(
-          Card(child: myListTile(iter.current, context),)
-      );
-    }
-
-    return Column(children: buttonList);
-  }
-}
-
-class ButtonBox extends RaisedButton {
-  final CertObjective cert;
-
-  ButtonBox(CertObjective arg, BuildContext context): cert=arg,
-        super(//뒤에 배경 이미지를 넣을려면 container로 바꿔서 구현해야한다.
-          child: Text('${arg.CertName}'),
-          color: Colors.limeAccent,
-          onPressed: () {
-            Navigator.of(context).pushNamed(
-              EACH_TEST_SETTING,
-              arguments: <String, CertObjective>{
-                'obj': arg
-              },
-            );
-          });
-}
-
-class myListTile extends ListTile {
-  final CertObjective cert;
-
-  myListTile(CertObjective arg, BuildContext context)
-      : cert = arg,
-        super(
-          title: Text('${arg.CertName}'),
-          trailing:Text('${arg.classificationName}'),
-          subtitle: Text('${arg.organizerName}'),
-//        leading: Icon(Icons.title), 여기는 각자 logo를 넣으면 어떨까요?
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              EACH_TEST_SETTING,
-              arguments: <String, CertObjective>{
-                'obj': arg
-              },
-            );
-          }
-      );
-}
-*/

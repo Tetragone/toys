@@ -24,7 +24,7 @@ class UIChooseCertOption extends SimpleDialogOption {
         );
 }
 
-/*
+
 class UIChooseCertOption2 extends SimpleDialogOption {
   String name;
   String orga;
@@ -38,11 +38,11 @@ class UIChooseCertOption2 extends SimpleDialogOption {
           (
             onPressed: () {
               superClass.selectedName = name;
-              superClass.selectedClass = classifi;
-              superClass.selectedOrga = orga;
+              superClass.classifi = classifi;
+              superClass.orga = orga;
               Navigator.pop(superClass.context, name);
             },
             child: Text(name)
         );
 }
-*/
+

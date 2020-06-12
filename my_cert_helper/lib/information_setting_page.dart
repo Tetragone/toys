@@ -120,7 +120,7 @@ class InformationPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(context,
                 MaterialPageRoute<void>(builder: (BuildContext context) {
-                  return ; // 바로가기할 페이지
+                  return ReviewPage(); // 바로가기할 페이지
                 }));
               },
             ),
