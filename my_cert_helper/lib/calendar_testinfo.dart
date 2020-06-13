@@ -44,10 +44,10 @@ class _editTestDayState extends State<editTestDay> {
     super.initState();
     _eventDate = DateTime.now();
     processing = false;
-    initPrefs();
+    //initPrefs();
   }
 
-
+/*
   initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -72,7 +72,7 @@ class _editTestDayState extends State<editTestDay> {
     return newMap;
   }
 
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,7 +158,6 @@ class _editTestDayState extends State<editTestDay> {
                       ));
                       Navigator.pop(context);
                   });
-//                  Navigator.pop(context);
                 }
               )
             ],

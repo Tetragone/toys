@@ -70,10 +70,10 @@ class _AddEventState extends State<AddEvent> {
                   controller: _description,
                   minLines: 3,
                   maxLines: 5,
-                  validator: (value) => (value.isEmpty) ? "설명을 입력해주세요" : null,
+                  validator: (value) => (value.isEmpty) ? "내용을 입력해주세요" : null,
                   style: style,
                   decoration: InputDecoration(
-                      labelText: "설명",
+                      labelText: "내용",
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 ),
               ),

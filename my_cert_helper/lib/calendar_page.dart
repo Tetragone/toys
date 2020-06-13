@@ -32,8 +32,6 @@ final Map<DateTime, List> _holidays = {
   DateTime(2020, 12, 25): ['성탄절'],
 };
 
-Map<DateTime, List<dynamic>> cal_events;
-CalendarController cal_controller;
 
 class CalenderPage extends StatefulWidget {
   @override
@@ -41,16 +39,15 @@ class CalenderPage extends StatefulWidget {
 }
 
 class _CalenderPageState extends State<CalenderPage> {
+  Map<DateTime, List<dynamic>> cal_events;
+  CalendarController cal_controller;
 
   // 여기서 DB 확인 후 캘린더 설정
-
-  
   List<dynamic> cal_selectedEvents;
   TextEditingController cal_eventController;
   SharedPreferences prefs;
   Firestore firestore = Firestore.instance;
   Stream<QuerySnapshot> streamData;
-  Map<DateTime, List<dynamic>> _events;
 
   @override
   void initState() {
@@ -58,7 +55,6 @@ class _CalenderPageState extends State<CalenderPage> {
     cal_controller = CalendarController();
     cal_eventController = TextEditingController();
     cal_events = {};
-    _events = {};
     cal_selectedEvents = [];
   }
 
@@ -149,49 +145,39 @@ class _CalenderPageState extends State<CalenderPage> {
                   calendarController: cal_controller,
                   ),
                  ... cal_selectedEvents.map((event) => Card(
-                   child: ListTile(
-                     //trailing: IconButton(
-                       //color: Colors.red,
-                       //icon: Icon(Icons.delete),
-                       //onPressed: () async{
-                         //try{
-                           //await FirestoreService().deleteNote(event.id);
-                         //} catch(e) {
-                           //print(e);
-                         //}
-                       //},
-                     //),
-                     title: Text(event.title),
-                       onTap: () {
-                         showDialog(
-                          context: context,
-                          builder : (context) => AlertDialog(
-                            content: Text("일정 상세 / 일정 지우기"),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text('일정 상세',style: TextStyle(color: Colors.black)), 
-                                onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
-                                }, 
-                              ),
-                              FlatButton(
-                                child: Text('일정 지우기',style: TextStyle(color: Colors.black)), 
-                                onPressed: () {
-                                  this.setState(() async {
-                                      try{
-                                        await eventDBS.removeItem(event.id);           
-                                      }catch(e) {
-                                        print(e);
-                                      }
-                                      Navigator.pop(context);
-                                    }
-                                  );
-                                }, 
-                              )
-                            ],
-                          ),                    
-                         );
-                       },
+                   child: Container(
+                     child: ListTile(
+                       title: Text(event.title),
+                         onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
+                            setState(() {
+                              
+                            });
+/*
+                           
+                           showDialog(
+                            context: context,
+                            builder : (context) => AlertDialog(
+                              content: Text("일정 자세히 보기"),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('예',style: TextStyle(color: Colors.black)), 
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
+                                  }, 
+                                ),
+                                FlatButton(
+                                  child: Text('아니오',style: TextStyle(color: Colors.black)), 
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  }, 
+                                ),
+                              ],
+                            ),                    
+                           );
+                                                  */
+                         },
+                     ),
                    ),
                  )
                  /*
