@@ -131,10 +131,7 @@ class InformationPage extends StatelessWidget {
               title: Text('중고장터'),
               subtitle: Text('자격증 교재, 강의 등 개인 간 중고거래'),
               onTap: () {
-                Navigator.push(context,
-                MaterialPageRoute<void>(builder: (BuildContext context) {
-                  return ; // 바로가기할 페이지
-                }));
+                Navigator.pushNamed(context, INFORMATION_MARKET);
               },
             ),
           ),                               

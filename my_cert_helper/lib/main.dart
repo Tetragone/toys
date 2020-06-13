@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:mycerthelper/add_new_board_contexts.dart';
 import 'package:mycerthelper/data/join_or_login.dart';
 import 'package:mycerthelper/page_input_study_time.dart';
 import 'package:mycerthelper/page_study_manage.dart';
@@ -18,7 +19,9 @@ import 'bottom_navigation_bar.dart';
 import 'calendar_page.dart';
 import 'each_recommendation_test_question.dart';
 import 'each_test_setting.dart';
+import 'infomation_market_page.dart';
 import 'information_notification.dart';
+import 'inner_board.dart';
 
 const String ROOT_PAGE = '/';
 const String TEST_SETTING_PAGE = '/test setting';
@@ -37,6 +40,8 @@ const String RECOMMENDATION_TEST_PAGE = '/study recommendation';
 const String LOGIN_PAGE = '/login';
 const String ALL_RECOMMENDATION_QUESTION = '/study recommendation/all for question';
 const String RECOMMENDATION_RESULT = '/study recommendation/recommendation result';
+const String BOARD_CONTENTS = '/notice/infomation market/board contents';
+const String ADD_NEW_BOARD_CONTEXTS = '/notice/infotmaiton market/add new board contexts';
 
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));
@@ -73,6 +78,9 @@ class MyAppState extends State<MyApp> {
         LOGIN_PAGE : (context) => Splash(),
         ALL_RECOMMENDATION_QUESTION : (context) => AllRecommendationQuestion(TestQuestionState.nowHowMany),
         RECOMMENDATION_RESULT : (context) => RecommendationResult(TestQuestionState.score, AllRecommendationQuestionState.answerSet),
+        INFORMATION_MARKET : (context) => marketBoard(),
+        BOARD_CONTENTS : (context) => BoardContents(),
+        ADD_NEW_BOARD_CONTEXTS : (context) => addNewBoardContext(),
       },
     );
 

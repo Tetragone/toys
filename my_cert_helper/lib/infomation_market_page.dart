@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 
-/*
 class marketBoard extends StatefulWidget {
 
   @override
@@ -17,6 +16,7 @@ class marketBoardState extends State<marketBoard> {
   Iterator<DocumentSnapshot> docIter;
   String titleTemp;
   String contentsTemp;
+  String emailTemp;
   PostedContents postedContentsTemp;
   static int selected = 0;
 
@@ -34,7 +34,8 @@ class marketBoardState extends State<marketBoard> {
     while(docIter.moveNext() == true) {
       titleTemp = docIter.current.data['title'];
       contentsTemp = docIter.current.data['contents'];
-      postedContentsTemp = PostedContents(titleTemp, contentsTemp);
+      emailTemp = docIter.current.data['userEmail'];
+      postedContentsTemp = PostedContents(titleTemp, contentsTemp, emailTemp);
 
       if(titleTemp != null && postedContents.length < docList.length) {
         postedContents.add(postedContentsTemp);
@@ -61,7 +62,7 @@ class marketBoardState extends State<marketBoard> {
             icon: const Icon(Icons.add),
             tooltip: 'Next page',
             onPressed: () {
-              // 새로운 게시글을 만드는데 사용;
+              Navigator.of(context).pushNamed(ADD_NEW_BOARD_CONTEXTS);
             },
           ),
         ],
@@ -87,10 +88,11 @@ class marketBoardState extends State<marketBoard> {
 class PostedContents {
   String title;
   String contents;
+  String email;
 
-  PostedContents(String title, String contents) {
+  PostedContents(String title, String contents, String email) {
     this.title = title;
     this.contents = contents;
+    this.email = email;
   }
 }
-*/

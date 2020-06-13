@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mycerthelper/page_study_manage.dart';
 import 'package:mycerthelper/test_score_prediction.dart';
 
 import 'data_group.dart';
