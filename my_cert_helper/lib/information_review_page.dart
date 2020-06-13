@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,14 +63,15 @@ class ReviewPageState extends State<ReviewPage> {
     docList = qSnap.documents;
     docIter = docList.iterator;
 
-    while(docIter.moveNext() == true) {
-      strTmp= docIter.current.data["name"];
+    while (docIter.moveNext() == true) {
+      strTmp = docIter.current.data["name"];
       strTmp_class = docIter.current.data["classification"];
       strTmp_orga = docIter.current.data["organizer"];
 
-      if(strTmp.contains(input) == true) {
+      if (strTmp.contains(input) == true) {
         resultList.add(strTmp);
-        optionList.add(UIChooseCertOption2(strTmp, this, strTmp_orga, strTmp_class));
+        optionList.add(
+            UIChooseCertOption2(strTmp, this, strTmp_orga, strTmp_class));
       }
     }
 
@@ -83,37 +83,111 @@ class ReviewPageState extends State<ReviewPage> {
           );
         }
     );
-
-    if(selectedName != null ) {
+    if (selectedName != null) {
       CertObjective result = CertObjective();
       result.CertName = selectedName;
       qSnap = await firestore.collection("CertList").getDocuments();
       docList = qSnap.documents;
       docIter = docList.iterator;
-      
+
       QuerySnapshot qSnapAggr;
       //docIterAggr
 
-      while(docIter.moveNext() != true) {
-        if( docIter.current.data['name'] == result.CertName ) {
-          qSnapAggr = await firestore.collection("CertList/" + docIter.current.documentID + "/Review" ).getDocuments();
-
+      while (docIter.moveNext() != true) {
+        if (docIter.current.data['name'] == result.CertName) {
+          qSnapAggr = await firestore.collection(
+              "CertList/" + docIter.current.documentID + "/Review")
+              .getDocuments();
         }
       }
     }
+
+    setState(() { });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        appBar: AppBar(
-          title: Text('자격증 평가'),
-        ),
-        body: Column(
+      appBar: AppBar(
+        title: Text('자격증 평가'),
+      ),
+      body: ListView(
+        scrollDirection: Axis.vertical,
         children: <Widget>[
-          searchBox
-    ],
-        ));
+          searchBox,
+          Center(
+            child: Text(selectedName == null ? '자격증을 선택해 주세요': selectedName)
+          ),
+          GestureDetector(
+            onTap: () {
+              print('클릭');
+            },
+            child: Column(children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.calendar_today),
+                title: Text('시험일'),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {},
+              ),
+              //Container(
+              //Text:'',
+              // ),
+            ]),
+          ),
+          GestureDetector(
+            onTap: () {
+              print('클릭');
+            },
+            child: Column(children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.assignment_turned_in),
+                title: Text('시험준비물'),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {},
+              ),
+            ]),
+          ),
+          GestureDetector(
+            onTap: () {
+              print('클릭');
+            },
+            child: Column(children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.assignment_late),
+                title: Text('시험주의사항'),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {},
+              ),
+            ]),
+          ),
+          GestureDetector(
+            onTap: () {
+              print('클릭');
+            },
+            child: Column(children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.star),
+                title: Text('난이도 평가 '),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {},
+              ),
+            ]),
+          ),
+          GestureDetector(
+            onTap: () {
+              print('클릭');
+            },
+            child: Column(children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.star),
+                title: Text('실무활용 평가'),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () {},
+              ),
+            ]),
+          ),
+        ],
+      ),
+    );
   }
 }
