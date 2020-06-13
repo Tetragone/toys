@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mycerthelper/page_study_manage.dart';
 import 'package:mycerthelper/test_score_prediction.dart';
 
+import 'data_group.dart';
+
 class RecommendationResult extends StatefulWidget {
   int score;
   List<int> answerSet;
@@ -36,10 +38,10 @@ class RecommendationResultState extends State<RecommendationResult> {
   @override
   void initState() {
 
-    if(StudyManagerState.data.certObj.elementAt(TestScorePrediction.selected).classificationName == '어학') {
+    if(Data.certObj.elementAt(TestScorePrediction.selected).classificationName == '어학') {
 
     }
-    else if (StudyManagerState.data.certObj.elementAt(TestScorePrediction.selected).classificationName == '사회') {
+    else if (Data.certObj.elementAt(TestScorePrediction.selected).classificationName == '사회') {
 
     }
     else {

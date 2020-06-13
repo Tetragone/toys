@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 
+/*
 class marketBoard extends StatefulWidget {
 
   @override
@@ -92,3 +93,4 @@ class PostedContents {
     this.contents = contents;
   }
 }
+*/

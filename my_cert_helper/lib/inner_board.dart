@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mycerthelper/infomation_market_page.dart';
-
+/*
 class BoardContents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -77,4 +77,4 @@ class BoardContents extends StatelessWidget {
     );
   }
 }
-
+*/
