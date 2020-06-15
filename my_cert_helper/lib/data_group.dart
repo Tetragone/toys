@@ -34,6 +34,8 @@ class CertObjective {
   int averageTime;
   String classificationName;
   String organizerName;
+  int goalTime = 0;
+  int goalWeek = 0;
 
   CertObjective();
 
