@@ -109,20 +109,58 @@ class StudyTimeBox extends StatefulWidget {
 class StateStudyTimeBox extends State<StudyTimeBox> {
   Firestore firestore;
   int studyTime;
+  int averageTime;
+  String printCompareGoal;
 
   StateStudyTimeBox();
 
   String compareText() {
-    String messege;
-    if (StudyManagerState.targetCert.averageTime == null) {
-      messege = "데이터를 가져오는 중입니다";
+    String message;
+
+    if (StudyManagerState.targetCert.goalTime == 0)
+    {
+      if (StudyManagerState.targetCert.averageTime == null) {
+        message = "데이터를 가져오는 중입니다";
+      }
+      else {
+        averageTime = StudyManagerState.targetCert.averageTime;
+
+        if (averageTime >= (StudyManagerState.targetCert.getWeekAverage())) {
+          message = "공부 시간이 부족합니다";
+        } else {
+          message = "공부 시간이 평균 이상입니다";
+        }
+      }
+    } // board 만들때 참고 하자.
+    else { // 목표 시간에 따른 공부 시간 알려주기 위한 코드
+      averageTime = StudyManagerState.targetCert.goalTime ~/ StudyManagerState.targetCert.goalWeek;
+      // ~/ 가 / .toInt()보다 효율적.
+      if (StudyManagerState.targetCert.averageTime == null) {
+        message = "데이터를 가져오는 중입니다";
+      }
+      else {
+        studyTime = StudyManagerState.targetCert.getWeekAverage();
+        if(averageTime >= studyTime)
+          message = "공부 시간이 부족합니다";
+        else {
+          message = '공부 시간이 평균 이상입니다';
+        }
+      }
     }
-    else if ((StudyManagerState.targetCert.averageTime) >= (StudyManagerState.targetCert.getWeekAverage())) {
-      messege = "공부 시간이 부족합니다";
-    } else {
-      messege = "공부 시간이 평균 이상입니다";
+
+    return message;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (StudyManagerState.targetCert.goalTime == 0) {
+      printCompareGoal = '다른 사람의 주간 공부 시간';
     }
-    return messege;
+    else {
+      printCompareGoal = '나의 주간 목표 공부 시간';
+    }
   }
 
   void updateStat() {
@@ -166,7 +204,7 @@ class StateStudyTimeBox extends State<StudyTimeBox> {
 
     var dataHori = [
       new horizontalChartContexts(StudyManagerState.targetCert.getWeekAverage(), '내 주간 공부 시간'),
-      new horizontalChartContexts(StudyManagerState.targetCert.averageTime, '다른 사람 평균 주간 공부 시간')
+      new horizontalChartContexts(averageTime, '$printCompareGoal')
     ];
 
     var series = [
@@ -267,7 +305,7 @@ class StateStudyTimeBox extends State<StudyTimeBox> {
           //위에랑 똑같은 이유
           Container(
             child: Text(
-              '주간 공부 시간은 ${studyTime}시간 입니다!',
+              '주간 공부 시간은 $studyTime시간 입니다!',
              style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -285,7 +323,7 @@ class StateStudyTimeBox extends State<StudyTimeBox> {
           ),
           Container(
             child: Text(
-              '다른 사람의 주간 공부 시간 : ${StudyManagerState.targetCert.averageTime}',
+              '$printCompareGoal : $averageTime',
              style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,

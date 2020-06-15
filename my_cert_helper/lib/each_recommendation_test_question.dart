@@ -51,6 +51,8 @@ class TestQuestionState extends State<TestQuestion>{
     }
 
     return setState(() {
+      nowHowMany++;
+
       if(docIter.moveNext() == true){
 
         testQuestion = docIter.current.data["question"];
@@ -59,7 +61,6 @@ class TestQuestionState extends State<TestQuestion>{
         answerTemp2 = docIter.current.data["answer2"];
         answerTemp3 = docIter.current.data["answer3"];
 
-        nowHowMany++;
         _radioValue = 1;
         _radioValue = 0;
       }
@@ -74,6 +75,7 @@ class TestQuestionState extends State<TestQuestion>{
     if(getFirestoreDocuments() == true)
       super.initState();
 
+    nowHowMany = 0;
     score = 0;
 
     // 처음의 질문 값을 넣어줘야한다.

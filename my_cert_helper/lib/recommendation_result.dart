@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mycerthelper/main.dart';
 import 'package:mycerthelper/test_score_prediction.dart';
 
 import 'data_group.dart';
@@ -237,6 +238,9 @@ class RecommendationResultState extends State<RecommendationResult> {
     }
 
     weekendStudyTime = basicTime * multiValue * multiValueForType;
+
+    Data.certObj.elementAt(TestScorePrediction.selected).goalTime = weekendStudyTime.toInt();
+    Data.certObj.elementAt(TestScorePrediction.selected).goalWeek = studyStartWeek;
   }
 
   @override
@@ -322,6 +326,23 @@ class RecommendationResultState extends State<RecommendationResult> {
                   );
                 },
                 childCount: (multiValue * 2)
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text('완료'),
+                        onPressed: () {
+                          Navigator.of(context).popUntil((route) => route.isFirst);
+                        },
+                      )
+                    ],
+                  ),
+                ]
               ),
             )
           ],
