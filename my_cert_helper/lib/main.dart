@@ -22,6 +22,11 @@ import 'each_test_setting.dart';
 import 'infomation_market_page.dart';
 import 'information_notification.dart';
 import 'inner_board.dart';
+import 'things_to_bring.dart';
+import 'things_to_know.dart';
+import 'certi_date.dart';
+import 'certi_review.dart';
+import 'work_review.dart';
 
 const String ROOT_PAGE = '/';
 const String TEST_SETTING_PAGE = '/test setting';
@@ -42,6 +47,14 @@ const String ALL_RECOMMENDATION_QUESTION = '/study recommendation/all for questi
 const String RECOMMENDATION_RESULT = '/study recommendation/recommendation result';
 const String BOARD_CONTENTS = '/notice/infomation market/board contents';
 const String ADD_NEW_BOARD_CONTEXTS = '/notice/infotmaiton market/add new board contexts';
+
+
+final dummyItems = [
+  'https://firebasestorage.googleapis.com/v0/b/certhelper-3e7f3.appspot.com/o/image%2Ftest_image1.PNG?alt=media&token=2e61859f-763d-4beb-9364-7859b68c84ac',
+  'https://firebasestorage.googleapis.com/v0/b/certhelper-3e7f3.appspot.com/o/image%2Ftest_image2.PNG?alt=media&token=b562655c-7163-4186-a730-8384e67b291d',
+  'https://firebasestorage.googleapis.com/v0/b/certhelper-3e7f3.appspot.com/o/image%2Ftest_image3.PNG?alt=media&token=712aceae-c962-40b1-8f33-f76e6fc728b1'
+];
+
 
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));

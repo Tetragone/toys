@@ -37,7 +37,7 @@ class UIChooseCertOption2 extends SimpleDialogOption {
         super
           (
             onPressed: () {
-              superClass.selectedName = name;
+              ReviewPageState.selectedName = name;
               superClass.classifi = classifi;
               superClass.orga = orga;
               Navigator.pop(superClass.context, name);
