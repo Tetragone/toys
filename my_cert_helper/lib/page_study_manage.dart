@@ -131,7 +131,7 @@ class StateStudyTimeBox extends State<StudyTimeBox> {
           message = "공부 시간이 평균 이상입니다";
         }
       }
-    } // board 만들때 참고 하자.
+    }
     else { // 목표 시간에 따른 공부 시간 알려주기 위한 코드
       averageTime = StudyManagerState.targetCert.goalTime ~/ StudyManagerState.targetCert.goalWeek;
       // ~/ 가 / .toInt()보다 효율적.

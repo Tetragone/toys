@@ -22,11 +22,13 @@ class marketBoardState extends State<marketBoard> {
 
   @override
   void initState() {
-    getBoardTitle();
     super.initState();
+    postedContents = List();
   }
 
-  void getBoardTitle() async {
+  getBoardTitle() async {
+    postedContents = List();
+
     qSnap = await firestore.collection("Board").getDocuments();
     docList = qSnap.documents;
     docIter = docList.iterator;
@@ -36,11 +38,10 @@ class marketBoardState extends State<marketBoard> {
       contentsTemp = docIter.current.data['contents'];
       emailTemp = docIter.current.data['userEmail'];
       postedContentsTemp = PostedContents(titleTemp, contentsTemp, emailTemp);
-
-      if(titleTemp != null && postedContents.length < docList.length) {
-        postedContents.add(postedContentsTemp);
-      }
+      postedContents.add(postedContentsTemp);
     }
+
+    return true;
   }
 
   @override
@@ -54,7 +55,6 @@ class marketBoardState extends State<marketBoard> {
             tooltip: '새로 고침',
             onPressed: () {
               setState(() {
-                getBoardTitle();
               });
             },
           ),
@@ -67,19 +67,28 @@ class marketBoardState extends State<marketBoard> {
           ),
         ],
       ),
-      body: Container(
-        child: ListView.builder(
-          itemCount: postedContents.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text('${index + 1}. ${postedContents[index].title}'),
-              onTap: () {
-                selected = index;
-                Navigator.of(context).pushNamed(BOARD_CONTENTS);
-              },
+      body: FutureBuilder(
+        future: getBoardTitle(),
+        builder: (context ,snapshot) {
+          if(snapshot.hasData == false)
+            return CircularProgressIndicator();
+          else {
+            return Container(
+              child: ListView.builder(
+                itemCount: postedContents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text('${index + 1}. ${postedContents[index].title}'),
+                    onTap: () {
+                      selected = index;
+                      Navigator.of(context).pushNamed(BOARD_CONTENTS);
+                    },
+                  );
+                },
+              ),
             );
-          },
-        ),
+          }
+        },
       )
     );
   }
