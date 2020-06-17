@@ -1,7 +1,7 @@
+import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mycerthelper/main.dart';
-import 'package:mycerthelper/page_study_manage.dart';
 
 import 'data_group.dart';
 
@@ -31,6 +31,7 @@ class TestQuestionState extends State<TestQuestion>{
   String answerTemp2;
   String answerTemp3;
   int selected;
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
 
   TestQuestionState(int selected){
     this.selected = selected;
@@ -72,8 +73,7 @@ class TestQuestionState extends State<TestQuestion>{
 
   @override
   void initState() {
-    if(getFirestoreDocuments() == true)
-      super.initState();
+    super.initState();
 
     nowHowMany = 0;
     score = 0;
@@ -82,106 +82,115 @@ class TestQuestionState extends State<TestQuestion>{
   }
 
   getFirestoreDocuments() async{
-    if(Data.certObj.elementAt(selected).classificationName == '어학'){
-      qSnap = await firestore.collection("RecommedationQuestionForLanguage").getDocuments();
-    }
-    else if(Data.certObj.elementAt(selected).classificationName == '사회'){
-      qSnap = await firestore.collection("RecommedationQuestionForSocial").getDocuments();
-    }
-    else {
-      qSnap = await firestore.collection("RecommedationQuestionForEngineering").getDocuments();
-    }
+    return this._memoizer.runOnce(() async{
+      if(Data.certObj.elementAt(selected).classificationName == '어학'){
+        qSnap = await firestore.collection("RecommedationQuestionForLanguage").getDocuments();
+      }
+      else if(Data.certObj.elementAt(selected).classificationName == '사회'){
+        qSnap = await firestore.collection("RecommedationQuestionForSocial").getDocuments();
+      }
+      else {
+        qSnap = await firestore.collection("RecommedationQuestionForEngineering").getDocuments();
+      }
 
-    docList = qSnap.documents;
-    docIter = docList.iterator;
+      docList = qSnap.documents;
+      docIter = docList.iterator;
 
-    docIter.moveNext();
-    testQuestion = docIter.current.data["question"];
+      docIter.moveNext();
 
-    answerTemp0 = docIter.current.data["answer0"];
-    answerTemp1 = docIter.current.data["answer1"];
-    answerTemp2 = docIter.current.data["answer2"];
-    answerTemp3 = docIter.current.data["answer3"];
+      testQuestion = docIter.current.data["question"];
+      answerTemp0 = docIter.current.data["answer0"];
+      answerTemp1 = docIter.current.data["answer1"];
+      answerTemp2 = docIter.current.data["answer2"];
+      answerTemp3 = docIter.current.data["answer3"];
 
-    return true;
+      return true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('공부 방법 추천 질문'),),
-      body: SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                child: Text(
-                  '${nowHowMany + 1}. $testQuestion',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                padding: EdgeInsets.all(20),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Radio(
-                    value: 0,
-                    groupValue: _radioValue,
-                    onChanged: (int value) {
-                      setState(() {
-                      _radioValue = value;
-                      });
-                    }
-                  ),
-                  Text("$answerTemp0"),
-                  Radio(
-                      value: 1,
-                      groupValue: _radioValue,
-                      onChanged: (int value) {
-                        setState(() {
-                          _radioValue = value;
-                        });
-                      }
-                  ),
-                  Text("$answerTemp1"),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Radio(
-                      value: 2,
-                      groupValue: _radioValue,
-                      onChanged: (int value) {
-                        setState(() {
-                          _radioValue = value;
-                        });
-                      }
-                  ),
-                  Text("$answerTemp2"),
-                  Radio(
-                      value: 3,
-                      groupValue: _radioValue,
-                      onChanged: (int value) {
-                        setState(() {
-                          _radioValue = value;
-                        });
-                      }
-                  ),
-                  Text("$answerTemp3"),
-                ],
-              ),
-              RaisedButton(
-                child: Text('$nextOrFinish'),
-                onPressed: showNextQuestion,
-              )
-            ],
-          )
-        )
-      );
+      body: FutureBuilder(
+        future: getFirestoreDocuments(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData == false)
+            return CircularProgressIndicator(); //위치 중앙으로 바꾸기
+          else {
+            return  SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        '${nowHowMany + 1}. $testQuestion',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(20),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Radio(
+                            value: 0,
+                            groupValue: _radioValue,
+                            onChanged: (int value) {
+                              setState(() {
+                                _radioValue = value;
+                              });
+                            }
+                        ),
+                        Text("$answerTemp0"),
+                        Radio(
+                            value: 1,
+                            groupValue: _radioValue,
+                            onChanged: (int value) {
+                              setState(() {
+                                _radioValue = value;
+                              });
+                            }
+                        ),
+                        Text("$answerTemp1"),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Radio(
+                            value: 2,
+                            groupValue: _radioValue,
+                            onChanged: (int value) {
+                              setState(() {
+                                _radioValue = value;
+                              });
+                            }
+                        ),
+                        Text("$answerTemp2"),
+                        Radio(
+                            value: 3,
+                            groupValue: _radioValue,
+                            onChanged: (int value) {
+                              setState(() {
+                                _radioValue = value;
+                              });
+                            }
+                        ),
+                        Text("$answerTemp3"),
+                      ],
+                    ),
+                    RaisedButton(
+                      child: Text('$nextOrFinish'),
+                      onPressed: showNextQuestion,
+                    )
+                  ],
+                )
+            );
+          }
+        },
+      )
+    );
   }
 }
-
-
