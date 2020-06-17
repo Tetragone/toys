@@ -120,7 +120,7 @@ class TestSettingPageState extends State<TestSettingPage> {
               children: <Widget>[
                 box
                 ]
-            ),
+            ),/*
             IconButton(
                 icon: Icon(Icons.save),
                 tooltip: "자격증 정보 동기화",
@@ -176,6 +176,7 @@ class TestSettingPageState extends State<TestSettingPage> {
 
                   }
                 }),
+                */
           ]
 
         ));
