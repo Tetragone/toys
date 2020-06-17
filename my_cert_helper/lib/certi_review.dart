@@ -24,7 +24,9 @@ class _CertiReviewState extends State<CertiReview> {
         appBar: AppBar(title: Text('난이도 평가',  style: TextStyle(fontSize: 20.0, color: Colors.black)), backgroundColor: Colors.yellow,),
         body: Column(
           children: <Widget>[
-            TextField(
+            Container(
+              margin: const EdgeInsets.all(10.0),
+            child: TextField(
               decoration: InputDecoration(
                 border:OutlineInputBorder(),
                 labelText: '평가 입력하기'
@@ -41,16 +43,19 @@ class _CertiReviewState extends State<CertiReview> {
                setState(() {});
               },
 
-              ),
+              ), ),
 
-            Text('평균 점수:' + ReviewPageState.certData.getMean(ReviewPageState.certData.difficulty).toString()),
+//            Text('평균 점수:' + ReviewPageState.certData.getMean(ReviewPageState.certData.difficulty).toString()),
             Expanded(
               child:ListView.builder(
-                itemCount: ReviewPageState.certData.difficulty.length,
+                itemCount: ReviewPageState.certData.difficultyReview.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    height: 50,
-                    child: Text(ReviewPageState.certData.difficulty.elementAt(index).toString() + '점'),
+                    decoration: BoxDecoration( border: Border.all(color: Colors.black12 ) ),
+                    margin: const EdgeInsets.all(10.0),
+                    child: Text(ReviewPageState.certData.difficultyReview.elementAt(index),
+                      textAlign: TextAlign.left,
+                      textScaleFactor: 1.2),
                   );
                 })
             ),

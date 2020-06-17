@@ -21,13 +21,15 @@ class _ThingsToBringState extends State<ThingsToBring> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('시험준비물',  style: TextStyle(fontSize: 20.0, color: Colors.black)), backgroundColor: Colors.yellow,),
-        body: Column(
-          children: <Widget>[
-            Link(
-                        child: Text(ReviewPageState.certData.prepare),
+        body: Container(
+          margin: const EdgeInsets.all(10.0),
+          child: Link(
+                        child: Text(ReviewPageState.certData.prepare.replaceAll("\\n", "\n"),
+                          textAlign: TextAlign.left,
+                          textScaleFactor: 1.2,
+                        ),
                         url: ReviewPageState.certData.prepareLink
                     ),
-    ]
     )
     );
   }

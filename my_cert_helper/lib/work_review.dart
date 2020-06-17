@@ -24,7 +24,10 @@ class _WorkReviewState extends State<WorkReview> {
         appBar: AppBar(title: Text('실무활용평가',  style: TextStyle(fontSize: 20.0, color: Colors.black)), backgroundColor: Colors.yellow),
         body: Column(
           children: <Widget>[
-            TextField(
+
+        Container(
+        margin: const EdgeInsets.all(10.0),
+            child: TextField(
               decoration: InputDecoration(
                   border:OutlineInputBorder(),
                   labelText: '평가 입력하기'
@@ -41,16 +44,19 @@ class _WorkReviewState extends State<WorkReview> {
                 setState(() { });
               },
 
-            ),
+            ),),
 
-            Text('평균 점수:' + ReviewPageState.certData.getMean(ReviewPageState.certData.usability).toString()),
+            //Text('평균 점수:' + ReviewPageState.certData.getMean(ReviewPageState.certData.usability).toString()),
             Expanded(
     child: ListView.builder(
-                itemCount: ReviewPageState.certData.usability.length,
+                itemCount: ReviewPageState.certData.usabilityReview.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    height: 50,
-                    child: Text(ReviewPageState.certData.usability.elementAt(index).toString() + '점'),
+                    decoration: BoxDecoration( border: Border.all(color: Colors.black12 ) ),
+                    margin: const EdgeInsets.all(10.0),
+                    child: Text(ReviewPageState.certData.usabilityReview.elementAt(index),
+                        textAlign: TextAlign.left,
+                        textScaleFactor: 1.2),
                   );
                 })
             )

@@ -27,8 +27,8 @@ class CertData {
   String prepareLink;
   String rule;
   String ruleLink;
-  List<int> difficulty = List<int>();
-  List<int> usability = List<int>();
+  List<String> difficultyReview = List<String>();
+  List<String> usabilityReview = List<String>();
   List<CertTestTime> testTimeList = List<CertTestTime>();
 
   double getMean(List<int> target) {
@@ -109,7 +109,7 @@ class ReviewPageState extends State<ReviewPage> {
 
         docIterAggr = qSnapAggr.documents.iterator;
         while (docIterAggr.moveNext() == true) {
-          certData.difficulty.add(int.parse(docIterAggr.current.data['score']));
+          certData.difficultyReview.add(docIterAggr.current.data['score']);
         }
 
         qSnapAggr = await firestore.collection(
@@ -118,7 +118,7 @@ class ReviewPageState extends State<ReviewPage> {
 
         docIterAggr = qSnapAggr.documents.iterator;
         while (docIterAggr.moveNext() == true) {
-          certData.usability.add(int.parse(docIterAggr.current.data['score']));
+          certData.usabilityReview.add(docIterAggr.current.data['score']);
         }
 
         qSnapAggr = await firestore.collection(

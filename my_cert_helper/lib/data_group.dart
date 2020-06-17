@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mycerthelper/page_study_manage.dart';
 
 class Data {
   static List<CertObjective> certObj = new List();
+  static bool initiated = false;
 
   static CertObjective getCertObjByName(String name) {
     Iterator<CertObjective> cursor;
@@ -15,15 +19,50 @@ class Data {
 
   void testMode() {
     CertObjective testData = CertObjective();
-    testData.buildTestData();
+    //testData.buildTestData();
     certObj.add(testData);
+  }
+
+  Future<bool> init() async {
+    FirebaseUser qID;
+    QuerySnapshot qSnap;
+    Firestore store = Firestore.instance;
+    Iterator<DocumentSnapshot> docIter;
+    DocumentSnapshot cursor;
+    CertObjective objective;
+    
+    
+    qID = await FirebaseAuth.instance.currentUser();
+    qSnap = await store.collection('/ObjectList').where('user', isEqualTo: qID.email).getDocuments();
+
+    if(qSnap.documents != null) {
+      docIter = qSnap.documents.iterator;
+
+      while (docIter.moveNext() == true) {
+        cursor = docIter.current;
+        objective = CertObjective();
+        objective.CertName = cursor['certName'];
+        objective.selected = Color(int.parse(cursor['color']));
+        objective.isTested = cursor['isTested'] == 'true' ? true : false;
+        objective.priority = int.parse(cursor['priority']);
+        objective.targetGrade = int.parse(cursor['targetGrade']);
+        objective.classificationName = cursor['classification'];
+        objective.organizerName = cursor['organizer'];
+
+        Data.certObj.add(objective);
+      }
+
+      StudyManagerState.targetCert = Data.certObj.first;
+    }
+    initiated = true;
+
+    return true;
   }
 
 
 }
 
 class CertObjective {
-  int CertID;
   String CertName;
   int priority;
   int targetGrade = -1;
@@ -60,7 +99,6 @@ class CertObjective {
   }
 
   CertObjective buildTestData() {
-    CertID = 101;
     CertName = "자격증을 입력해 주세요!";
     priority = 1;
     targetGrade =  -1;

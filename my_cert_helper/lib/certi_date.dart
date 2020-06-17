@@ -27,9 +27,13 @@ class _CertiDateState extends State<CertiDate> {
                     itemCount: ReviewPageState.certData.testTimeList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
-                        height: 50,
+                        decoration: BoxDecoration( border: Border.all(color: Colors.black12 ) ),
+                        margin: const EdgeInsets.all(10.0),
                         child: Link(
-                            child: Text(ReviewPageState.certData.testTimeList.elementAt(index).time.toString()),
+                            child: Text(ReviewPageState.certData.testTimeList.elementAt(index).time.toString(),
+                            textAlign: TextAlign.left,
+                              textScaleFactor: 2,
+                            ),
                             url: ReviewPageState.certData.testTimeList.elementAt(index).link
                         ),
                       );
