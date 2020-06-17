@@ -142,38 +142,6 @@ class StudyManagerState extends State<StudyManager> {
   StateStudyTimeBox();
 
   String compareText() {
-  String message;
-
-  if (StudyManagerState.targetCert.goalTime == 0)
-  {
-  if (StudyManagerState.targetCert.averageTime == null) {
-  message = "데이터를 가져오는 중입니다";
-  }
-  else {
-  averageTime = StudyManagerState.targetCert.averageTime;
-
-  if (averageTime >= (StudyManagerState.targetCert.getWeekAverage())) {
-  message = "공부 시간이 부족합니다";
-  } else {
-  message = "공부 시간이 평균 이상입니다";
-  }
-  }
-  } // board 만들때 참고 하자.
-  else { // 목표 시간에 따른 공부 시간 알려주기 위한 코드
-  averageTime = StudyManagerState.targetCert.goalTime ~/ StudyManagerState.targetCert.goalWeek;
-  // ~/ 가 / .toInt()보다 효율적.
-  if (StudyManagerState.targetCert.averageTime == null) {
-  message = "데이터를 가져오는 중입니다";
-  }
-  else {
-  studyTime = StudyManagerState.targetCert.getWeekAverage();
-  if(averageTime >= studyTime)
-  message = "공부 시간이 부족합니다";
-  else {
-  message = '공부 시간이 평균 이상입니다';
-  }
-  }
-  }
     String message;
 
     if (StudyManagerState.targetCert.goalTime == 0)
