@@ -141,7 +141,7 @@ class EachTestSettingState extends State<EachTestSetting>{
                       ),
                     ),
                     Expanded(
-                        flex: 5,
+                        flex: 4,
                         child: DropdownButton<Color>(
                           hint: Text('색상!'),
                           value: args['obj'].selected  ?? Colors.yellow,
