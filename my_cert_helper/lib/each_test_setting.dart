@@ -18,6 +18,24 @@ class EachTestSettingState extends State<EachTestSetting>{
   Widget build(BuildContext context) {
     final Map<String,CertObjective> args = ModalRoute.of(context).settings.arguments;
 
+    if(args['obj'].isTested == null)
+      args['obj'].isTested = false;
+    if(args['obj'].targetGrade.toString() == null)
+      args['obj'].targetGrade = 0;
+    if(args['obj'].priority == null)
+      args['obj'].priority = 1;
+    if(args['obj'].selected == null)
+      args['obj'].selected = Colors.yellow;
+
+    if(args['obj'].selected.value == Colors.yellow.value)
+      args['obj'].selected = Colors.yellow;
+    if(args['obj'].selected.value == Colors.red.value)
+      args['obj'].selected = Colors.red;
+    if(args['obj'].selected.value == Colors.blue.value)
+      args['obj'].selected = Colors.blue;
+    if(args['obj'].selected.value == Colors.green.value)
+      args['obj'].selected = Colors.green;
+
     return Scaffold(
       appBar: AppBar(title: Text('${args['obj'].CertName}의 설정'),),
       body: Row(
@@ -123,7 +141,7 @@ class EachTestSettingState extends State<EachTestSetting>{
                       ),
                     ),
                     Expanded(
-                        flex: 4,
+                        flex: 5,
                         child: DropdownButton<Color>(
                           hint: Text('색상!'),
                           value: args['obj'].selected  ?? Colors.yellow,
