@@ -203,6 +203,7 @@ class _CalenderPageState extends State<CalenderPage> {
             onTap: () {
               Navigator.push(context,
               MaterialPageRoute<void>(builder: (BuildContext context) {
+                editTestDay.selected = false;
                 return editTestDay();
               })
              );

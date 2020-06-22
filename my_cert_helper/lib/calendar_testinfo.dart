@@ -1,6 +1,7 @@
 // json 직렬화
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:mycerthelper/each_test_setting.dart';
 
 // 캘린더 플러그인
 import 'package:table_calendar/table_calendar.dart';
@@ -21,7 +22,7 @@ import 'calendar_view_event.dart';
 
 
 class editTestDay extends StatefulWidget {
-
+  static bool selected = false;
   final EventModel note;
 
   editTestDay({Key key, this.note}) : super(key: key);
@@ -31,19 +32,25 @@ class editTestDay extends StatefulWidget {
 }
 
 class _editTestDayState extends State<editTestDay> {
-
+  static bool selected = editTestDay.selected;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   DateTime _eventDate;
   bool processing;
-
 // 기존 코드
   SharedPreferences prefs;
+  Stream<QuerySnapshot> stream;
 
     void initState() {
     // TODO: implement initState
     super.initState();
     _eventDate = DateTime.now();
     processing = false;
+
+    if(selected == false){
+      stream = Firestore.instance.collection('testinfo').snapshots();
+    } else {
+      stream = Firestore.instance.collection('testinfo').where('cert', isEqualTo: '${EachTestSettingState.obj.CertName}').snapshots();
+    }
     //initPrefs();
   }
 
@@ -93,8 +100,9 @@ class _editTestDayState extends State<editTestDay> {
 
 
   Widget buildBody(BuildContext context) {
+
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('testinfo').snapshots(),
+      stream: stream,
       builder: (context, snapshot) {
         if(!snapshot.hasData) {
           return LinearProgressIndicator();
