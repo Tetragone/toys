@@ -1,4 +1,5 @@
 // json 직렬화
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:firebase_helpers/firebase_helpers.dart';
 
@@ -48,6 +49,7 @@ class _CalenderPageState extends State<CalenderPage> {
   SharedPreferences prefs;
   Firestore firestore = Firestore.instance;
   Stream<QuerySnapshot> streamData;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -58,6 +60,13 @@ class _CalenderPageState extends State<CalenderPage> {
     cal_selectedEvents = [];
   }
 
+  void inputData() async {
+    final FirebaseUser user = await auth.currentUser();
+    final uemail = user.email;
+    print(uemail);
+    // here you write the codes to input the data into firestore
+  }
+  
   Map<DateTime, List<dynamic>> groupEvents(List<EventModel> events) {
     Map<DateTime,List<dynamic>> data = {};
     events.forEach((event) {
@@ -153,79 +162,10 @@ class _CalenderPageState extends State<CalenderPage> {
                             setState(() {
                               
                             });
-/*
-                           
-                           showDialog(
-                            context: context,
-                            builder : (context) => AlertDialog(
-                              content: Text("일정 자세히 보기"),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('예',style: TextStyle(color: Colors.black)), 
-                                  onPressed: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
-                                  }, 
-                                ),
-                                FlatButton(
-                                  child: Text('아니오',style: TextStyle(color: Colors.black)), 
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  }, 
-                                ),
-                              ],
-                            ),                    
-                           );
-                                                  */
                          },
                      ),
                    ),
                  )
-                 /*
-Card(
-// or ListTile(title: Text(event),)
-                   child: new GestureDetector(
-                     onTap: () {
-                       showDialog(
-                        context: context,
-                        builder : (context) => AlertDialog(
-                          content: Text("일정 상세/ 일정 삭제"),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text('일정 상세',style: TextStyle(color: Colors.black)), 
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
-                              }, 
-                            ),
-                            FlatButton(
-                              child: Text('일정 지우기',style: TextStyle(color: Colors.black)), 
-                              onPressed: () {
-                                setState(() {
-                                  print(event);
-                                  Firestore.instance
-                                    .collection('events')
-                                    .document('temp')
-                                    .delete();                                    
-                                  Navigator.pop(context);
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
-                                  }
-                                );
-                              }, 
-                            )
-                          ],
-                        ),                    
-                       );
-                     },
-                     child: Container(
-                       width: MediaQuery.of(context).size.width,
-                       height: 50,
-                       child: Padding(
-                         padding: EdgeInsets.only(left: 15, top: 10, bottom: 10),
-                         child: Text(event.title, style: TextStyle(fontSize: 18),)
-                         )
-                     ),
-                   ),
-                 )
-                 */
                 ),
               ]
             )
@@ -310,4 +250,73 @@ Card(
     super.dispose();
   }
 }
+/*
+                           
+                           showDialog(
+                            context: context,
+                            builder : (context) => AlertDialog(
+                              content: Text("일정 자세히 보기"),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('예',style: TextStyle(color: Colors.black)), 
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
+                                  }, 
+                                ),
+                                FlatButton(
+                                  child: Text('아니오',style: TextStyle(color: Colors.black)), 
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  }, 
+                                ),
+                              ],
+                            ),                    
+                           );
+                                                  */
 
+                 /*
+Card(
+// or ListTile(title: Text(event),)
+                   child: new GestureDetector(
+                     onTap: () {
+                       showDialog(
+                        context: context,
+                        builder : (context) => AlertDialog(
+                          content: Text("일정 상세/ 일정 삭제"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('일정 상세',style: TextStyle(color: Colors.black)), 
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
+                              }, 
+                            ),
+                            FlatButton(
+                              child: Text('일정 지우기',style: TextStyle(color: Colors.black)), 
+                              onPressed: () {
+                                setState(() {
+                                  print(event);
+                                  Firestore.instance
+                                    .collection('events')
+                                    .document('temp')
+                                    .delete();                                    
+                                  Navigator.pop(context);
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
+                                  }
+                                );
+                              }, 
+                            )
+                          ],
+                        ),                    
+                       );
+                     },
+                     child: Container(
+                       width: MediaQuery.of(context).size.width,
+                       height: 50,
+                       child: Padding(
+                         padding: EdgeInsets.only(left: 15, top: 10, bottom: 10),
+                         child: Text(event.title, style: TextStyle(fontSize: 18),)
+                         )
+                     ),
+                   ),
+                 )
+                 */

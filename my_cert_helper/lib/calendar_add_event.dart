@@ -70,7 +70,7 @@ class _AddEventState extends State<AddEvent> {
                   controller: _description,
                   minLines: 3,
                   maxLines: 5,
-                  validator: (value) => (value.isEmpty) ? "내용을 입력해주세요" : null,
+                  //validator: (value) => (value.isEmpty) ? "내용을 입력해주세요" : null,
                   style: style,
                   decoration: InputDecoration(
                       labelText: "내용",
@@ -108,6 +108,7 @@ class _AddEventState extends State<AddEvent> {
                               });
                               if(widget.note != null) {                           
                                 await eventDBS.updateData(widget.note.id,{
+                                  //"id" : uid,
                                   "title": _title.text,
                                   "description": _description.text,
                                   "event_date": widget.note.eventDate
