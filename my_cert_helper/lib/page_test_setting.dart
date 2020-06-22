@@ -120,65 +120,8 @@ class TestSettingPageState extends State<TestSettingPage> {
               children: <Widget>[
                 box
                 ]
-            ),/*
-            IconButton(
-                icon: Icon(Icons.save),
-                tooltip: "자격증 정보 동기화",
-                onPressed:() async {
-                  if(Data.certObj != null) {
-                    Firestore store = Firestore.instance;
-                    DocumentSnapshot result;
-                    QuerySnapshot qResult;
-                    Iterator<CertObjective> objectCursor;
-                    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-
-                    objectCursor = Data.certObj.iterator;
-                    while(objectCursor.moveNext() == true) {
-                      qResult = await store.collection('/ObjectList').where('certName', isEqualTo: objectCursor.current.CertName)
-                          .where('user', isEqualTo: user.email).getDocuments();
-                      if(qResult.documents.isEmpty == false) {
-                        result = qResult.documents.elementAt(0);
-                        await store.collection('/ObjectList').document(result.documentID).setData({
-                          'certName' : objectCursor.current.CertName ,
-                          'color' : objectCursor.current.selected.value.toString(),
-                          'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
-                          'priority' : objectCursor.current.priority.toString() ,
-                          'targetGrade' : objectCursor.current.targetGrade.toString() ,
-                          'user' : user.email ,
-                        'classification': objectCursor.current.classificationName,
-                        'organizer': objectCursor.current.organizerName
-
-                        });
-                      }
-
-                      else {
-                        await firestore.collection('/ObjectList').document().setData({
-                          'certName' : objectCursor.current.CertName ,
-                          'color' : objectCursor.current.selected.value.toString(),
-                          'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
-                          'priority' : objectCursor.current.priority.toString() ,
-                          'targetGrade' : objectCursor.current.targetGrade.toString() ,
-                          'user' : user.email ,
-                          'classification': objectCursor.current.classificationName,
-                          'organizer': objectCursor.current.organizerName
-                        });
-                      }
-                      Fluttertoast.showToast(
-                          msg: "저장됨",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          fontSize: 16.0
-                      );
-
-                    }
-
-
-                  }
-                }),
-                */
+            ),
           ]
-
         ));
   }
 }

@@ -17,6 +17,7 @@ import 'package:mycerthelper/recommendation_result.dart';
 import 'all_recommendation_question.dart';
 import 'bottom_navigation_bar.dart';
 import 'calendar_page.dart';
+import 'calendar_testinfo.dart';
 import 'each_recommendation_test_question.dart';
 import 'each_test_setting.dart';
 import 'infomation_market_page.dart';
@@ -47,6 +48,7 @@ const String ALL_RECOMMENDATION_QUESTION = '/study recommendation/all for questi
 const String RECOMMENDATION_RESULT = '/study recommendation/recommendation result';
 const String BOARD_CONTENTS = '/notice/infomation market/board contents';
 const String ADD_NEW_BOARD_CONTEXTS = '/notice/infotmaiton market/add new board contexts';
+const String ADD_TEST_DAY = '/calendar page/add test day';
 
 
 final dummyItems = [
@@ -94,6 +96,7 @@ class MyAppState extends State<MyApp> {
         INFORMATION_MARKET : (context) => marketBoard(),
         BOARD_CONTENTS : (context) => BoardContents(),
         ADD_NEW_BOARD_CONTEXTS : (context) => addNewBoardContext(),
+        ADD_TEST_DAY : (context) => editTestDay(),
       },
     );
 

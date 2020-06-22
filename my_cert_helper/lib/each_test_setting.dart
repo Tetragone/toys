@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mycerthelper/calendar_testinfo.dart';
 import 'package:mycerthelper/data_group.dart';
 
 import 'main.dart';
@@ -12,11 +13,33 @@ class EachTestSetting extends StatefulWidget{
 }
 
 class EachTestSettingState extends State<EachTestSetting>{
-  CertObjective obj;
+  static CertObjective obj;
+
+  Firestore store = Firestore.instance;
+  DocumentSnapshot result;
+  QuerySnapshot qResult;
+  Iterator<CertObjective> objectCursor;
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  String emailID;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    firebaseAuth.onAuthStateChanged
+        .firstWhere((user) => user != null)
+        .then((user) {
+      emailID = user.email;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final Map<String,CertObjective> args = ModalRoute.of(context).settings.arguments;
+
+    obj = args['obj'];
 
     if(args['obj'].isTested == null)
       args['obj'].isTested = false;
@@ -36,8 +59,37 @@ class EachTestSettingState extends State<EachTestSetting>{
     if(args['obj'].selected.value == Colors.green.value)
       args['obj'].selected = Colors.green;
 
+
     return Scaffold(
-      appBar: AppBar(title: Text('${args['obj'].CertName}의 설정'),),
+      appBar: AppBar(
+        title: Text('${args['obj'].CertName}의 설정'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.delete),
+            tooltip: '삭제',
+            onPressed: () {
+              if(args['obj'].CertName != null) {
+                Firestore.instance.collection('ObjectList')
+                    .where("certName", isEqualTo: args['obj'].CertName)
+                    .where("user", isEqualTo: emailID).getDocuments().then(
+                        (QuerySnapshot qs) => qs.documents.forEach((element) {
+                          Firestore.instance.collection('ObjectList').document('${element.documentID}').delete();
+
+                          Fluttertoast.showToast(
+                              msg: "삭제 완료했습니다.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              fontSize: 16.0
+                          );
+
+                          Navigator.of(context).pop();
+                        }));
+              }
+            },
+          )
+        ],
+      ),
       body: Row(
         children: <Widget>[
           Expanded(
@@ -168,16 +220,17 @@ class EachTestSettingState extends State<EachTestSetting>{
                     )
                   ],
                 ),
-
-                IconButton(
-                    icon: Icon(Icons.save),
-                    tooltip: "자격증 정보 동기화",
+                ListTile(
+                  title: Text('응시일 설정하기'),
+                  onTap: () {
+                    editTestDay.selected = true;
+                    Navigator.of(context).pushNamed(ADD_TEST_DAY);
+                  }
+                ),
+                RaisedButton(
+                  child: Text('완료'),
                     onPressed:() async {
                       if(Data.certObj != null) {
-                        Firestore store = Firestore.instance;
-                        DocumentSnapshot result;
-                        QuerySnapshot qResult;
-                        Iterator<CertObjective> objectCursor;
                         FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
                         objectCursor = Data.certObj.iterator;
@@ -195,10 +248,8 @@ class EachTestSettingState extends State<EachTestSetting>{
                               'user' : user.email ,
                               'classification': objectCursor.current.classificationName,
                               'organizer': objectCursor.current.organizerName
-
                             });
                           }
-
                           else {
                             await store.collection('/ObjectList').document().setData({
                               'certName' : objectCursor.current.CertName ,
@@ -218,12 +269,24 @@ class EachTestSettingState extends State<EachTestSetting>{
                               timeInSecForIosWeb: 1,
                               fontSize: 16.0
                           );
-
+                          Navigator.of(context).pop();
                         }
-
-
                       }
-                    }),
+                    }
+                ),
+                RaisedButton(
+                    child: Text('취소'),
+                    onPressed:() {
+                      Fluttertoast.showToast(
+                        msg: "취소됨",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        fontSize: 16.0
+                      );
+                      Navigator.of(context).pop();
+                    }
+                ),
               ],
             ),
           )

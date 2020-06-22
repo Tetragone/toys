@@ -263,6 +263,7 @@ Card(
             onTap: () {
               Navigator.push(context,
               MaterialPageRoute<void>(builder: (BuildContext context) {
+                editTestDay.selected = false;
                 return editTestDay();
               })
              );
