@@ -101,7 +101,7 @@ class EachTestSettingState extends State<EachTestSetting>{
                     Expanded(
                       flex: 9,
                       child: Text(
-                        '응시여부',
+                        '   응시여부',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -122,7 +122,7 @@ class EachTestSettingState extends State<EachTestSetting>{
                     Expanded(
                       flex: 6,
                       child: Text(
-                        '목표 점수/등급',
+                        '   목표 점수/등급',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -146,7 +146,7 @@ class EachTestSettingState extends State<EachTestSetting>{
                     Expanded(
                       flex: 6,
                       child: Text(
-                        '우선 순위',
+                        '   우선 순위',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -186,7 +186,7 @@ class EachTestSettingState extends State<EachTestSetting>{
                     Expanded(
                       flex: 6,
                       child: Text(
-                        '캘린더 색상 선택',
+                        '   캘린더 색상 선택',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -221,49 +221,74 @@ class EachTestSettingState extends State<EachTestSetting>{
                   ],
                 ),
                 ListTile(
-                  title: Text('응시일 설정하기'),
+                  title: Text(
+                    '응시일 설정하기',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  trailing: Icon(Icons.calendar_today),
                   onTap: () {
                     editTestDay.selected = true;
                     Navigator.of(context).pushNamed(ADD_TEST_DAY);
                   }
                 ),
-                RaisedButton(
-                  child: Text('완료'),
-                    onPressed:() async {
-                      if(Data.certObj != null) {
-                        FirebaseUser user = await FirebaseAuth.instance.currentUser();
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                        child: Text('완료'),
+                        onPressed:() async {
+                          if(Data.certObj != null) {
+                            FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
-                        objectCursor = Data.certObj.iterator;
-                        while(objectCursor.moveNext() == true) {
-                          qResult = await store.collection('/ObjectList').where('certName', isEqualTo: objectCursor.current.CertName)
-                              .where('user', isEqualTo: user.email).getDocuments();
-                          if(qResult.documents.isEmpty == false) {
-                            result = qResult.documents.elementAt(0);
-                            await store.collection('/ObjectList').document(result.documentID).setData({
-                              'certName' : objectCursor.current.CertName ,
-                              'color' : objectCursor.current.selected.value.toString(),
-                              'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
-                              'priority' : objectCursor.current.priority.toString() ,
-                              'targetGrade' : objectCursor.current.targetGrade.toString() ,
-                              'user' : user.email ,
-                              'classification': objectCursor.current.classificationName,
-                              'organizer': objectCursor.current.organizerName
-                            });
+                            objectCursor = Data.certObj.iterator;
+                            while(objectCursor.moveNext() == true) {
+                              qResult = await store.collection('/ObjectList').where('certName', isEqualTo: objectCursor.current.CertName)
+                                  .where('user', isEqualTo: user.email).getDocuments();
+                              if(qResult.documents.isEmpty == false) {
+                                result = qResult.documents.elementAt(0);
+                                await store.collection('/ObjectList').document(result.documentID).setData({
+                                  'certName' : objectCursor.current.CertName ,
+                                  'color' : objectCursor.current.selected.value.toString(),
+                                  'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
+                                  'priority' : objectCursor.current.priority.toString() ,
+                                  'targetGrade' : objectCursor.current.targetGrade.toString() ,
+                                  'user' : user.email ,
+                                  'classification': objectCursor.current.classificationName,
+                                  'organizer': objectCursor.current.organizerName
+                                });
+                              }
+                              else {
+                                await store.collection('/ObjectList').document().setData({
+                                  'certName' : objectCursor.current.CertName ,
+                                  'color' : objectCursor.current.selected.value.toString(),
+                                  'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
+                                  'priority' : objectCursor.current.priority.toString() ,
+                                  'targetGrade' : objectCursor.current.targetGrade.toString() ,
+                                  'user' : user.email ,
+                                  'classification': objectCursor.current.classificationName,
+                                  'organizer': objectCursor.current.organizerName
+                                });
+                              }
+                              Fluttertoast.showToast(
+                                  msg: "저장됨",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  fontSize: 16.0
+                              );
+                              Navigator.of(context).pop();
+                            }
                           }
-                          else {
-                            await store.collection('/ObjectList').document().setData({
-                              'certName' : objectCursor.current.CertName ,
-                              'color' : objectCursor.current.selected.value.toString(),
-                              'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
-                              'priority' : objectCursor.current.priority.toString() ,
-                              'targetGrade' : objectCursor.current.targetGrade.toString() ,
-                              'user' : user.email ,
-                              'classification': objectCursor.current.classificationName,
-                              'organizer': objectCursor.current.organizerName
-                            });
-                          }
+                        }
+                    ),
+                    SizedBox(width: 10,),
+                    RaisedButton(
+                        child: Text('취소'),
+                        onPressed:() {
                           Fluttertoast.showToast(
-                              msg: "저장됨",
+                              msg: "취소됨",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.CENTER,
                               timeInSecForIosWeb: 1,
@@ -271,22 +296,10 @@ class EachTestSettingState extends State<EachTestSetting>{
                           );
                           Navigator.of(context).pop();
                         }
-                      }
-                    }
+                    ),
+                  ],
                 ),
-                RaisedButton(
-                    child: Text('취소'),
-                    onPressed:() {
-                      Fluttertoast.showToast(
-                        msg: "취소됨",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        fontSize: 16.0
-                      );
-                      Navigator.of(context).pop();
-                    }
-                ),
+
               ],
             ),
           )
