@@ -91,7 +91,7 @@ class UnderBarState extends State<UnderBar> {
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.account_box),
-            title: Text('MY자격증'),
+            title: Text('정보 설정'),
           )
         ],
       ),

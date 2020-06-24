@@ -203,7 +203,7 @@ class AuthPageState extends State<AuthPage> {
             title: Text("생일             ${_eventDate.year} - ${_eventDate.month} - ${_eventDate.day}"),
             leading: Icon(Icons.cake),
             onTap: () async{
-              DateTime picked = await showDatePicker(context: context, initialDate: _eventDate, firstDate: DateTime(_eventDate.year-70), lastDate: DateTime(_eventDate.year+1));
+              DateTime picked = await showDatePicker(context: context, initialDate: _eventDate, firstDate: DateTime(DateTime.now().year-70), lastDate: DateTime(DateTime.now().year+1));
               if(picked != null) {
                 setState(() {
                   _eventDate = picked;
