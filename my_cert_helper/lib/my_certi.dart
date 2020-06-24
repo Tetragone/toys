@@ -72,13 +72,7 @@ class _MYCERTIState extends State<MYCERTI> {
                         child: new SizedBox(
                           width: 180.0,
                           height: 180.0,
-                          child: (_image!=null)?Image.file(
-                            _image,
-                            fit: BoxFit.fill,
-                          ):Image.network(
-                            "https://flutterawesome.com/favicon.png",
-                            fit: BoxFit.fill,
-                          ),
+                          child: (_image!=null) ? Image.file(_image, fit: BoxFit.fill,) : Image.network("https://flutterawesome.com/favicon.png", fit: BoxFit.fill,),
                         ),
                       ),
                     ),
