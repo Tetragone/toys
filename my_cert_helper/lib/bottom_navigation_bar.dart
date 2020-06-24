@@ -91,7 +91,7 @@ class UnderBarState extends State<UnderBar> {
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.account_box),
-            title: Text('정보 설정'),
+            title: Text('회원정보'),
           )
         ],
       ),
