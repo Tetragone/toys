@@ -77,6 +77,28 @@ class _MYCERTIPORTFOLIOState extends State<MYCERTIPORTFOLIO> {
                 Image.network(record.url),
               ],
             ),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  content: Text("자격증을 삭제하시겠습니까?"),                  
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('예',style: TextStyle(color: Colors.black)), 
+                        onPressed: () {
+                          //_deleteImageToFirebase();
+                      }, 
+                    ),
+                  FlatButton(
+                    child: Text('아니오',style: TextStyle(color: Colors.black)), 
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }, 
+                    ),
+                  ],                  
+                )
+              );
+            },
           ),
         ),
       );
@@ -123,6 +145,9 @@ class _MYCERTIPORTFOLIOState extends State<MYCERTIPORTFOLIO> {
           }
       );
     }
+  }
+  Future<void> _deleteImageToFirebase(File image) async {
+
   }
 }
 
