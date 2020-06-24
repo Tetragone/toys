@@ -161,18 +161,6 @@ class _MYCERTIState extends State<MYCERTI> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-<<<<<<< HEAD
-                  Align(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.grey[100],
-                      child: ClipOval(
-                        child: new SizedBox(
-                          width: 180.0,
-                          height: 180.0,
-                          child: (_image!=null) ? Image.file(_image, fit: BoxFit.fill,) : Image.network("https://flutterawesome.com/favicon.png", fit: BoxFit.fill,),
-=======
                   SizedBox(
                     height: 20.0,
                   ),
@@ -197,7 +185,6 @@ class _MYCERTIState extends State<MYCERTI> {
                               ),
                             ),
                           ),
->>>>>>> 706108f46f8f5b627c41966dcbb116bbd2d43473
                         ),
                       ),
                       Padding(
