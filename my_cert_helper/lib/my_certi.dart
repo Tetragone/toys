@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 import 'bottom_navigation_bar.dart';
 import 'calendar_page.dart';
 import 'my_certi_portfolio.dart';
-
-
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -25,7 +23,7 @@ class MYCERTI extends StatefulWidget {
 class _MYCERTIState extends State<MYCERTI> {
   File _image;
 
-  @override
+  
   @override
   Widget build(BuildContext context) {
 
@@ -108,7 +106,7 @@ class _MYCERTIState extends State<MYCERTI> {
                         style:
                             TextStyle(color: Colors.blueGrey, fontSize: 18.0)),
                     SizedBox(width: 20.0),
-                    Text('michelle123@gmail.com',
+                    Text('이메일',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 20.0,
