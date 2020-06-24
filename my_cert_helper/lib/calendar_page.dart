@@ -1,4 +1,5 @@
 // json 직렬화
+import 'package:async/async.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:firebase_helpers/firebase_helpers.dart';
@@ -50,6 +51,8 @@ class _CalenderPageState extends State<CalenderPage> {
   Firestore firestore = Firestore.instance;
   Stream<QuerySnapshot> streamData;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+  String emailID;
 
   @override
   void initState() {
@@ -60,13 +63,17 @@ class _CalenderPageState extends State<CalenderPage> {
     cal_selectedEvents = [];
   }
 
-  void inputData() async {
-    final FirebaseUser user = await auth.currentUser();
-    final uemail = user.email;
-    print(uemail);
-    // here you write the codes to input the data into firestore
+  getUserEmail() async {
+    return this._memoizer.runOnce(() async {
+      await auth.onAuthStateChanged
+          .firstWhere((user) => user != null)
+          .then((user) {
+        emailID = user.email;
+      });
+      return true;
+    });
   }
-  
+
   Map<DateTime, List<dynamic>> groupEvents(List<EventModel> events) {
     Map<DateTime,List<dynamic>> data = {};
     events.forEach((event) {
@@ -74,7 +81,10 @@ class _CalenderPageState extends State<CalenderPage> {
       if(data[date] == null) {
         data[date] = [];
       }
-      data[date].add(event);
+      if(event.id == emailID) {
+        data[date].add(event);
+      }
+
     });
     return data;
   }
@@ -85,92 +95,101 @@ class _CalenderPageState extends State<CalenderPage> {
 
       appBar: AppBar(
         title: Text('캘린더'),
-      ), // AppBar
-      body: StreamBuilder<List<EventModel>>(
-        stream: eventDBS.streamList(),
+      ),
+      body: FutureBuilder(
+        future: getUserEmail(),
         builder: (context, snapshot) {
-          if(snapshot.hasData) {
-            List<EventModel> allEvents = snapshot.data;
-            if(allEvents.isNotEmpty) {
-              cal_events = groupEvents(allEvents);
-            }
-          }
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                TableCalendar(
-                  locale: 'ko_KO',
-                  events: cal_events,//cal_events,
-                  holidays: _holidays,
-                  //initialCalendarFormat: CalendarFormat.week,
-                  calendarStyle: CalendarStyle(
-                    todayColor: Colors.blue, // 오늘 날짜 동그라미 색상
-                    selectedColor: Colors.orange, // 기본 색상과 동일한 선택날짜 색상
-                    todayStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  headerStyle: HeaderStyle(
-                    centerHeaderTitle: true,
-                    formatButtonDecoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    formatButtonTextStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    formatButtonShowsNext: false,
-                  ),
+          if(snapshot.hasData == false)
+            return CircularProgressIndicator();
+          else
+            return StreamBuilder<List<EventModel>>(
+                stream: eventDBS.streamList(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    List<EventModel> allEvents = snapshot.data;
+
+                    if(allEvents.isNotEmpty) {
+                      cal_events = groupEvents(allEvents);
+                    }
+                  }
+                  return SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            TableCalendar(
+                              locale: 'ko_KO',
+                              events: cal_events,//cal_events,
+                              holidays: _holidays,
+                              //initialCalendarFormat: CalendarFormat.week,
+                              calendarStyle: CalendarStyle(
+                                todayColor: Colors.blue, // 오늘 날짜 동그라미 색상
+                                selectedColor: Colors.orange, // 기본 색상과 동일한 선택날짜 색상
+                                todayStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              headerStyle: HeaderStyle(
+                                centerHeaderTitle: true,
+                                formatButtonDecoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                formatButtonTextStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                formatButtonShowsNext: false,
+                              ),
 //              startingDayOfWeek: StartingDayOfWeek.monday,
-                  onDaySelected: (date, events){
-                    setState(() {
-                      cal_selectedEvents = events;
-                    });
-                  },
-                  builders: CalendarBuilders(
-                    selectedDayBuilder: (context, date, events) => 
-                    Container(
-                      margin: const EdgeInsets.all(4.0),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(100.0),
-                      ),
-                      child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
-                    todayDayBuilder: (context, date, events) => 
-                    Container(
-                      margin: const EdgeInsets.all(4.0),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(100.0),
-                      ),
-                      child: Text(date.day.toString(), 
-                      style: TextStyle(color:Colors.white),
-                      )),
-                  ),
-                  calendarController: cal_controller,
-                  ),
-                 ... cal_selectedEvents.map((event) => Card(
-                   child: Container(
-                     child: ListTile(
-                       title: Text(event.title),
-                         onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
-                            setState(() {
-                              
-                            });
-                         },
-                     ),
-                   ),
-                 )
-                ),
-              ]
-            )
-          );
-        }
+                              onDaySelected: (date, events){
+                                setState(() {
+                                  cal_selectedEvents = events;
+                                });
+                              },
+                              builders: CalendarBuilders(
+                                selectedDayBuilder: (context, date, events) =>
+                                    Container(
+                                        margin: const EdgeInsets.all(4.0),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Colors.orange,
+                                          borderRadius: BorderRadius.circular(100.0),
+                                        ),
+                                        child: Text(date.day.toString(), style: TextStyle(color:Colors.white),)),
+                                todayDayBuilder: (context, date, events) =>
+                                    Container(
+                                        margin: const EdgeInsets.all(4.0),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius: BorderRadius.circular(100.0),
+                                        ),
+                                        child: Text(date.day.toString(),
+                                          style: TextStyle(color:Colors.white),
+                                        )),
+                              ),
+                              calendarController: cal_controller,
+                            ),
+                            ... cal_selectedEvents.map((event) => Card(
+                              child: Container(
+                                child: ListTile(
+                                  title: Text(event.title),
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetails(event: event,)));
+                                    setState(() {
+
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                            ),
+                          ]
+                      )
+                  );
+                }
+            );
+        },
       ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
