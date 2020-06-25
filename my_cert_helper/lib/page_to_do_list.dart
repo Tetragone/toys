@@ -53,26 +53,104 @@ class _ToDoListPageState extends State<ToDoListPage> {
           color: Colors.white,
         ),
       ),
-      body: ListView.builder(
-          itemCount: todos.length, itemBuilder:(BuildContext context, int index) {
-        return Dismissible(key: Key(todos[index]), child: Card(
-          elevation: 4,
-          margin: EdgeInsets.all(8),
-          shape: RoundedRectangleBorder(borderRadius:
-          BorderRadius.circular(8)),
-          child: ListTile(
-            title: Text(todos[index]),
-            trailing: IconButton(icon: Icon(
-              Icons.delete,
-              color: Colors.grey,
-            ), onPressed: (){
-              setState(() {
-                todos.removeAt(index);
-              });
-            }),
-          ),
-        ));
-      }),
+      body: Container (
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              title: Text('To Do'),
+              pinned: false,
+              floating: false,
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return Dismissible(key: Key(todos[index]), child: Card(
+                      elevation: 4,
+                      margin: EdgeInsets.all(8),
+                      shape: RoundedRectangleBorder(borderRadius:
+                      BorderRadius.circular(8)),
+                      child: ListTile(
+                        title: Text(todos[index]),
+                        trailing: IconButton(icon: Icon(
+                          Icons.delete,
+                          color: Colors.grey,
+                        ), onPressed: (){
+                          setState(() {
+                            todos.removeAt(index);
+                          });
+                        }),
+                      ),
+                    ));
+                  },
+                childCount: todos.length,
+              ),
+
+            ),
+            SliverAppBar(
+              title: Text('Doing'),
+              pinned: false,
+              floating: false,
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                  return Dismissible(key: Key(todos[index]), child: Card(
+                    elevation: 4,
+                    margin: EdgeInsets.all(8),
+                    shape: RoundedRectangleBorder(borderRadius:
+                    BorderRadius.circular(8)),
+                    child: ListTile(
+                      title: Text(todos[index]),
+                      trailing: IconButton(icon: Icon(
+                        Icons.delete,
+                        color: Colors.grey,
+                      ), onPressed: (){
+                        setState(() {
+                          todos.removeAt(index);
+                        });
+                      }),
+                    ),
+                  ));
+                },
+                childCount: todos.length,
+              ),
+
+            ),
+            SliverAppBar(
+              title: Text('Done'),
+              pinned: false,
+              floating: false,
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                  return Dismissible(key: Key(todos[index]), child: Card(
+                    elevation: 4,
+                    margin: EdgeInsets.all(8),
+                    shape: RoundedRectangleBorder(borderRadius:
+                    BorderRadius.circular(8)),
+                    child: ListTile(
+                      title: Text(todos[index]),
+                      trailing: IconButton(icon: Icon(
+                        Icons.delete,
+                        color: Colors.grey,
+                      ), onPressed: (){
+                        setState(() {
+                          todos.removeAt(index);
+                        });
+                      }),
+                    ),
+                  ));
+                },
+                childCount: todos.length,
+              ),
+
+            ),
+
+          ],
+        ),
+      )
+
     );
   }
 }

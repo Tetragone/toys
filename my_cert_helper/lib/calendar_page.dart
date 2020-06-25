@@ -36,6 +36,7 @@ final Map<DateTime, List> _holidays = {
 
 
 class CalenderPage extends StatefulWidget {
+  static String emailID;
   @override
   _CalenderPageState createState() => _CalenderPageState();
 }
@@ -52,7 +53,6 @@ class _CalenderPageState extends State<CalenderPage> {
   Stream<QuerySnapshot> streamData;
   final FirebaseAuth auth = FirebaseAuth.instance;
   final AsyncMemoizer _memoizer = AsyncMemoizer();
-  String emailID;
 
   @override
   void initState() {
@@ -68,7 +68,7 @@ class _CalenderPageState extends State<CalenderPage> {
       await auth.onAuthStateChanged
           .firstWhere((user) => user != null)
           .then((user) {
-        emailID = user.email;
+        CalenderPage.emailID = user.email;
       });
       return true;
     });
@@ -81,7 +81,7 @@ class _CalenderPageState extends State<CalenderPage> {
       if(data[date] == null) {
         data[date] = [];
       }
-      if(event.id == emailID) {
+      if(event.id == CalenderPage.emailID) {
         data[date].add(event);
       }
 

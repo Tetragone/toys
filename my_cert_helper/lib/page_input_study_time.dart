@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mycerthelper/page_study_manage.dart';
 
+import 'calendar_page.dart';
 import 'data_group.dart';
 
 
@@ -45,7 +47,10 @@ class RouteGetStudyTime extends StatelessWidget{
               StudyManagerState.targetCert.personalTime.add(new StudyTime(cursor.targetDate, cursor.targetDate.add(new Duration(hours: input))));
             }
           }
-        }
+      }
+      Firestore.instance.collection('ObjectList')
+          .where('certName', isEqualTo: StudyManagerState.targetCert.CertName)
+          .where('user', isEqualTo: CalenderPage.emailID);
       stateFormList = new List<StateStudyTimeForm>();
         Navigator.pop(context);
 //        StudyManagerState.updateStat();
