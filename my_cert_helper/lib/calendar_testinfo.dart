@@ -32,7 +32,6 @@ class editTestDay extends StatefulWidget {
 }
 
 class _editTestDayState extends State<editTestDay> {
-  static bool selected = editTestDay.selected;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   DateTime _eventDate;
   bool processing;
@@ -46,7 +45,7 @@ class _editTestDayState extends State<editTestDay> {
     _eventDate = DateTime.now();
     processing = false;
 
-    if(selected == false){
+    if(editTestDay.selected == false){
       stream = Firestore.instance.collection('testinfo').snapshots();
     } else {
       stream = Firestore.instance.collection('testinfo').where('cert', isEqualTo: '${EachTestSettingState.obj.CertName}').snapshots();
