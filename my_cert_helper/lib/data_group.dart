@@ -75,6 +75,7 @@ class CertObjective {
   String organizerName;
   int goalTime = 0;
   int goalWeek = 0;
+  bool uploaded = false;
 
   CertObjective();
 

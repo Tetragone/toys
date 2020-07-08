@@ -9,6 +9,34 @@ import 'data_group.dart';
 
 class RouteGetStudyTime extends StatelessWidget{
   static List<StateStudyTimeForm> stateFormList = new List<StateStudyTimeForm>();
+  List<String> weekday = ['월', '화', '수', '목', '금', '토', '일'];
+  List<int> inputList = List();
+  Iterator<DocumentSnapshot> docIter;
+  DateTime inputStudyTimeDay = DateTool.getWeekMonday(DateTime.now());
+
+  getStudyTime() async {
+    DateTime tempDateTime;
+
+    await Firestore.instance.collection('ObjectList')
+        .where('certName', isEqualTo: StudyManagerState.targetCert.CertName)
+        .where('user', isEqualTo: CalenderPage.emailID).getDocuments()
+        .then((QuerySnapshot qs) {
+       docIter = qs.documents.iterator;
+
+       if(docIter.moveNext() == true){
+         for(int i = 0; i < 7; i++) {
+           int temp = docIter.current.data['${weekday[i]}'];
+           inputList.add(temp);
+
+           tempDateTime = inputStudyTimeDay.add(Duration(days: i));
+           if(temp == null)
+             StudyManagerState.targetCert.personalTime.add(new StudyTime(tempDateTime, tempDateTime.add(Duration(hours: 0))));
+           else
+             StudyManagerState.targetCert.personalTime.add(new StudyTime(tempDateTime, tempDateTime.add(Duration(hours: temp))));
+         }
+       }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +55,16 @@ class RouteGetStudyTime extends StatelessWidget{
     }
 
     result.add( MaterialButton(
-      onPressed: ()
-      {
+      onPressed: () async {
       Iterator stateIter = stateFormList.iterator;
+      List<int> inputList = List();
       int input;
       int storedData;
       StateStudyTimeForm cursor;
       while(stateIter.moveNext() != false) {
           cursor = stateIter.current;
           input = int.parse(cursor.formController.text);
+          inputList.add(input);
           storedData = StudyManagerState.targetCert.getPersonalTimeWithDate(
               cursor.targetDate);
           if (storedData != input) {
@@ -48,11 +77,38 @@ class RouteGetStudyTime extends StatelessWidget{
             }
           }
       }
-      Firestore.instance.collection('ObjectList')
+      await Firestore.instance.collection('ObjectList')
           .where('certName', isEqualTo: StudyManagerState.targetCert.CertName)
-          .where('user', isEqualTo: CalenderPage.emailID);
+          .where('user', isEqualTo: CalenderPage.emailID).getDocuments()
+          .then((QuerySnapshot qs) {
+         qs.documents.forEach((element) {
+           if(element.data['${weekday[0]}'] == null) {
+             Firestore.instance.collection('ObjectList').document('${element.documentID}').setData({
+               '${weekday[0]}': '${inputList[0]}',
+               '${weekday[1]}': '${inputList[1]}',
+               '${weekday[2]}': '${inputList[2]}',
+               '${weekday[3]}': '${inputList[3]}',
+               '${weekday[4]}': '${inputList[4]}',
+               '${weekday[5]}': '${inputList[5]}',
+               '${weekday[6]}': '${inputList[6]}',
+               'standardDay': '${DateTool.getWeekMonday(DateTime.now())}',
+             }, merge: true );
+           } else {
+             Firestore.instance.collection('ObjectList').document('${element.documentID}').updateData({
+               '${weekday[0]}': '${inputList[0]}',
+               '${weekday[1]}': '${inputList[1]}',
+               '${weekday[2]}': '${inputList[2]}',
+               '${weekday[3]}': '${inputList[3]}',
+               '${weekday[4]}': '${inputList[4]}',
+               '${weekday[5]}': '${inputList[5]}',
+               '${weekday[6]}': '${inputList[6]}',
+               'standardDay': '${DateTool.getWeekMonday(DateTime.now())}',
+             });
+           }
+         });
+      });
       stateFormList = new List<StateStudyTimeForm>();
-        Navigator.pop(context);
+      Navigator.pop(context);
 //        StudyManagerState.updateStat();
       },
       child: Text("확인"),
@@ -100,7 +156,6 @@ class StateStudyTimeForm extends State<StudyTimeForm> {
   StateStudyTimeForm(this.targetDate) {
     formController = TextEditingController(text: StudyManagerState.targetCert.getPersonalTimeWithDate(targetDate).toString());
   }
-  bool needRedraw = false;
 
   @override
   Widget build(BuildContext context) {

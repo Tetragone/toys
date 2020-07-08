@@ -159,6 +159,7 @@ class _editTestDayState extends State<editTestDay> {
                       Data.getCertObjByName(record.testCert).examDate.add(DateTime.parse(tday));
                     }
                     eventDBS.createItem(EventModel(
+                      id: CalenderPage.emailID,
                       title: tname,
                       description: tday,
                       eventDate: settday

@@ -12,6 +12,7 @@ import 'package:mycerthelper/screens/login.dart';
 import 'package:mycerthelper/screens/main_page.dart';
 import 'package:mycerthelper/study_time_check_and_compare.dart';
 import 'package:mycerthelper/test_score_prediction.dart';
+import 'package:mycerthelper/tool_firebase.dart';
 import 'package:provider/provider.dart';
 import 'package:mycerthelper/recommendation_result.dart';
 import 'all_recommendation_question.dart';
@@ -57,7 +58,6 @@ final dummyItems = [
   'https://firebasestorage.googleapis.com/v0/b/certhelper-3e7f3.appspot.com/o/image%2Ftest_image3.PNG?alt=media&token=712aceae-c962-40b1-8f33-f76e6fc728b1'
 ];
 
-
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));
 }
@@ -69,8 +69,8 @@ class MyApp extends StatefulWidget{
 
 
 class MyAppState extends State<MyApp> {
-
   static MaterialApp mApp;
+
   @override
   Widget build(BuildContext context) {
     mApp = MaterialApp(

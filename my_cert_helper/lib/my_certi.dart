@@ -391,7 +391,7 @@ class _MYCERTIState extends State<MYCERTI> {
                         color: Colors.grey,
                         onPressed: () {
                           FirebaseAuth.instance.signOut();
-                          Splash.isFirstCall = true;
+                          Splash();
                         },
                         elevation: 4.0,
                         splashColor: Colors.yellow,
