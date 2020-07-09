@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -11,6 +12,13 @@ class FirebaseHandler {
   List<DocumentSnapshot> objectDocSnap;
   List<DocumentSnapshot> boardDocSnap;
   QuerySnapshot querySnapshot;
+  static final FirebaseHandler _instance = FirebaseHandler._internal();
+
+  factory FirebaseHandler() {
+    return _instance;
+  } // 불러오면 하나만 반환.
+
+  FirebaseHandler._internal(); //singleton
 
   Future<String> getEmailID() async {
     if(emailID == null) {

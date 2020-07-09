@@ -80,6 +80,7 @@ class StudyManagerState extends State<StudyManager> {
     return true;
   } // 데이터를 가져오는 부분 (주간 공부 시간을 가져오는 부분)
 
+
   @override
   void initState() {
     if (data == null) {

@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mycerthelper/calendar_page.dart';
 import 'package:mycerthelper/calendar_testinfo.dart';
 import 'package:mycerthelper/data_group.dart';
+import 'package:mycerthelper/page_test_setting.dart';
+import 'package:mycerthelper/tool_firebase.dart';
 
 import 'main.dart';
 
@@ -14,7 +17,7 @@ class EachTestSetting extends StatefulWidget{
 
 class EachTestSettingState extends State<EachTestSetting>{
   static CertObjective obj;
-
+  var firebaseHandler = FirebaseHandler();
   Firestore store = Firestore.instance;
   DocumentSnapshot result;
   QuerySnapshot qResult;
@@ -27,12 +30,6 @@ class EachTestSettingState extends State<EachTestSetting>{
   @override
   void initState() {
     super.initState();
-
-    firebaseAuth.onAuthStateChanged
-        .firstWhere((user) => user != null)
-        .then((user) {
-      emailID = user.email;
-    });
   }
 
   @override
@@ -67,7 +64,17 @@ class EachTestSettingState extends State<EachTestSetting>{
           IconButton(
             icon: const Icon(Icons.delete),
             tooltip: '삭제',
-            onPressed: () {
+            onPressed: () async {
+              Fluttertoast.showToast(
+                  msg: "삭제를 시작합니다.",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  fontSize: 16.0
+              );
+              emailID = await firebaseHandler.getEmailID();
+              print('$emailID');
+
               if(args['obj'].CertName != null) {
                 Firestore.instance.collection('ObjectList')
                     .where("certName", isEqualTo: args['obj'].CertName)
@@ -75,6 +82,7 @@ class EachTestSettingState extends State<EachTestSetting>{
                         (QuerySnapshot qs) => qs.documents.forEach((element) {
                           Firestore.instance.collection('ObjectList').document('${element.documentID}').delete();
 
+                          print('doing\n');
                           Fluttertoast.showToast(
                               msg: "삭제 완료했습니다.",
                               toastLength: Toast.LENGTH_SHORT,
@@ -83,6 +91,10 @@ class EachTestSettingState extends State<EachTestSetting>{
                               fontSize: 16.0
                           );
 
+
+                          Data.certObj.remove(obj);
+
+                          print('done?\n');
                           Navigator.of(context).pop();
                         }));
               }
@@ -239,48 +251,75 @@ class EachTestSettingState extends State<EachTestSetting>{
                     RaisedButton(
                         child: Text('완료'),
                         onPressed:() async {
-                          if(Data.certObj != null) {
-                            FirebaseUser user = await FirebaseAuth.instance.currentUser();
+                          emailID = await firebaseHandler.getEmailID();
 
-                            objectCursor = Data.certObj.iterator;
-                            while(objectCursor.moveNext() == true) {
-                              qResult = await store.collection('/ObjectList').where('certName', isEqualTo: objectCursor.current.CertName)
-                                  .where('user', isEqualTo: user.email).getDocuments();
-                              if(qResult.documents.isEmpty == false) {
-                                result = qResult.documents.elementAt(0);
-                                await store.collection('/ObjectList').document(result.documentID).setData({
-                                  'certName' : objectCursor.current.CertName ,
-                                  'color' : objectCursor.current.selected.value.toString(),
-                                  'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
-                                  'priority' : objectCursor.current.priority.toString() ,
-                                  'targetGrade' : objectCursor.current.targetGrade.toString() ,
-                                  'user' : user.email ,
-                                  'classification': objectCursor.current.classificationName,
-                                  'organizer': objectCursor.current.organizerName
-                                });
-                              }
-                              else {
-                                await store.collection('/ObjectList').document().setData({
-                                  'certName' : objectCursor.current.CertName ,
-                                  'color' : objectCursor.current.selected.value.toString(),
-                                  'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
-                                  'priority' : objectCursor.current.priority.toString() ,
-                                  'targetGrade' : objectCursor.current.targetGrade.toString() ,
-                                  'user' : user.email ,
-                                  'classification': objectCursor.current.classificationName,
-                                  'organizer': objectCursor.current.organizerName
-                                });
-                              }
-                              Fluttertoast.showToast(
-                                  msg: "저장됨",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  fontSize: 16.0
-                              );
-                              Navigator.of(context).pop();
-                            }
-                          }
+                          await store.collection('ObjectList').where('certName', isEqualTo: obj.CertName)
+                              .where('user', isEqualTo: CalenderPage.emailID).getDocuments().then(
+                                  (QuerySnapshot qs) {
+                                    if(qs.documents.isEmpty == false){
+                                      qs.documents.forEach((element) {
+                                        store.collection('ObjectList').document(element.documentID).updateData({
+                                          'certName' : obj.CertName ,
+                                          'color' : obj.selected.value.toString(),
+                                          'isTested' : obj.isTested == true ? "true" : "false" ,
+                                          'priority' : obj.priority.toString() ,
+                                          'targetGrade' : obj.targetGrade.toString() ,
+                                          'user' : CalenderPage.emailID ,
+                                          'classification': obj.classificationName,
+                                          'organizer': obj.organizerName
+                                        });
+                                      });
+                                    } else {
+                                      store.collection('/ObjectList').document().setData({
+                                        'certName' : obj.CertName ,
+                                        'color' : obj.selected.value.toString(),
+                                        'isTested' : obj.isTested == true ? "true" : "false" ,
+                                        'priority' : obj.priority.toString() ,
+                                        'targetGrade' : obj.targetGrade.toString() ,
+                                        'user' : CalenderPage.emailID,
+                                        'classification': obj.classificationName,
+                                        'organizer': obj.organizerName
+                                      });
+                                    }
+                                    Fluttertoast.showToast(
+                                        msg: "저장됨",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        fontSize: 16.0
+                                    );
+                                    Navigator.of(context).pop();
+                                  });
+//                          if(Data.certObj != null) {
+//                            objectCursor = Data.certObj.iterator;
+//                            while(objectCursor.moveNext() == true) {
+//                              qResult = await store.collection('/ObjectList').where('certName', isEqualTo: objectCursor.current.CertName)
+//                                  .where('user', isEqualTo: firebaseHandler.getEmailID()).getDocuments();
+//                              if(qResult.documents.isEmpty == false) {
+//                                result = qResult.documents.elementAt(0);
+//                                await store.collection('/ObjectList').document(result.documentID).updateData({
+//                                  'certName' : objectCursor.current.CertName ,
+//                                  'color' : objectCursor.current.selected.value.toString(),
+//                                  'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
+//                                  'priority' : objectCursor.current.priority.toString() ,
+//                                  'targetGrade' : objectCursor.current.targetGrade.toString() ,
+//                                  'user' : firebaseHandler.getEmailID() ,
+//                                  'classification': objectCursor.current.classificationName,
+//                                  'organizer': objectCursor.current.organizerName
+//                                });
+//                              }
+//                              else {
+//                                await store.collection('/ObjectList').document().setData({
+//                                  'certName' : objectCursor.current.CertName ,
+//                                  'color' : objectCursor.current.selected.value.toString(),
+//                                  'isTested' : objectCursor.current.isTested == true ? "true" : "false" ,
+//                                  'priority' : objectCursor.current.priority.toString() ,
+//                                  'targetGrade' : objectCursor.current.targetGrade.toString() ,
+//                                  'user' : firebaseHandler.getEmailID(),
+//                                  'classification': objectCursor.current.classificationName,
+//                                  'organizer': objectCursor.current.organizerName
+//                                });
+//                              }
                         }
                     ),
                     SizedBox(width: 10,),

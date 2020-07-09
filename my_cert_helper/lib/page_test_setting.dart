@@ -27,13 +27,12 @@ class TestSettingPageState extends State<TestSettingPage> {
   String selectedName;
   String selectedClass;
   String selectedOrga;
-  Data data;
+  static Data data;
   SelectedBox box;
 
-  TestSettingPageState(Data data) {
-    this.data = data;
+  TestSettingPageState(Data dataTemp) {
+    data = dataTemp;
   }
-
 
   @override
   void initState() {
@@ -51,6 +50,12 @@ class TestSettingPageState extends State<TestSettingPage> {
           hintText: '자격증을 입력해주세요!',
         ));
     box = SelectedBox(Data.certObj);
+  }
+
+  getCertList() async {
+    box = SelectedBox(Data.certObj);
+
+    return true;
   }
 
   onSearchBoxClicked() async {
@@ -84,13 +89,14 @@ class TestSettingPageState extends State<TestSettingPage> {
     }
 
     selectedName = await showDialog<String>(context: context,
-    builder: (BuildContext context) {
-      return SimpleDialog(
-          title: Text("자격증을 선택해 주십시오"),
-          children: optionList
-      );
-    }
+      builder: (BuildContext context) {
+        return SimpleDialog(
+            title: Text("자격증을 선택해 주십시오"),
+            children: optionList
+        );
+      }
     );
+
     if(selectedName != null && selectedClass != null && selectedOrga != null) {
       CertObjective result = CertObjective();
       result.CertName = selectedName;
@@ -106,6 +112,12 @@ class TestSettingPageState extends State<TestSettingPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('응시 자격증 설정'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () => setState(() {}),
+            )
+          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -115,12 +127,22 @@ class TestSettingPageState extends State<TestSettingPage> {
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Text('설정된 자격증'),
             ),
-            Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                box
-                ]
+            FutureBuilder(
+              future: getCertList(),
+              builder: (context, snapshot) {
+                if(snapshot.hasData == false)
+                  return CircularProgressIndicator();
+                else {
+                  return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        box
+                      ]
+                  );
+                }
+              },
             ),
+
           ]
         ));
   }

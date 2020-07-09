@@ -30,8 +30,7 @@ class Data {
     Iterator<DocumentSnapshot> docIter;
     DocumentSnapshot cursor;
     CertObjective objective;
-    
-    
+
     qID = await FirebaseAuth.instance.currentUser();
     qSnap = await store.collection('/ObjectList').where('user', isEqualTo: qID.email).getDocuments();
 
