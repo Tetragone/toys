@@ -79,7 +79,7 @@ class ReviewPageState extends State<ReviewPage> {
             icon: Icon(Icons.search),
             onPressed: onSearchBoxClicked,
           ),
-          hintText: '자격증을 입력해주세요!',
+          hintText: '우측의 돋보기를 클릭하세요!',
         ));
   }
 
@@ -373,7 +373,7 @@ class ReviewPageState extends State<ReviewPage> {
             searchBox,
             Center(
                 child: Text(
-                    selectedName == null ? '자격증을 선택해 주세요' : selectedName)
+                    selectedName == null ? '자격증을 선택해 주세요' : selectedName, )
             ),
             _buildPadding1(),
             _buildBottom(context),

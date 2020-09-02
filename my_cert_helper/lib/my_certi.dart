@@ -149,7 +149,7 @@ class _MYCERTIState extends State<MYCERTI> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('MY정보'),
+        title: Text('회원정보'),
       ),
       body: FutureBuilder(
         future: getUserInfo(),
@@ -204,7 +204,7 @@ class _MYCERTIState extends State<MYCERTI> {
                   Container(
                     margin: EdgeInsets.all(20.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text('이메일',
                             style:
@@ -222,21 +222,21 @@ class _MYCERTIState extends State<MYCERTI> {
                     height: 20.0,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                         child: Container(
                           child: Column(
                             children: <Widget>[
                               Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text('닉네임',
                                     style: TextStyle(
                                         color: Colors.blueGrey, fontSize: 18.0)),
                               ),
                               Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Container(
                                   width: 150,
                                   child: Form(
@@ -259,7 +259,7 @@ class _MYCERTIState extends State<MYCERTI> {
                         ),
                       ),
                       Align(
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.center,
                         child: Container(
                           child: NicknameEditWidget()
                         ),
@@ -270,21 +270,24 @@ class _MYCERTIState extends State<MYCERTI> {
                     height: 20.0,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                         child: Container(
                           child: Column(
                             children: <Widget>[
                               Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text('생일',
                                     style: TextStyle(
                                         color: Colors.blueGrey, fontSize: 18.0)),
                               ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
                               Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text('${birthdayDate.year}-${birthdayDate.month}-${birthdayDate.day}',
                                     style: TextStyle(
                                         color: Colors.black,
@@ -296,7 +299,7 @@ class _MYCERTIState extends State<MYCERTI> {
                         ),
                       ),
                       Align(
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.center,
                         child: Container(
                           child: IconButton(
                             icon: Icon(Icons.create),
