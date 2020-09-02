@@ -371,6 +371,9 @@ class ReviewPageState extends State<ReviewPage> {
           scrollDirection: Axis.vertical,
           children: <Widget>[
             searchBox,
+            SizedBox(
+              height: 10.0,
+            ),
             Center(
                 child: Text(
                     selectedName == null ? '자격증을 선택해 주세요' : selectedName, style: TextStyle(fontSize: 20), )
