@@ -373,7 +373,7 @@ class ReviewPageState extends State<ReviewPage> {
             searchBox,
             Center(
                 child: Text(
-                    selectedName == null ? '자격증을 선택해 주세요' : selectedName, )
+                    selectedName == null ? '자격증을 선택해 주세요' : selectedName, style: TextStyle(fontSize: 20), )
             ),
             _buildPadding1(),
             _buildBottom(context),
