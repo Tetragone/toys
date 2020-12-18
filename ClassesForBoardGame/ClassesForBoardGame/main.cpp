@@ -1,51 +1,35 @@
-#include "PrintOmok.h"
-#include "PrintOthello.h"
 #include "Render.h"
 #include "Logic.h"
-#include "Omok.h"
-#include "Othello.h"
-#include "OmokBoard.h"
-#include "OthelloBoard.h"
+#include "WideBoard.h"
 #include "Board.h"
+#include "Bingo.h"
+#include "PrintBingo.h"
 
 int main() {
-	int mode;
-	char x, y;
+	int x;
 	int win;
+	
+	Bingo b = Bingo(5);
+	PrintBingo pb = PrintBingo();
 
-	cout << "1. Omok 2.Othello : ";
-	cin >> mode;
+	do {
+		pb.setDat(b.getDat());
+		pb.setDat2(b.getDat2());
+		pb.printAll();
 
-	if (mode == 1) {
-		Omok omok = Omok();
-		PrintOmok printomok = PrintOmok();
+		cout << "input position:";
+		cin >> x;
 
-		do {
-			printomok.setDat(omok.getDat());
-			printomok.printAll();
+		win = b.putStone(x, ' ');
+	} while (win == -1);
 
-			cout << "input position:";
-			cin >> x >> y;
+	pb.setDat(b.getDat());
+	pb.setDat2(b.getDat2());
+	pb.printAll();
 
-			win = omok.putStone(x, y);
-		} while (win == -1);
-//		logic = static_cast<Omok>(omok);
-//		render = static_cast<PrintOmok>(printomok);
-	}
-	else {
-		Othello othello = Othello();
-		PrintOthello printothello = PrintOthello();
+	if (win == 0) cout << "플레이어 1의 승리입니다.\n";
+	else if (win == 1) cout << "플레이어 2의 승리입니다\n";
+	else cout << "무승부 입니다!\n";
 
-		do {
-			printothello.setDat(othello.getDat());
-			printothello.printAll();
-
-			cout << "input position:";
-			cin >> x >> y;
-
-			win = othello.putStone(x, y);
-		} while (win == -1);
-//		logic = static_cast<Othello>(othello);
-//		render = static_cast<PrintOthello>(printothello);
-	}
+	cin >> x;
 }

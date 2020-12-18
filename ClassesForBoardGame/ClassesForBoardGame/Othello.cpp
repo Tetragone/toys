@@ -6,25 +6,12 @@
 
 using namespace std;
 
-Othello::Othello()
+Othello::Othello(int s) : Board(s)
 {
-	size = 8;
-	dat = (int**)malloc(sizeof(int*) * size);
-	dat[0] = (int*)malloc(sizeof(int) * size * size);
-	for (int i = 1; i < size; i++) dat[i] = dat[i - 1] + size;
-	memset(dat[0], -0x01, sizeof(int) * size * size);
-
 	dat[3][3] = 0;
 	dat[4][4] = 0;
 	dat[3][4] = 1;
 	dat[4][3] = 1;
-}
-
-
-Othello::~Othello()
-{
-	free(dat[0]);
-	free(dat);
 }
 
 void Othello::totalStone() {

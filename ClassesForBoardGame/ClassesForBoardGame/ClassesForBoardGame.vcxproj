@@ -115,24 +115,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bingo.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="Omok.h" />
     <ClInclude Include="OmokBoard.h" />
     <ClInclude Include="Othello.h" />
-    <ClInclude Include="OthelloBoard.h" />
+    <ClInclude Include="PrintBingo.h" />
+    <ClInclude Include="WideBoard.h" />
     <ClInclude Include="PrintOmok.h" />
     <ClInclude Include="PrintOthello.h" />
     <ClInclude Include="Render.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bingo.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Omok.cpp" />
     <ClCompile Include="OmokBoard.cpp" />
     <ClCompile Include="Othello.cpp" />
-    <ClCompile Include="OthelloBoard.cpp" />
+    <ClCompile Include="PrintBingo.cpp" />
+    <ClCompile Include="WideBoard.cpp" />
     <ClCompile Include="PrintOmok.cpp" />
     <ClCompile Include="PrintOthello.cpp" />
     <ClCompile Include="Render.cpp" />

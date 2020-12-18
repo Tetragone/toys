@@ -5,19 +5,7 @@
 
 using namespace std;
 
-Omok::Omok()
-{
-	size = 16;
-	dat = (int**)malloc(sizeof(int*) * size);
-	dat[0] = (int*)malloc(sizeof(int) * size * size);
-	for (int i = 1; i < size; i++) dat[i] = dat[i - 1] + size;
-	memset(dat[0], -0x01, sizeof(int) * size * size);
-}
-
-Omok::~Omok()
-{
-	free(dat[0]);
-	free(dat);
+Omok::Omok(int s) : Board(s) {// constructor
 }
 
 bool Omok::check(int x, int y, int index) {

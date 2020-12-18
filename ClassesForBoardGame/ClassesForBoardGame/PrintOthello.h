@@ -1,11 +1,10 @@
 #pragma once
-#include "OthelloBoard.h"
+#include "WideBoard.h"
 class PrintOthello :
-	public OthelloBoard
+	public WideBoard
 {
 private:
 	void printBoardOneLine(int) override; // 한줄을 출력하기 위한 함수.
-	void printMiddleLine(int); // 중간의 줄을 출력하기 위한 함수. 
 
 public:
 	PrintOthello();
