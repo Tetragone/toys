@@ -1,12 +1,15 @@
 #pragma once
 #include "Logic.h"
 #include <stack>
+#include <iostream>
+#define MAX_LENGTH 100
 
+using namespace std;
 class Board : public Logic
 {
 protected: 
 	int length;
-//	stack<pair<int, int>> progress;
+	pair<int, int> progess[MAX_LENGTH];
 	int turn = 0; // 0: Èæµ¹ 1: ¹éµ¹
 	int move[8][2] = { {-1 ,1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1} };
 	int spaceStone;

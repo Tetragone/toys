@@ -12,7 +12,7 @@ Board::Board(int s)
 	dat = (int**)malloc(sizeof(int*) * size);
 	dat[0] = (int*)malloc(sizeof(int) * size * size);
 	for (int i = 1; i < size; i++) dat[i] = dat[i - 1] + size;
-	memset(dat[0], 0, sizeof(int) * size * size);
+	memset(dat[0], -0x01, sizeof(int) * size * size);
 }
 
 
@@ -33,9 +33,10 @@ bool Board::check(int x, int y, int index) {
 		length++;
 
 		if (tempX >= size || tempY >= size || tempX < 0 || tempY < 0) return false;
-//		progress.push(pair<int, int>(tempX, tempY));
+		progess[length].first = tempX;
+		progess[length].second = tempY;
 	} while (dat[tempX][tempY] == turn);
 
-	if (length && dat[x][y] == turn) return true;
+	if (length != 1 && dat[x][y] == turn) return true;
 	else return false;
 }

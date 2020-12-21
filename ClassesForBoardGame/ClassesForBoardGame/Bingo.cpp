@@ -13,6 +13,7 @@ Bingo::Bingo(int s) : Board(s)
 	dat2[0] = (int*)malloc(sizeof(int) * size * size);
 	for (int i = 1; i < size; i++) dat2[i] = dat2[i - 1] + size;
 	memset(dat2[0], 0, sizeof(int) * size * size);
+	memset(dat[0], 0, sizeof(int) * size * size);
 	srand((unsigned int)time(NULL));
 	this->init(dat);
 	this->init(dat2);

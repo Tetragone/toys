@@ -119,7 +119,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="Omok.h" />
-    <ClInclude Include="OmokBoard.h" />
+    <ClInclude Include="NarrowBoard.h" />
     <ClInclude Include="Othello.h" />
     <ClInclude Include="PrintBingo.h" />
     <ClInclude Include="WideBoard.h" />
@@ -133,7 +133,7 @@
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Omok.cpp" />
-    <ClCompile Include="OmokBoard.cpp" />
+    <ClCompile Include="NarrowBoard.cpp" />
     <ClCompile Include="Othello.cpp" />
     <ClCompile Include="PrintBingo.cpp" />
     <ClCompile Include="WideBoard.cpp" />

@@ -1,9 +1,9 @@
 #pragma once
-#include "OmokBoard.h"
+#include "NarrowBoard.h"
 class PrintOmok :
-	public OmokBoard
+	public NarrowBoard
 {
-	void printBoardOneLine(int) override; // 한줄을 출력하기 위한 함수.
+	void printStone(int) override;
 public:
 	PrintOmok();
 	~PrintOmok();
